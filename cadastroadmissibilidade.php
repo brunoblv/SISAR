@@ -161,8 +161,7 @@ if ($permissao == 2) {
 							$tipoalvara1 = $receber_cadastros['tipoalvara1'];
 							$tipoalvara2 = $receber_cadastros['tipoalvara2'];
 							$tipoalvara3 = $receber_cadastros['tipoalvara3'];
-							$stand = $receber_cadastros['stand'];
-							$categoria = $receber_cadastros['categoria'];
+							$stand = $receber_cadastros['stand'];							
 							$sts = $receber_cadastros['sts'];
 							$descstatus = $receber_cadastros['descstatus'];
 							$decreto = $receber_cadastros['decreto'];
@@ -341,13 +340,13 @@ if ($permissao == 2) {
 					</div>
 					<div class="card-body">
 						<div class="form-row">
-							<div class="col col-3">
+							<div class="col col-2">
 								<label for="sei" class="form-label">N° de Controle interno:</label>
-								<input type="text" class="form-control form-control-sm" id="controleinterno" readonly name="controleinterno" required="required" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
+								<input type="text" class="form-control form-control-sm" id="controleinterno" readonly name="controleinterno" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
 							</div>
-							<div class="col col-3">
+							<div class="col col-2">
 								<label for="sei" class="form-label">N° do Processo SEI:</label>
-								<input type="text" class="form-control form-control-sm" id="sei" readonly name="sei" required="required" value="<?php echo htmlspecialchars($sei); ?>"></input>
+								<input type="text" class="form-control form-control-sm" id="sei" readonly name="sei" value="<?php echo htmlspecialchars($sei); ?>"></input>
 							</div>
 
 							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
@@ -361,26 +360,26 @@ if ($permissao == 2) {
 
 							?>
 
-							<div class="col col-3">
+							<div class="col col-2">
 								<label for="dataprotocolo" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm" id="dataprotocolo" readonly name="dataprotocolo" required="required" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
+								<input type="text" class="form-control form-control-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
 							</div>
-							<div class="col col-3">
-								<label for="datalimite" class="form-label">Data de limite para análise de admissiblidade:</label>
-								<input type="text" class="form-control form-control-sm" id="datalimite" readonly name="datalimite" required="required" value="<?php echo htmlspecialchars($datalimite); ?>"></input>
+							<div class="col col-2">
+								<label for="datalimite" class="form-label">Data limite de análise:</label>
+								<input type="text" class="form-control form-control-sm" id="datalimite" readonly name="datalimite" value="<?php echo htmlspecialchars($datalimite); ?>"></input>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="card bg-light mb-3">
 					<div class="card-header">
-						<strong>Dados de Distribuição</strong>
+						<strong>Dados de Admissibilidade</strong>
 					</div>
 					<div class="card-body">
 						<div class="form-row">
 							<div class="col col-3">
 								<label for="decisao" class="form-label">Data de publicação da decisão interlocutória</label>
-								<input type="text" class="form-control form-control-sm" id="dataad" name="dataad" required="required">
+								<input type="text" class="form-control form-control-sm" id="dataad" name="dataad">
 							</div>
 							<div class="col col-3">
 								<label for="decisao" class="form-label">Parecer da decisão interlocutória</label>
@@ -392,11 +391,11 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-3">
 								<label for="decisao" class="form-label">Data de envio Coordenadoria/Secretarias:</label>
-								<input type="text" class="form-control form-control-sm" id="dataenvio" name="dataenvio" required="required">
+								<input type="text" class="form-control form-control-sm" id="dataenvio" name="dataenvio">
 							</div>
 							<div class="col col-3">
 								<label for="decisao" class="form-label">Coordenadoria/Divisão de SMUL</label>
-								<select class="form-select" aria-label="Default select example" name="coordenadoria" id="coordenadoria" required="required">
+								<select class="form-select" aria-label="Default select example" name="coordenadoria" id="coordenadoria">
 									<option selected></option>
 									<option value="1">COMIN</option>
 									<option value="2">COMIN/DCIGP</option>
@@ -415,6 +414,51 @@ if ($permissao == 2) {
 								</select>
 							</div>
 						</div>
+						<div class="form-row">
+							<div class="col col-3">
+								<label for="sub" class="form-label">Subprefeitura:</label>
+								<select class="form-select" aria-label="Default select example" name="sub" id="sub">
+									<option selected></option>
+									<option value="1">Aricanduva/Formosa/Carrão</option>
+									<option value="2">Butantã</option>
+									<option value="3">Campo Limpo</option>
+									<option value="4">Capela do Socorro</option>
+									<option value="5">Cidade Ademar</option>
+									<option value="6">Cidade Tiradentes</option>
+									<option value="7">Ermelino Matarazzo</option>
+									<option value="8">Freguesia/Brasilândia</option>
+									<option value="9">Guaianases</option>
+									<option value="10">Ipiranga</option>
+									<option value="11">Itaim Paulista</option>
+									<option value="12">Jabaquara</option>
+									<option value="13">Jaçanã/Tremembé</option>
+									<option value="14">Lajeado</option>
+									<option value="15">Lapa</option>
+									<option value="16">M'Boi Mirim</option>
+									<option value="17">Mooca</option>
+									<option value="18">Parelheiros</option>
+									<option value="19">Penha</option>
+									<option value="20">Perus</option>
+									<option value="21">Pinheiros</option>
+									<option value="22">Pirituba/Jaraguá</option>
+									<option value="23">Santana/Tucuruvi</option>
+									<option value="24">Santo Amaro</option>
+									<option value="25">São Mateus</option>
+									<option value="26">São Miguel</option>
+									<option value="27">Sé</option>
+									<option value="28">Tatuapé</option>
+									<option value="29">Vila Formosa</option>
+									<option value="30">Vila Maria/Vila Guilherme</option>
+									<option value="31">Vila Mariana</option>
+									<option value="32">Vila Prudente/Sapopemba</option>
+								</select>
+							</div>
+							<div class="col col-3">
+								<label for="uso" class="form-label">Categoria de Uso:</label>
+								<input type="text" class="form-control form-control-sm" id="uso" name="uso">
+							</div>
+						</div>
+						<br>
 						<div class="form-row motivos" style="display: none;">
 							<div class="col col-3">
 								<label for="decisao" class="form-label">Motivos da Inadmissibilidade</label>
@@ -501,21 +545,21 @@ if ($permissao == 2) {
 		const selectElement = document.getElementById('parecer');
 		const motivosElement = document.querySelector('.motivos');
 		const dataenvio = document.getElementById('dataenvio');
-	  	const coordenadoria = document.getElementById('coordenadoria');
+		const coordenadoria = document.getElementById('coordenadoria');
 
 		selectElement.addEventListener('change', function() {
 			if (this.value === '2') {
 				motivosElement.style.display = 'block';
 				dataenvio.readOnly = true;
-    			coordenadoria.disabled = true;
-    			dataenvio.removeAttribute('required');
-    			coordenadoria.removeAttribute('required');
+				coordenadoria.disabled = true;
+				dataenvio.removeAttribute('required');
+				coordenadoria.removeAttribute('required');
 			} else {
 				motivosElement.style.display = 'none';
 				dataenvio.readOnly = false;
-    			coordenadoria.disabled = false;
-    			dataenvio.setAttribute('required', true);
-    			coordenadoria.setAttribute('required', true);
+				coordenadoria.disabled = false;
+				dataenvio.setAttribute('required', true);
+				coordenadoria.setAttribute('required', true);
 			}
 		});
 	</script>

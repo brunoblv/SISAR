@@ -343,11 +343,11 @@ if ($permissao == 2) {
 						<div class="form-row">
 							<div class="col col-3">
 								<label for="sei" class="form-label">N° de Controle interno:</label>
-								<input type="text" class="form-control form-control-sm" id="controleinterno" readonly name="controleinterno" required="required" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
+								<input type="text" class="form-control form-control-sm" id="controleinterno" readonly name="controleinterno" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="sei" class="form-label">N° do Processo SEI:</label>
-								<input type="text" class="form-control form-control-sm" id="sei" readonly name="sei" required="required" value="<?php echo htmlspecialchars($sei); ?>"></input>
+								<input type="text" class="form-control form-control-sm" id="sei" readonly name="sei" value="<?php echo htmlspecialchars($sei); ?>"></input>
 							</div>
 
 							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
@@ -363,11 +363,11 @@ if ($permissao == 2) {
 
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm" id="dataprotocolo" readonly name="dataprotocolo" required="required" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
+								<input type="text" class="form-control form-control-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="datalimite" class="form-label">Data de limite para análise de admissiblidade:</label>
-								<input type="text" class="form-control form-control-sm" id="datalimite" readonly name="datalimite" required="required" value="<?php echo htmlspecialchars($datalimite); ?>"></input>
+								<input type="text" class="form-control form-control-sm" id="datalimite" readonly name="datalimite" value="<?php echo htmlspecialchars($datalimite); ?>"></input>
 							</div>
 						</div>
 					</div>
@@ -380,11 +380,11 @@ if ($permissao == 2) {
 						<div class="form-row">
 							<div class="col col-3">
 								<label for="datainicio" class="form-label">Data de Início</label>
-								<input type="text" class="form-control form-control-sm" id="datainicio" name="datainicio" required="required" onchange="calcularDiferenca()">
+								<input type="text" class="form-control form-control-sm" id="datainicio" name="datainicio" onchange="calcularDiferenca()">
 							</div>
 							<div class="col col-3">
 								<label for="datafim" class="form-label">Data fim</label>
-								<input type="text" class="form-control form-control-sm" id="datafim" name="datafim" required="required" onchange="calcularDiferenca()">
+								<input type="text" class="form-control form-control-sm" id="datafim" name="datafim" onchange="calcularDiferenca()">
 							</div>
 							<div class="col col-3">
 								<label for="motivo" class="form-label">Motivo:</label>
@@ -406,7 +406,7 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-3">
 								<label for="total" class="form-label">Total de dias:</label>
-								<input type="text" class="form-control form-control-sm" id="total" name="total" required="required">
+								<input type="text" class="form-control form-control-sm" id="total" name="total">
 							</div>
 						</div>
 						<br>

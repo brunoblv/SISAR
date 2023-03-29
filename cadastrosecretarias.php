@@ -332,11 +332,11 @@ if ($permissao == 2) {
 						<div class="form-row">
 							<div class="col col-3">
 								<label for="sei" class="form-label">N° de Controle interno:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno" required="required" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="sei" class="form-label">N° do Processo SEI:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="sei" readonly name="sei" required="required" value="<?php echo htmlspecialchars($sei); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="sei" readonly name="sei" value="<?php echo htmlspecialchars($sei); ?>"></input>
 							</div>
 
 							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
@@ -371,29 +371,29 @@ if ($permissao == 2) {
 
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Coordenadoria/Divisão em SMUL:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" required="required" value="<?php echo htmlspecialchars($coordenadoria); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($coordenadoria); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="datalimite" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datalimite" readonly name="datalimite" required="required" value="<?php echo htmlspecialchars($dataprotocolo2); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datalimite" readonly name="datalimite" value="<?php echo htmlspecialchars($dataprotocolo2); ?>"></input>
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="col col-3">
 								<label for="tipoprocesso" class="form-label">Tipo de Processo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" required="required" value="<?php echo htmlspecialchars($tipoprocesso); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" value="<?php echo htmlspecialchars($tipoprocesso); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="tipoprocesso" class="form-label">Data de envio para as Secretarias:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" required="required" value="<?php echo htmlspecialchars($dataenvio_br); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" value="<?php echo htmlspecialchars($dataenvio_br); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Data limite para análise técnica das Secretarias:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" required="required" value="<?php echo htmlspecialchars($datalimiteanalise); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($datalimiteanalise); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Data limite para 45/75 dias:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" required="required" value="<?php echo htmlspecialchars($datalimiteprazo); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($datalimiteprazo); ?>"></input>
 							</div>
 						</div>
 					</div>

@@ -78,7 +78,7 @@
 					<div class="collapse" id="submenu3" aria-expanded="false">
 						<ul class="flex-column pl-2 nav">
 							<li>
-								<a href="alterarinicial.php"><span class="fa fa-desktop mr-3"></span>Dados Iniciais</a>
+								<a href="alterar.php"><span class="fa fa-desktop mr-3"></span>Dados Iniciais</a>
 							</li>							
 						</ul>
 					</div>

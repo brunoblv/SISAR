@@ -148,18 +148,17 @@ if ($result->num_rows > 0) {
         <div class="form-row">
           <div class="col col-3">
             <label for="novocontrole" class="form-label">Número de Controle interno:</label>
-            <input type="text" class="form-control form-control-sm" id="novocontrole" readonly name="novocontrole" required="required" value="<?php echo htmlspecialchars($next_id); ?>"></input>
+            <input type="text" class="form-control form-control-sm" id="novocontrole" readonly name="novocontrole" value="<?php echo htmlspecialchars($next_id); ?>"></input>
           </div>
           <div class="col col-3">
             <label for="datasql" class="form-label">Data do último protocolo para esse SQL:</label>
-            <input type="text" class="form-control form-control-sm" id="datasql" readonly name="datasql" required="required" value="<?php echo htmlspecialchars($dataprotocolo); ?>"></input>
+            <input type="text" class="form-control form-control-sm" id="datasql" readonly name="datasql" value="<?php echo htmlspecialchars($dataprotocolo); ?>"></input>
           </div>
         </div>
         <div class="form-row">
           <div class="col col-6">
             <br>
             <?php echo $alert; ?>
-
 
           </div>
         </div>
@@ -178,29 +177,29 @@ if ($result->num_rows > 0) {
             </div>
             <div class="col col-3">
               <label for="numsql" class="form-label sql">SQL:</label>
-              <input type="text" class="form-control form-control-sm" id="numsql" name="numsql" required="required" readonly value="<?php echo htmlspecialchars($numsql); ?>">
+              <input type="text" class="form-control form-control-sm" id="numsql" name="numsql" readonly value="<?php echo htmlspecialchars($numsql); ?>">
             </div>
             <div class="col col-3">
               <label for="tipo" class="form-label">Tipo:</label>
-              <input type="text" class="form-control form-control-sm" id="tipo" name="tipo" required="required">
+              <input type="text" class="form-control form-control-sm" id="tipo" name="tipo">
             </div>
             <div class="col col-3">
               <label for="req" class="form-label">REQ:</label>
-              <input type="text" class="form-control form-control-sm" id="req" name="req" required="required">
+              <input type="text" class="form-control form-control-sm" id="req" name="req">
             </div>
           </div>
           <div class="form-row">
             <div class="col col-3">
               <label for="aprova" class="form-label digital">N° Aprova Digital:</label>
-              <input type="text" class="form-control form-control-sm" id="digital" name="digital" required="required">
+              <input type="text" class="form-control form-control-sm" id="digital" name="digital">
             </div>
             <div class="col col-3">
               <label for="fisico" class="form-label fisico">Nº Processo Físico:</label>
-              <input type="text" class="form-control form-control-sm" id="fisico" name="fisico" required="required">
+              <input type="text" class="form-control form-control-sm" id="fisico" name="fisico">
             </div>
             <div class="col col-3">
-              <label for="dataprotocolo" class="form-label">Data do Protocolo:</label>
-              <input type="text" class="form-control form-control-sm" id="dataprotocolo" name="dataprotocolo" required="required">
+              <label for="dataprotocolo" class="form-label">Data de Protocolo pelo interessado:</label>
+              <input type="text" class="form-control form-control-sm" id="dataprotocolo" name="dataprotocolo">
             </div>
             <div class="col col-3">
               <label for="tipoprocesso" class="form-label">Tipo de processo:</label>
@@ -249,11 +248,7 @@ if ($result->num_rows > 0) {
             </div>
           </div>
           <div class="form-row">
-            <div class="col col-3">
-              <label for="uso" class="form-label">Categoria de Uso:</label>
-              <input type="text" class="form-control form-control-sm" id="uso" name="uso" required="required">
-            </div>
-            <div class="col col-3">
+             <div class="col col-3">
               <label for="status" class="form-label">Status:</label>
               <select class="form-select" aria-label="Default select example" name="status" id="status">
                 <option selected></option>
@@ -267,7 +262,7 @@ if ($result->num_rows > 0) {
             </div>
             <div class="col col-3">
               <label for="descstatus" class="form-label">Descrição de Status:</label>
-              <input type="text" class="form-control form-control-sm" id="descstatus" name="descstatus" required="required">
+              <input type="text" class="form-control form-control-sm" id="descstatus" name="descstatus">
             </div>
             <div class="col col-3">
               <label for="decreto" class="form-label">Anterior ao Decreto ou após novo Decreto?:</label>
@@ -276,6 +271,10 @@ if ($result->num_rows > 0) {
                 <option value="1">Anterior</option>
                 <option value="2">Posterior</option>
               </select>
+            </div>
+            <div class="col col-3">
+              <label for="dataad" class="form-label">Data de início Admissibilidade:</label>
+              <input type="text" class="form-control form-control-sm" id="dataad" name="dataad">
             </div>
           </div>
           <div class="row">
@@ -305,6 +304,18 @@ if ($result->num_rows > 0) {
 
   $(document).ready(function() {
     var date_input = $('input[name="dataprotocolo"]');
+    var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+    date_input.datepicker({
+      format: 'dd/mm/yyyy',
+      container: container,
+      todayHighlight: true,
+      autoclose: true,
+      regional: 'pt-BR'
+    })
+  })
+
+  $(document).ready(function() {
+    var date_input = $('input[name="dataad"]');
     var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
     date_input.datepicker({
       format: 'dd/mm/yyyy',

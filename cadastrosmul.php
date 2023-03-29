@@ -339,11 +339,11 @@ if ($permissao == 2) {
 						<div class="form-row">
 							<div class="col col-3">
 								<label for="sei" class="form-label">N° de Controle interno:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno" required="required" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno"" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="sei" class="form-label">N° do Processo SEI:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="sei" readonly name="sei" required="required" value="<?php echo htmlspecialchars($sei); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="sei" readonly name="sei"" value="<?php echo htmlspecialchars($sei); ?>"></input>
 							</div>
 
 							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
@@ -378,29 +378,29 @@ if ($permissao == 2) {
 
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Coordenadoria/Divisão:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" required="required" value="<?php echo htmlspecialchars($coordenadoria); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($coordenadoria); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="datalimite" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datalimite" readonly name="datalimite" required="required" value="<?php echo htmlspecialchars($dataprotocolo2); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datalimite" readonly name="datalimite" value="<?php echo htmlspecialchars($dataprotocolo2); ?>"></input>
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="col col-3">
 								<label for="tipoprocesso" class="form-label">Tipo de Processo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" required="required" value="<?php echo htmlspecialchars($tipoprocesso); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" value="<?php echo htmlspecialchars($tipoprocesso); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="tipoprocesso" class="form-label">Data de envio para Coordenadoria:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" required="required" value="<?php echo htmlspecialchars($dataenvio_br); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" value="<?php echo htmlspecialchars($dataenvio_br); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Data limite para análise técnica da Coordenadoria:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" required="required" value="<?php echo htmlspecialchars($datalimiteanalise); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($datalimiteanalise); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Data limite para 45/75 dias:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" required="required" value="<?php echo htmlspecialchars($datalimiteprazo); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($datalimiteprazo); ?>"></input>
 							</div>
 						</div>
 					</div>
@@ -416,49 +416,11 @@ if ($permissao == 2) {
 								<div class="form-row">
 									<div class="col col-4">
 										<label for="tec" class="form-label">Técnico da Coordenadoria responsável:</label>
-										<input type="text" class="form-control form-control-sm" id="tec" name="tec" required="required">
-									</div>
-									<div class="col col-4">
-										<label for="sub" class="form-label">Subprefeitura:</label>
-										<select class="form-select" aria-label="Default select example" name="subprefeitura" id="subprefeitura">
-											<option selected></option>
-											<option value="1">Aricanduva/Formosa/Carrão</option>
-											<option value="2">Butantã</option>
-											<option value="3">Campo Limpo</option>
-											<option value="4">Capela do Socorro</option>
-											<option value="5">Cidade Ademar</option>
-											<option value="6">Cidade Tiradentes</option>
-											<option value="7">Ermelino Matarazzo</option>
-											<option value="8">Freguesia/Brasilândia</option>
-											<option value="9">Guaianases</option>
-											<option value="10">Ipiranga</option>
-											<option value="11">Itaim Paulista</option>
-											<option value="12">Jabaquara</option>
-											<option value="13">Jaçanã/Tremembé</option>
-											<option value="14">Lajeado</option>
-											<option value="15">Lapa</option>
-											<option value="16">M'Boi Mirim</option>
-											<option value="17">Mooca</option>
-											<option value="18">Parelheiros</option>
-											<option value="19">Penha</option>
-											<option value="20">Perus</option>
-											<option value="21">Pinheiros</option>
-											<option value="22">Pirituba/Jaraguá</option>
-											<option value="23">Santana/Tucuruvi</option>
-											<option value="24">Santo Amaro</option>
-											<option value="25">São Mateus</option>
-											<option value="26">São Miguel</option>
-											<option value="27">Sé</option>
-											<option value="28">Tatuapé</option>
-											<option value="29">Vila Formosa</option>
-											<option value="30">Vila Maria/Vila Guilherme</option>
-											<option value="31">Vila Mariana</option>
-											<option value="32">Vila Prudente/Sapopemba</option>
-										</select>
-									</div>
+										<input type="text" class="form-control form-control-sm" id="tec" name="tec"">
+									</div>									
 									<div class="col col-4">
 										<label for="tec2" class="form-label">Técnico da Coordenadoria após redistribuição:</label>
-										<input type="text" class="form-control form-control-sm" id="tec2" name="tec2" required="required">
+										<input type="text" class="form-control form-control-sm" id="tec2" name="tec2"">
 									</div>
 								</div>
 								<br>

@@ -9,6 +9,8 @@ if(isset($_POST['salvar'])) {
     $parecer = mysqli_real_escape_string($mysqli, $_POST['parecer']);    
     $dataad = mysqli_real_escape_string($mysqli, $_POST['dataad']); 
     $dataad = date("Y-m-d",strtotime(str_replace('/','-',$dataad))); 
+    $sub = mysqli_real_escape_string($mysqli, $_POST['sub']); 
+    $categoria = mysqli_real_escape_string($mysqli, $_POST['categoria']); 
 
     if(!isset($_POST['coordenadoria'])) {
         $coordenadoria = 0;
@@ -26,7 +28,7 @@ if(isset($_POST['salvar'])) {
        $coordenadoria = 0;
     }
 
-    $mysqli->query("INSERT INTO admissibilidade (controleinterno, parecer, dataad, coordenadoria, dataenvio) VALUES('$controleinterno','$parecer','$dataad','$coordenadoria','$dataenvio')") or die ($mysqli->error);
+    $mysqli->query("INSERT INTO admissibilidade (controleinterno, parecer, dataad, coordenadoria, dataenvio, sub, categoria) VALUES('$controleinterno','$parecer','$dataad','$coordenadoria','$dataenvio','$sub','$categoria')") or die ($mysqli->error);
 
     // Obter o ID do último registro inserido na tabela admissibilidade
     $last_id = mysqli_insert_id($mysqli);

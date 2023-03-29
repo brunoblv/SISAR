@@ -386,11 +386,11 @@ if ($permissao == 2) {
 						<div class="form-row">
 							<div class="col col-3">
 								<label for="sei" class="form-label">N° de Controle interno:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno" required="required" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="sei" class="form-label">N° do Processo SEI:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="sei" readonly name="sei" required="required" value="<?php echo htmlspecialchars($sei); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="sei" readonly name="sei" value="<?php echo htmlspecialchars($sei); ?>"></input>
 							</div>
 
 							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
@@ -425,29 +425,29 @@ if ($permissao == 2) {
 
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Coordenadoria/Divisão:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" required="required" value="<?php echo htmlspecialchars($coordenadoria); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($coordenadoria); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="datalimite" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datalimite" readonly name="datalimite" required="required" value="<?php echo htmlspecialchars($dataprotocolo2); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datalimite" readonly name="datalimite" value="<?php echo htmlspecialchars($dataprotocolo2); ?>"></input>
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="col col-3">
 								<label for="tipoprocesso" class="form-label">Tipo de Processo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" required="required" value="<?php echo htmlspecialchars($tipoprocesso); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" value="<?php echo htmlspecialchars($tipoprocesso); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="tipoprocesso" class="form-label">Data de envio para Coordenadoria:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" required="required" value="<?php echo htmlspecialchars($dataenvio_br); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" value="<?php echo htmlspecialchars($dataenvio_br); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Data limite para análise técnica da Coordenadoria:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" required="required" value="<?php echo htmlspecialchars($datalimiteanalise); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($datalimiteanalise); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Data limite para 45/75 dias:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" required="required" value="<?php echo htmlspecialchars($datalimiteprazo); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($datalimiteprazo); ?>"></input>
 							</div>
 						</div>
 					</div>
@@ -471,33 +471,33 @@ if ($permissao == 2) {
 									</div>
 									<div class="col col-3">
 										<label for="dataoutorga" class="form-label">Data de início do Comunique-se de Outorga:</label>
-										<input type="text" class="form-control form-control-sm" id="dataoutorga" name="dataoutorga" required="required">
+										<input type="text" class="form-control form-control-sm" id="dataoutorga" name="dataoutorga">
 									</div>
 									<div class="col col-3">
 										<label for="dataresposta" class="form-label">Data de resposta do Comunique-se de Outorga:</label>
-										<input type="text" class="form-control form-control-sm" id="dataresposta" name="dataresposta" required="required">
+										<input type="text" class="form-control form-control-sm" id="dataresposta" name="dataresposta">
 									</div>
 									<div class="col col-3">
 										<label for="dataemissao" class="form-label">Data de emissão do Alvará:</label>
-										<input type="text" class="form-control form-control-sm" id="dataemissao" name="dataemissao" required="required">
+										<input type="text" class="form-control form-control-sm" id="dataemissao" name="dataemissao">
 									</div>
 								</div>
 								<div class="form-row">
 									<div class="col col-3">
 										<label for="numeroalvara" class="form-label">Número do Alvará:</label>
-										<input type="text" class="form-control form-control-sm" id="numeroalvara" name="numeroalvara" required="required">
+										<input type="text" class="form-control form-control-sm" id="numeroalvara" name="numeroalvara">
 									</div>
 									<div class="col col-3">
 										<label for="dataapostilamento" class="form-label">Data do pedido de apostilamento:</label>
-										<input type="text" class="form-control form-control-sm" id="dataapostilamento" name="dataapostilamento" required="required">
+										<input type="text" class="form-control form-control-sm" id="dataapostilamento" name="dataapostilamento">
 									</div>
 									<div class="col col-3">
 										<label for="datatermo" class="form-label">Data de assinatura do termo de encerramento:</label>
-										<input type="text" class="form-control form-control-sm" id="datatermo" name="datatermo" required="required">
+										<input type="text" class="form-control form-control-sm" id="datatermo" name="datatermo">
 									</div>
 									<div class="col col-3">
 										<label for="dataconclusao" class="form-label">Data da conclusão do processo SEI:</label>
-										<input type="text" class="form-control form-control-sm" id="dataconclusao" name="dataconclusao" required="required">
+										<input type="text" class="form-control form-control-sm" id="dataconclusao" name="dataconclusao">
 									</div>
 								</div>
 								<div>

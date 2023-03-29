@@ -358,11 +358,11 @@ if ($permissao == 2) {
 						<div class="form-row">
 							<div class="col col-3">
 								<label for="sei" class="form-label">N° de Controle interno:</label>
-								<input type="text" class="form-control form-control-sm" id="controleinterno" readonly name="controleinterno" required="required" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
+								<input type="text" class="form-control form-control-sm" id="controleinterno" readonly name="controleinterno" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="sei" class="form-label">N° do Processo SEI:</label>
-								<input type="text" class="form-control form-control-sm" id="sei" readonly name="sei" required="required" value="<?php echo htmlspecialchars($sei); ?>"></input>
+								<input type="text" class="form-control form-control-sm" id="sei" readonly name="sei" value="<?php echo htmlspecialchars($sei); ?>"></input>
 							</div>
 
 							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
@@ -378,11 +378,11 @@ if ($permissao == 2) {
 
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm" id="dataprotocolo" readonly name="dataprotocolo" required="required" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
+								<input type="text" class="form-control form-control-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="datalimite" class="form-label">Data de limite para análise de admissiblidade:</label>
-								<input type="text" class="form-control form-control-sm" id="datalimite" readonly name="datalimite" required="required" value="<?php echo htmlspecialchars($datalimite); ?>"></input>
+								<input type="text" class="form-control form-control-sm" id="datalimite" readonly name="datalimite" value="<?php echo htmlspecialchars($datalimite); ?>"></input>
 							</div>
 						</div>
 					</div>
@@ -397,11 +397,11 @@ if ($permissao == 2) {
 								<div class="form-row">
 									<div class="col col-6">
 										<label for="datarecon" class="form-label">Data de apresentação do pedido de reconsideração da decisão interlocutória</label>
-										<input type="text" class="form-control form-control-sm" id="datarecon" name="datarecon" required="required">
+										<input type="text" class="form-control form-control-sm" id="datarecon" name="datarecon">
 									</div>
 									<div class="col col-3">
 										<label for="datapubli" class="form-label">Data de publicação da nova decisão interlocutória:</label>
-										<input type="text" class="form-control form-control-sm" id="datapubli" name="datapubli" required="required">
+										<input type="text" class="form-control form-control-sm" id="datapubli" name="datapubli">
 									</div>
 									<div class="col col-3">
 										<label for="parecer" class="form-label">Parecer da nova decisão interlocutória:</label>
@@ -413,11 +413,11 @@ if ($permissao == 2) {
 									</div>
 									<div class="col col-3">
 										<label for="decisao" class="form-label">Data de envio Coordenadoria/Secretarias:</label>
-										<input type="text" class="form-control form-control-sm" id="dataenvio" name="dataenvio" required="required">
+										<input type="text" class="form-control form-control-sm" id="dataenvio" name="dataenvio">
 									</div>
 									<div class="col col-3">
 										<label for="decisao" class="form-label">Coordenadoria/Divisão de SMUL</label>
-										<select class="form-select" aria-label="Default select example" name="coordenadoria" id="coordenadoria" required="required">
+										<select class="form-select" aria-label="Default select example" name="coordenadoria" id="coordenadoria">
 											<option selected></option>
 											<option value="1">COMIN</option>
 											<option value="2">COMIN/DCIGP</option>

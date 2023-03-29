@@ -39,6 +39,8 @@ if ($permissao == 2) {
 			regional: 'pt-BR'
 		})
 	})
+
+
 </script>
 
 <!doctype html>
@@ -144,8 +146,7 @@ if ($permissao == 2) {
 								$tipoalvara1 = $receber_cadastros['tipoalvara1'];
 								$tipoalvara2 = $receber_cadastros['tipoalvara2'];
 								$tipoalvara3 = $receber_cadastros['tipoalvara3'];
-								$stand = $receber_cadastros['stand'];
-								$categoria = $receber_cadastros['categoria'];
+								$stand = $receber_cadastros['stand'];								
 								$sts = $receber_cadastros['sts'];
 								$descstatus = $receber_cadastros['descstatus'];
 								$decreto = $receber_cadastros['decreto'];
@@ -328,11 +329,11 @@ if ($permissao == 2) {
 						<div class="form-row">
 							<div class="col col-3">
 								<label for="controleinterno" class="form-label">N° de Controle interno:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno" required="required" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="sei" class="form-label">N° do Processo SEI:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="sei" readonly name="sei" required="required" value="<?php echo htmlspecialchars($sei); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="sei" readonly name="sei" value="<?php echo htmlspecialchars($sei); ?>"></input>
 							</div>
 
 							<!-- Convertendo a data para DD/MM/AAAA-->
@@ -340,7 +341,7 @@ if ($permissao == 2) {
 
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" required="required" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
 							</div>
 						</div>
 					</div>
@@ -352,52 +353,93 @@ if ($permissao == 2) {
 					<div class="card-body">
 						<div class="form-row">
 							<div class="col col-3">
-								<label for="ci" class="form-label">Técnico de ATECC responsável:</label>
-								<input type="text" class="form-control form-control-sm" id="tec" name="tec" required="required">
+								<label for="tec" class="form-label">Técnico de ATECC responsável:</label>
+								<select class="form-select" id="tec" required name="tec">
+									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='TEC' ORDER BY NOME ASC"); ?>
+									<?php while ($reg = $query->fetch_array()) { ?>
+										<option value="<?php echo $reg['nome']; ?>">
+										<?php echo $reg['nome']; ?>
+										</option>
+									<?php } ?>
+								</select>
 							</div>
 							<div class="col col-3">
 								<label for="tectroca" class="form-label">Técnico de ATECC responsável após troca:</label>
-								<input type="text" class="form-control form-control-sm" id="tectroca" name="tectroca" required="required">
+								<select class="form-select" id="tectroca" required name="tectroca">
+									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='TEC' ORDER BY NOME ASC "); ?>
+									<?php while ($reg = $query->fetch_array()) { ?>
+										<option value="<?php echo $reg['nome']; ?>">
+										<?php echo $reg['nome']; ?>
+										</option>
+									<?php } ?>
+								</select>
 							</div>
 							<div class="col col-3">
-								<label for="numsql" class="form-label">ADM de ATECC responsável:</label>
-								<input type="text" class="form-control form-control-sm" id="adm" name="adm" required="required">
+								<label for="adm" class="form-label">ADM de ATECC responsável:</label>
+								<select class="form-select" id="adm" required name="adm">
+									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='ADM' ORDER BY NOME ASC  "); ?>
+									<?php while ($reg = $query->fetch_array()) { ?>
+										<option value="<?php echo $reg['nome']; ?>">
+											<?php echo $reg['nome']; ?>
+										</option>
+									<?php } ?>
+								</select>
 							</div>
 							<div class="col col-3">
-								<label for="tipo" class="form-label">ADM de ATECC substituto:</label>
-								<input type="text" class="form-control form-control-sm" id="admsubst" name="admsubst" required="required">
+								<label for="admsubst" class="form-label">ADM de ATECC substituto:</label>
+								<select class="form-select" id="admsubst" required name="admsubst">
+									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='ADM' ORDER BY NOME ASC  "); ?>
+									<?php while ($reg = $query->fetch_array()) { ?>
+										<option value="<?php echo $reg['nome']; ?>">
+											<?php echo $reg['nome']; ?>
+										</option>
+									<?php } ?>
+								</select>
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="col col-3">
-								<label for="req" class="form-label">ADM de ATECC substituto do substituto:</label>
-								<input type="text" class="form-control form-control-sm" id="admsubst2" name="admsubst2" required="required">
+								<label for="admsubst2" class="form-label">ADM de ATECC substituto do substituto:</label>
+								<select class="form-select" id="admsubst2" required name="admsubst2">
+									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='ADM' ORDER BY NOME ASC  "); ?>
+									<?php while ($reg = $query->fetch_array()) { ?>
+										<option value="<?php echo $reg['nome']; ?>">
+											<?php echo $reg['nome']; ?>
+										</option>
+									<?php } ?>
+								</select>
 							</div>
 							<div class="col col-3">
 								<label for="fisico" class="form-label">Observações 1:</label>
-								<input type="text" class="form-control form-control-sm" id="obs1" name="obs1" required="required">
+								<input type="text" class="form-control form-control-sm" id="obs1" name="obs1">
 							</div>
 							<div class="col col-3">
 								<label for="aprova" class="form-label">Observações 2:</label>
-								<input type="text" class="form-control form-control-sm" id="obs2" name="obs2" required="required">
+								<input type="text" class="form-control form-control-sm" id="obs2" name="obs2">
 							</div>
 							<div class="col col-3">
-								<label for="sei" class="form-label">Verificada baixa no pagamento das guias?:</label>
-								<input type="text" class="form-control form-control-sm" id="baixa" name="baixa" required="required">
+								<label for="baixa" class="form-label">Verificada baixa no pagamento das guias?:</label>
+								<select class="form-select" id="baixa" required name="baixa">
+									<option></option>
+									<option value="1">Sim</option>
+									<option value="2">Isento</option>
+									<option value="3">Sim, vinculado</option>
+									<option value="4">Isento, vinculado</option>
+								</select>
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="col col-3">
 								<label for="dataad" class="form-label">Data de início da Admissibilidade:</label>
-								<input type="text" class="form-control form-control-sm" id="dataad" name="dataad" required="required">
+								<input type="text" class="form-control form-control-sm" id="dataad" name="dataad">
 							</div>
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Processo relacionado incomum:</label>
-								<input type="text" class="form-control form-control-sm" id="pi" name="pi" required="required">
+								<input type="text" class="form-control form-control-sm" id="pi" name="pi">
 							</div>
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Assunto do processo relacionado incomum:</label>
-								<input type="text" class="form-control form-control-sm" id="assuntopi" name="assuntopi" required="required">
+								<input type="text" class="form-control form-control-sm" id="assuntopi" name="assuntopi">
 							</div>
 						</div>
 						<br>
