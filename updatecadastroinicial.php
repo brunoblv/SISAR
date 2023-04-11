@@ -38,15 +38,11 @@ if(isset($_POST['salvar'])) {
     $stmt = $mysqli->prepare("UPDATE inicial SET numsql=?, obs=?, tipo=?, req=?, fisico=?, aprovadigital=?, sei=?, dataprotocolo=?, tipoprocesso=?, tipoalvara1=?, tipoalvara2=?, tipoalvara3=?,
      stand=?, sts=?, descstatus=?, decreto=?, dataad=? WHERE id='$id'");
     $stmt->bind_param("ssiissssiiiiiisis", $numsql, $obs, $tipo, $req, $fisico, $digital, $sei, $dataprotocolo, $tipoprocesso, $alv1, $alv2, $alv3, $stand, $status, $descstatus, $decreto, $dataad);
-    $stmt->execute();  
+    $stmt->execute();      
     
-    echo $id;
+  
+    echo "<script>window.alert('Atualizado com Sucesso!'); document.location.href='alterar.php'</script>";
     
-   if ($prot == 0){
-        echo "<script>window.alert('Atualizado com Sucesso!'); document.location.href='alterar.php'</script>";
-    } else {
-        echo "<script>window.alert('Atualizado com Sucesso! Porém esse SQL tem protocolo em menos de 120 dias.'); document.location.href='alterar.php'</script>";
-    }
    
  }
 ?>

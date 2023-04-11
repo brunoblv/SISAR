@@ -26,9 +26,36 @@ if ($permissao == 2) {
 
 ?>
 
+<script>
+	//Função para as caixas de data funcionarem corretamente.
 
+	$(document).ready(function() {
+		var date_input = $('input[name="dataad"]');
+		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+		date_input.datepicker({
+			format: 'dd/mm/yyyy',
+			container: container,
+			todayHighlight: true,
+			autoclose: true,
+			regional: 'pt-BR'
+		})
+	})
+
+	$(document).ready(function() {
+		var date_input = $('input[name="dataenvio"]');
+		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+		date_input.datepicker({
+			format: 'dd/mm/yyyy',
+			container: container,
+			todayHighlight: true,
+			autoclose: true,
+			regional: 'pt-BR'
+		})
+	})
+</script>
 <!doctype html>
 <html lang="pt-br">
+
 
 <head>
 	<?php include 'head.php'; ?>
@@ -50,7 +77,7 @@ if ($permissao == 2) {
 		<div id="tabela">
 			<div class="card bg-light mb-3">
 				<div class="card-header">
-					<strong>Processos aguardando análise de admissibilidade</strong>
+					<strong>Processos aguardando 1ª Instância</strong>
 				</div>
 				<div class="card-body">
 					<div class="form-row">
@@ -134,7 +161,7 @@ if ($permissao == 2) {
 							$tipoalvara1 = $receber_cadastros['tipoalvara1'];
 							$tipoalvara2 = $receber_cadastros['tipoalvara2'];
 							$tipoalvara3 = $receber_cadastros['tipoalvara3'];
-							$stand = $receber_cadastros['stand'];							
+							$stand = $receber_cadastros['stand'];
 							$sts = $receber_cadastros['sts'];
 							$descstatus = $receber_cadastros['descstatus'];
 							$decreto = $receber_cadastros['decreto'];
@@ -210,12 +237,6 @@ if ($permissao == 2) {
 									break;
 							}
 
-							if ($decreto == 1){
-								$decreto = "Sim";
-							} else {
-								$decreto = "Não";
-							}
-
 
 							$tec = $receber_cadastros['tec'];
 						?>
@@ -281,11 +302,11 @@ if ($permissao == 2) {
 			</div>
 			<nav aria-label="Page navigation example">
 				<ul class="pagination">
-					<li class="page-item"><a class="page-link" href="cadastroadmissibilidade.php?pagina=1">Primeira</a></li>
+					<li class="page-item"><a class="page-link" href="cadastroprimeirainstancia.php?pagina=1">Primeira</a></li>
 
 					<?php for ($pag_ant = $pagina - $max_links; $pag_ant <= $pagina - 1; $pag_ant++) {
 						if ($pag_ant >= 1) {
-							echo "<li class='page-item'><a class='page-link' href='cadastroadmissibilidade.php?pagina=$pag_ant'>$pag_ant</a></li>";
+							echo "<li class='page-item'><a class='page-link' href='cadastroprimeirainstancia.php?pagina=$pag_ant'>$pag_ant</a></li>";
 						}
 					} ?>
 
@@ -293,21 +314,22 @@ if ($permissao == 2) {
 
 					<?php for ($pag_dep = $pagina + 1; $pag_dep <= $pagina + $max_links; $pag_dep++) {
 						if ($pag_dep <= $quantidade_pg) {
-							echo "<li class='page-item'><a class='page-link' href='cadastroadmissibilidade.php?pagina=$pag_dep'>$pag_dep</a></li>";
+							echo "<li class='page-item'><a class='page-link' href='cadastroprimeirainstancia.php?pagina=$pag_dep'>$pag_dep</a></li>";
 						}
 					}
 
 
-					echo "<li class='page-item'><a class='page-link' href='cadastroadmissibilidade.php?pagina=$quantidade_pg'>Última</a></li>";
+					echo "<li class='page-item'><a class='page-link' href='cadastroprimeirainstancia.php?pagina=$quantidade_pg'>Última</a></li>";
 
 					echo '</ul>';
 					echo '</nav>';
 
-					?>
 
+
+					?>
 		</div>
 		<div id="form" hidden>
-			<form class="need-validation" no validade method="POST" action="addadmissibilidade.php" autocomplete="off" name="formulario" id="formulario">
+			<form class="need-validation" no validade method="POST" action="addprimeirainstancia.php" autocomplete="off" name="formulario" id="formulario">
 				<div class="card bg-light mb-3">
 					<div class="card-header">
 						<strong>Dados do Processo</strong>
@@ -347,126 +369,223 @@ if ($permissao == 2) {
 				</div>
 				<div class="card bg-light mb-3">
 					<div class="card-header">
-						<strong>Dados de Admissibilidade</strong>
+						<strong>Primeiro GRAPROEM</strong>
 					</div>
 					<div class="card-body">
 						<div class="form-row">
-							<div class="col col-3">
-								<label for="decisao" class="form-label">Data de publicação da decisão interlocutória</label>
-								<input type="date" class="form-control form-control-sm" id="dataad" name="dataad">
+							<div class="col col-4">
+								<label for="datainicio" class="form-label">Data de início da análise pela coordenadoria/secretarias:</label>
+								<input type="text" class="form-control" id="datainicio" name="datainicio">
 							</div>
-							<div class="col col-3">
-								<label for="decisao" class="form-label">Parecer da decisão interlocutória</label>
-								<select class="form-select" aria-label="Default select example" name="parecer" id="parecer">
-									<option selected></option>
-									<option value='1'>Admissível</option>
-									<option value='2'>Inadmissível</option>
-								</select>
+							<div class="col col-4">
+								<label for="datalimite" class="form-label">Data limite para análise pela coordenadoria/secretarias:</label>
+								<input type="text" class="form-control" id="datalimite" name="datalimite">
 							</div>
-							<div class="col col-3">
-								<label for="decisao" class="form-label">Data de envio Coordenadoria/Secretarias:</label>
-								<input type="date" class="form-control form-control-sm" id="dataenvio" name="dataenvio">
+							<div class="col col-4">
+								<label for="datagendada" class="form-label">Data agendada da primeira reunião do GRAPROEM:</label>
+								<input type="text" class="form-control" id="datagendada" name="datagendada">
 							</div>
-							<div class="col col-3">
-								<label for="decisao" class="form-label">Coordenadoria/Divisão de SMUL</label>
-								<select class="form-select" aria-label="Default select example" name="coordenadoria" id="coordenadoria">
-									<option selected></option>
-									<option value="1">COMIN</option>
-									<option value="2">COMIN/DCIGP</option>
-									<option value="3">COMIN/DCIMP</option>
-									<option value="4">PARHIS</option>
-									<option value="5">PARHIS/DHIS</option>
-									<option value="6">PARHIS/DHMP</option>
-									<option value="7">PARHIS/DPS</option>
-									<option value="8">RESID</option>
-									<option value="9">RESID/DRPM</option>
-									<option value="10">RESID/DRGP</option>
-									<option value="11">RESID/DRU</option>
-									<option value="12">SERVIN</option>
-									<option value="13">SERVIN/DSIGP</option>
-									<option value="14">SERVIN/DCIMP</option>
-								</select>
+						</div>
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="datareal" class="form-label">Data da realização do primeiro GRAPROEM:</label>
+								<input type="text" class="form-control" id="datareal" name="datareal">
+							</div>
+							<div class="col col-4">
+								<label for="motivodatadistinta" class="form-label">Motivo da realização do primeiro GRAPROEM ser em data distinta</label>
+								<input type="text" class="form-control" id="motivodatadistinta" name="motivodatadistinta">
+							</div>
+							<div class="col col-4">
+								<label for="parecer" class="form-label">Parecer do primeiro GRAPROEM ou Coordenadoria:</label>
+								<input type="text" class="form-control" id="parecer" name="parecer">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="datapubliparecer" class="form-label">Data de publicação do primeiro parecer do GRAPROEM ou Coordenadoria:</label>
+								<input type="text" class="form-control" id="datapubliparecer" name="datapubliparecer">
+							</div>
+							<div class="col col-4">
+								<label for="datafimanalise" class="form-label">Data final da análise pela coordenadoria de SMUL:</label>
+								<input type="text" class="form-control" id="datafimanalise" name="datafimanalise">
+							</div>
+							<div class="col col-4">
+								<label for="datafinalsvma" class="form-label">Data final da análise SVMA:</label>
+								<input type="text" class="form-control" id="datafinalsvma" name="datafinalsvma">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="datafinalsmt" class="form-label">Data final da análise SMT:</label>
+								<input type="text" class="form-control" id="datafinalsmt" name="datafinalsmt">
+							</div>
+
+							<div class="col col-4">
+								<label for="datafinalsmc" class="form-label">Data final da análise SMC:</label>
+								<input type="text" class="form-control" id="datafinalsmc" name="datafinalsmc">
+							</div>
+							<div class="col col-4">
+								<label for="datafinalsehab" class="form-label">Data final da análise SEHAB:</label>
+								<input type="text" class="form-control" id="datafinalsehab" name="datafinalsehab">
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="col col-3">
-								<label for="sub" class="form-label">Subprefeitura:</label>
-								<select class="form-select" aria-label="Default select example" name="sub" id="sub">
-									<option selected></option>
-									<option value="1">Aricanduva/Formosa/Carrão</option>
-									<option value="2">Butantã</option>
-									<option value="3">Campo Limpo</option>
-									<option value="4">Capela do Socorro</option>
-									<option value="5">Cidade Ademar</option>
-									<option value="6">Cidade Tiradentes</option>
-									<option value="7">Ermelino Matarazzo</option>
-									<option value="8">Freguesia/Brasilândia</option>
-									<option value="9">Guaianases</option>
-									<option value="10">Ipiranga</option>
-									<option value="11">Itaim Paulista</option>
-									<option value="12">Jabaquara</option>
-									<option value="13">Jaçanã/Tremembé</option>
-									<option value="14">Lajeado</option>
-									<option value="15">Lapa</option>
-									<option value="16">M'Boi Mirim</option>
-									<option value="17">Mooca</option>
-									<option value="18">Parelheiros</option>
-									<option value="19">Penha</option>
-									<option value="20">Perus</option>
-									<option value="21">Pinheiros</option>
-									<option value="22">Pirituba/Jaraguá</option>
-									<option value="23">Santana/Tucuruvi</option>
-									<option value="24">Santo Amaro</option>
-									<option value="25">São Mateus</option>
-									<option value="26">São Miguel</option>
-									<option value="27">Sé</option>
-									<option value="28">Tatuapé</option>
-									<option value="29">Vila Formosa</option>
-									<option value="30">Vila Maria/Vila Guilherme</option>
-									<option value="31">Vila Mariana</option>
-									<option value="32">Vila Prudente/Sapopemba</option>
-								</select>
-							</div>
-							<div class="col col-3">
-								<label for="categoria" class="form-label">Categoria de Uso:</label>
-								<input type="text" class="form-control form-control-sm" id="categoria" name="categoria">
+								<label for="datafinalsiurb" class="form-label">Data final da análise SIURB:</label>
+								<input type="text" class="form-control" id="datafinalsiurb" name="datafinalsiurb">
 							</div>
 						</div>
-						<br>
-						<div class="form-row motivos" style="display: none;">
-							<div class="col col-3">
-								<label for="decisao" class="form-label">Motivos da Inadmissibilidade</label>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="1" name="motivo1">
-									<label class="form-check-label" for="motivo1"> Não cumprimento de requisito
-								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="2" name="motivo2">
-									<label class="form-check-label" for="motivo2"> Ausência de documentos
-								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="3" name="motivo3">
-									<label class="form-check-label" for="motivo3"> Documentação não conforme com descrição solicitada
-								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="4" name="motivo4">
-									<label class="form-check-label" for="motivo4"> Não está de acordo com os parâmetros urbanisticos
-								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="5" name="motivo5">
-									<label class="form-check-label" for="motivo5"> Não foi dado baixa no pagamento das guias
-								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="6" name="motivo6">
-									<label class="form-check-label" for="motivo5"> Nenhuma das anteriores
-								</div>
-							</div>
-						</div>
-						<br>
+					</div>
+				</div>
+				<div class="card bg-light mb-3">
+					<div class="card-header">
+						<strong>Segundo GRAPROEM</strong>
+					</div>
+					<div class="card-body">
 						<div class="form-row">
-							<div class="col col-3">
-								<button type="submit" class="btn btn-primary" name="salvar">Salvar</button>
-								<button type="button" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
+							<div class="col col-4">
+								<label for="datacumprimento" class="form-label">Data de cumprimento do Comunique-se:</label>
+								<input type="text" class="form-control" id="datacumprimento" name="datacumprimento">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="datainicio" class="form-label">Data de início da análise pela coordenadoria/Secretarias:</label>
+								<input type="text" class="form-control" id="datainicio2" name="datainicio2">
+							</div>
+							<div class="col col-4">
+								<label for="datalimite" class="form-label">Data limite para análise pela coordenadoria/Secretarias:</label>
+								<input type="text" class="form-control" id="datalimite2" name="datalimite2">
+							</div>
+							<div class="col col-4">
+								<label for="datagendada" class="form-label">Data agendada da segunda reunião do GRAPROEM:</label>
+								<input type="text" class="form-control" id="datagendada2" name="datagendada2">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="datareal" class="form-label">Data da realização do segundo GRAPROEM:</label>
+								<input type="text" class="form-control" id="datareal2" name="datareal2">
+							</div>
+							<div class="col col-4">
+								<label for="motivodatadistinta" class="form-label">Motivo da realização do segundo GRAPROEM ser em data distinta</label>
+								<input type="text" class="form-control" id="motivodatadistinta2" name="motivodatadistinta2">
+							</div>
+							<div class="col col-4">
+								<label for="parecer" class="form-label">Parecer do segundo GRAPROEM ou Coordenadoria:</label>
+								<input type="text" class="form-control" id="parecer2" name="parecer2">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="comuniqcomplementar" class="form-label">Houve Comunique-se complementar?</label>
+								<input type="text" class="form-control" id="comuniqcomplementar" name="comuniqcomplementar">
+							</div>
+							<div class="col col-4">
+								<label for="datacomplementar" class="form-label">Data de publicação do Comunique-se complementar</label>
+								<input type="text" class="form-control" id="datacomplementar" name="datacomplementar">
+							</div>
+							<div class="col col-4">
+								<label for="dataresp" class="form-label">Data resposta do Comunique-se complementar</label>
+								<input type="text" class="form-control" id="dataresp" name="dataresp">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="datapubliparecer" class="form-label">Data de publicação do segundo parecer GRAPROEM/Coordenadoria:</label>
+								<input type="text" class="form-control" id="datapubliparecer" name="datapubliparecer">
+							</div>
+							<div class="col col-4">
+								<label for="datafimanalise" class="form-label">Data final da análise pela coordenadoria de SMUL:</label>
+								<input type="text" class="form-control" id="datafinalsmul2" name="datafinalsmul2">
+							</div>
+							<div class="col col-4">
+								<label for="datafinalsvma" class="form-label">Data final da análise SVMA:</label>
+								<input type="text" class="form-control" id="datafinalsvma2" name="datafinalsvma2">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="datafinalsmt" class="form-label">Data final da análise SMT:</label>
+								<input type="text" class="form-control" id="datafinalsmt2" name="datafinalsmt2">
+							</div>
+
+							<div class="col col-4">
+								<label for="datafinalsmc" class="form-label">Data final da análise SMC:</label>
+								<input type="text" class="form-control" id="datafinalsmc2" name="datafinalsmc2">
+							</div>
+							<div class="col col-4">
+								<label for="datafinalsehab" class="form-label">Data final da análise SEHAB:</label>
+								<input type="text" class="form-control" id="datafinalsehab2" name="datafinalsehab2">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="datafinalsiurb" class="form-label">Data final da análise SIURB:</label>
+								<input type="text" class="form-control" id="datafinalsiurb2" name="datafinalsiurb2">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card bg-light mb-3">
+					<div class="card-header">
+						<strong>GRAPROEM complementar</strong>
+					</div>
+					<div class="card-body">
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="datainicio" class="form-label">Data de início da análise pela coordenadoria/Secretarias:</label>
+								<input type="text" class="form-control" id="datainicio3" name="datainicio3">
+							</div>
+							<div class="col col-4">
+								<label for="datalimite" class="form-label">Data limite para análise pela coordenadoria/Secretarias:</label>
+								<input type="text" class="form-control" id="datalimite3" name="datalimite3">
+							</div>
+							<div class="col col-4">
+								<label for="datagendada" class="form-label">Data agendada da segunda reunião do GRAPROEM:</label>
+								<input type="text" class="form-control" id="datagendada3" name="datagendada3">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="datareal" class="form-label">Data da realização do segundo GRAPROEM:</label>
+								<input type="text" class="form-control" id="datareal3" name="datareal3">
+							</div>
+							<div class="col col-4">
+								<label for="motivodatadistinta" class="form-label">Motivo da realização do segundo GRAPROEM ser em data distinta</label>
+								<input type="text" class="form-control" id="motivodatadistinta3" name="motivodatadistinta3">
+							</div>
+							<div class="col col-4">
+								<label for="parecer" class="form-label">Data de publicação da decisão do GRAPROEM:</label>
+								<input type="text" class="form-control" id="datapublidec" name="datapublidec">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="datafimanalise" class="form-label">Data final da análise pela coordenadoria de SMUL:</label>
+								<input type="text" class="form-control" id="datafinalsmul2" name="datafinalsmul2">
+							</div>
+							<div class="col col-4">
+								<label for="datafinalsvma" class="form-label">Data final da análise SVMA:</label>
+								<input type="text" class="form-control" id="datafinalsvma2" name="datafinalsvma2">
+							</div>
+							<div class="col col-4">
+								<label for="datafinalsmt" class="form-label">Data final da análise SMT:</label>
+								<input type="text" class="form-control" id="datafinalsmt2" name="datafinalsmt2">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="datafinalsmc" class="form-label">Data final da análise SMC:</label>
+								<input type="text" class="form-control" id="datafinalsmc2" name="datafinalsmc2">
+							</div>
+							<div class="col col-4">
+								<label for="datafinalsehab" class="form-label">Data final da análise SEHAB:</label>
+								<input type="text" class="form-control" id="datafinalsehab2" name="datafinalsehab2">
+							</div>
+							<div class="col col-4">
+								<label for="datafinalsiurb" class="form-label">Data final da análise SIURB:</label>
+								<input type="text" class="form-control" id="datafinalsiurb2" name="datafinalsiurb2">
 							</div>
 						</div>
 					</div>

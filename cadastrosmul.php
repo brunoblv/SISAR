@@ -122,25 +122,18 @@ if ($permissao == 2) {
 
 						if (!empty($_GET['search'])) {
 							$data = $_GET['search'];
-							$buscar_cadastros = "SELECT i.id, i.sei, i.numsql, i.tipoprocesso, i.dataprotocolo, a.dataenvio, a.coordenadoria
-							FROM inicial i
-							INNER JOIN admissibilidade a ON i.id = a.controleinterno AND a.parecer = 1
-							UNION
-							SELECT i.id, i.sei, i.numsql, i.tipoprocesso, i.dataprotocolo, r.dataenvio, r.coordenadoria
-							FROM inicial i
-							INNER JOIN reconad r ON i.id = r.controleinterno AND r.parecer = 1
-							WHERE i.sei = '%$data%'";
+							$buscar_cadastros = "SELECT i.id, i.sei, i.numsql, i.dataprotocolo, i.tipoprocesso, i.sts, a.dataenvio, a.coordenadoria 
+								FROM INICIAL i 
+								INNER JOIN ADMISSIBILIDADE a ON a.controleinterno = i.id							
+								WHERE i.sts = '2' AND i.sei LIKE '%$data%'";
 						} else {
-							$buscar_cadastros = "SELECT i.id, i.sei, i.numsql, i.tipoprocesso, i.dataprotocolo, a.dataenvio, a.coordenadoria
-							FROM inicial i
-							INNER JOIN admissibilidade a ON i.id = a.controleinterno AND a.parecer = 1
-							UNION
-							SELECT i.id, i.sei, i.numsql, i.tipoprocesso, i.dataprotocolo, r.dataenvio as rdataenvio, r.coordenadoria as rcoord
-							FROM inicial i
-							INNER JOIN reconad r ON i.id = r.controleinterno AND r.parecer = 1
-							LIMIT $inicio, $qnt_result_pg";
+							$buscar_cadastros = "SELECT i.id, i.sei, i.numsql, i.dataprotocolo, i.tipoprocesso, a.dataenvio, a.coordenadoria 
+								FROM INICIAL i 
+								INNER JOIN ADMISSIBILIDADE a ON a.controleinterno = i.id
+								WHERE i.sts = '2'							
+								ORDER BY i.id DESC LIMIT $inicio, $qnt_result_pg";
 						}
-
+						
 
 						$query_cadastros = mysqli_query($conn, $buscar_cadastros);
 						//Paginação - Somar a quantidade de processos                   

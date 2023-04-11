@@ -12,7 +12,7 @@
                 </div>
                 <div class="col col-3">
                     <label for="numsql" class="form-label sql">SQL:</label>
-                    <input type="text" class="form-control form-control-sm" id="numsql" name="numsql" required="required" value="<?php echo htmlspecialchars($numsql); ?>">
+                    <input type="text" class="form-control form-control-sm" id="numsql" name="numsql" value="<?php echo htmlspecialchars($numsql); ?>">
                 </div>
                 <div class="col col-3">
                     <label for="tipo" class="form-label">Tipo:</label>
@@ -33,7 +33,7 @@
                     <input type="text" class="form-control form-control-sm" id="fisico" name="fisico" value="<?php echo htmlspecialchars($fisico); ?>">
                 </div>
                 <div class="col col-3">
-                    <label for="dataprotocolo" class="form-label">Data do Protocolo:</label>
+                    <label for="dataprotocolo" class="form-label">Data do Protocolo pelo interessado:</label>
                     <input type="text" class="form-control form-control-sm" id="dataprotocolo" name="dataprotocolo" value="<?php echo htmlspecialchars($inverted_date); ?>">
                 </div>
                 <div class="col col-3">
@@ -199,7 +199,7 @@
                 </div>
                 <div class="col col-3">
                     <label for="descstatus" class="form-label">Descrição de Status:</label>
-                    <input type="text" class="form-control form-control-sm" id="descstatus" name="descstatus" required="required" value="<?php echo htmlspecialchars($descstatus); ?>">
+                    <input type="text" class="form-control form-control-sm" id="descstatus" name="descstatus" value="<?php echo htmlspecialchars($descstatus); ?>">
                 </div>
                 <div class="col col-3">
                     <label for="decreto" class="form-label">Anterior ao Decreto ou após novo Decreto?:</label>
@@ -232,7 +232,7 @@
             </div>
             <br>
             <button type="submit" class="btn btn-primary" name="salvar">Atualizar</button>
-            <button type="submit" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
+            <button type="button" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
         </form>
     </div>
 </div>

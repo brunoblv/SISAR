@@ -99,8 +99,7 @@ if ($permissao == 2) {
 							<th>Copiar</th>
 							<th>Nº Controle Interno</th>
 							<th>Nº SEI</th>
-							<th>SQL</th>
-							<th>Técnico ATECC</th>
+							<th>SQL</th>							
 							<th>Data Protocolo</th>
 							<th>Tipo Processo</th>
 							<th>Tipo Alvará</th>
@@ -126,9 +125,9 @@ if ($permissao == 2) {
 
 						if (!empty($_GET['search'])) {
 							$data = $_GET['search'];
-							$buscar_cadastros = "SELECT Inicial.*, distribuicao.tec FROM inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno WHERE id IN (SELECT controleinterno FROM distribuicao) AND id NOT IN (SELECT controleinterno FROM admissibilidade) AND sei LIKE '%$data%' ORDER BY id DESC";
+							$buscar_cadastros = "SELECT * from inicial WHERE conclusao = 0 and sei like '%$data%'";
 						} else {
-							$buscar_cadastros = "SELECT Inicial.*, distribuicao.tec FROM inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno  WHERE id IN (SELECT controleinterno FROM distribuicao)AND id NOT IN (SELECT controleinterno FROM admissibilidade) ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
+							$buscar_cadastros = "SELECT * from inicial WHERE conclusao = 0 ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
 						}
 
 
@@ -161,8 +160,7 @@ if ($permissao == 2) {
 							$tipoalvara1 = $receber_cadastros['tipoalvara1'];
 							$tipoalvara2 = $receber_cadastros['tipoalvara2'];
 							$tipoalvara3 = $receber_cadastros['tipoalvara3'];
-							$stand = $receber_cadastros['stand'];
-							$categoria = $receber_cadastros['categoria'];
+							$stand = $receber_cadastros['stand'];							
 							$sts = $receber_cadastros['sts'];
 							$descstatus = $receber_cadastros['descstatus'];
 							$decreto = $receber_cadastros['decreto'];
@@ -239,14 +237,13 @@ if ($permissao == 2) {
 							}
 
 
-							$tec = $receber_cadastros['tec'];
+							
 						?>
 							<tr>
 								<td><a class='btnpesquisa btn-outline-info copiar botaoselecao'><span class="glyphicon glyphicon-edit"></span>Selecionar</a></td>
 								<td class="ci" scope="row"><?php echo $controleinterno ?></td>
 								<td class="sei"><?php echo $sei ?></td>
-								<td><?php echo $numsql ?></td>
-								<td><?php echo $tec ?></td>
+								<td><?php echo $numsql ?></td>								
 								<td><?php echo $inverted_date ?></td>
 								<td><?php echo $tipoprocesso ?></td>
 								<td><?php echo $tipoalvara1 ?></td>
@@ -413,7 +410,7 @@ if ($permissao == 2) {
 						<div class="form-row">
 							<div class="col col-3">
 								<button type="submit" class="btn btn-primary" name="salvar">Salvar</button>
-								<button type="submit" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
+								<button type="button" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
 							</div>
 						</div>
 					</div>
@@ -421,8 +418,6 @@ if ($permissao == 2) {
 			</form>
 		</div>
 	</div>
-
-
 	<script>
 		var search = document.getElementById('pesquisar');
 

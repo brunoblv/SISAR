@@ -45,14 +45,8 @@
 								<a href="cadastrosecretarias.php"><span class="fa fa-user mr-3"></span>Outras Secretarias</a>
 							</li>
 							<li>
-								<a href="cadastroprimeirainstancia.php"><span class="fa fa-user mr-3"></span>1ª Instância</a>
-							</li>
-							<li>
-								<a href="cadastrosegundainstancia.php"><span class="fa fa-user mr-3"></span>2ª Instância</a>
-							</li>
-							<li>
-								<a href="cadastroterceirainstancia.php"><span class="fa fa-user mr-3"></span>3ª Instância</a>
-							</li>
+								<a href="cadastrograproem.php"><span class="fa fa-user mr-3"></span>GRAPROEM</a>
+							</li>							
 							<li>
 								<a href="cadastroprazo.php"><span class="fa fa-user mr-3"></span>Suspensão de prazos</a>
 							</li>
@@ -74,15 +68,9 @@
 						</ul>
 					</div>
 				</li>
-				<li class="active"><a class="nav-link collapsed text-truncate" href="#submenu3" data-toggle="collapse" data-target="#submenu3" aria-expanded="false"><span class="fa fa-home mr-3"></span>Alteração de Dados</a>
-					<div class="collapse" id="submenu3" aria-expanded="false">
-						<ul class="flex-column pl-2 nav">
-							<li>
-								<a href="alterar.php"><span class="fa fa-desktop mr-3"></span>Dados Iniciais</a>
-							</li>							
-						</ul>
-					</div>
-				</li>
+				<li class="active">
+					<a href="alterar.php"><span class="fa fa-home mr-3"></span>Alteração de Dados</a>
+				</li>				
 				<li class="active">
 					<a href="principal.php"><span class="fa fa-home mr-3"></span>Cadastro de Usuários</a>
 				</li>

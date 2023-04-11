@@ -20,9 +20,7 @@ if(isset($_POST['salvar'])) {
     $alv1 = mysqli_real_escape_string($mysqli, $_POST['alv1']);
     $alv2 = mysqli_real_escape_string($mysqli, $_POST['alv2']);
     $alv3 = mysqli_real_escape_string($mysqli, $_POST['alv3']);
-    $stand = mysqli_real_escape_string($mysqli, $_POST['stand']);   
-    $status = mysqli_real_escape_string($mysqli, $_POST['status']);
-    $descstatus = mysqli_real_escape_string($mysqli, $_POST['descstatus']);
+    $stand = mysqli_real_escape_string($mysqli, $_POST['stand']);  
     $decreto = mysqli_real_escape_string($mysqli, $_POST['decreto']);
     $dataad = mysqli_real_escape_string($mysqli, $_POST['dataad']);
     $conclusao = 0;
@@ -34,9 +32,11 @@ if(isset($_POST['salvar'])) {
     $resultado = mysqli_fetch_assoc($query_cadastros);
     $prot = $resultado['numprotocolo'];   
 
+    $status = '1';
+
 
     $stmt = $mysqli->prepare("INSERT INTO inicial (conclusao, obs, numsql, tipo, req, fisico, aprovadigital, sei, dataprotocolo, tipoprocesso, tipoalvara1, tipoalvara2, tipoalvara3, stand, sts, descstatus, decreto) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("issssssssssssssss", $conclusao, $obs, $numsql, $tipo, $req, $fisico, $digital, $sei, $dataprotocolo, $tipoprocesso, $alv1, $alv2, $alv3, $stand, $status, $descstatus, $decreto);
+    $stmt->bind_param("isssssssssssssss", $conclusao, $obs, $numsql, $tipo, $req, $fisico, $digital, $sei, $dataprotocolo, $tipoprocesso, $alv1, $alv2, $alv3, $stand, $status, $decreto);
     $stmt->execute();    
     
     if ($prot == 0){

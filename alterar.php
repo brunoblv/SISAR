@@ -63,7 +63,7 @@ if ($permissao == 2) {
         <div id="tabela">
             <div class="card bg-light mb-3">
                 <div class="card-header">
-                    <strong>Processos aguardando distribução</strong>
+                    <strong>Alteração de dados</strong>
                 </div>
                 <div class="card-body">
                     <div class="form-row">
@@ -111,7 +111,10 @@ if ($permissao == 2) {
 
                             if (!empty($_GET['search'])) {
                                 $data = $_GET['search'];
-                                $buscar_cadastros = "SELECT * FROM inicial WHERE sei LIKE '%$data%' ORDER BY id DESC";
+
+                                $data = mysqli_real_escape_string($conn, $data);
+
+                                $buscar_cadastros = "SELECT * FROM INICIAL WHERE sei = '$data'";
                             } else {
                                 $buscar_cadastros = "SELECT * FROM inicial WHERE id = 0";
                             }
@@ -149,10 +152,10 @@ if ($permissao == 2) {
                                 $descstatus = $receber_cadastros['descstatus'];
                                 $decreto = $receber_cadastros['decreto'];
                                 $dataad = $receber_cadastros['dataad'];
-                                
-                                
+
+
                                 $inverted_date = date("d/m/Y", strtotime($dataprotocolo));
-                                $inverted_datead  = date("d/m/Y", strtotime($dataad));                              
+                                $inverted_datead  = date("d/m/Y", strtotime($dataad));
 
                                 // Invertendo a data do SQL para o formato brasileiro
 
@@ -231,6 +234,29 @@ if ($permissao == 2) {
 
 
                             ?>
+
+                                <?php
+                                $buscar_cadastros = "SELECT * FROM DISTRIBUICAO WHERE CONTROLEINTERNO = ?";
+                                $stmt = $conn->prepare($buscar_cadastros);
+                                $stmt->bind_param("s", $controleinterno);
+                                $stmt->execute();
+                                $query_cadastros = $stmt->get_result();
+
+                                
+
+                                while ($receber_cadastros = mysqli_fetch_array($query_cadastros)) {
+                                    $tec = $receber_cadastros['tec'];
+                                    $tectroca = $receber_cadastros['tectroca'];
+                                    $adm = $receber_cadastros['adm'];
+                                    $admsubst = $receber_cadastros['admsubst'];
+                                    $admsubst2 = $receber_cadastros['admsubst2'];
+                                    $obs1 = $receber_cadastros['obs1'];
+                                    $obs2 = $receber_cadastros['obs2'];
+                                    $baixa = $receber_cadastros['baixa'];
+                                    $pi = $receber_cadastros['pi'];
+                                    $assuntopi = $receber_cadastros['assuntopi'];
+                                }
+                                ?>
                                 <tr>
                                     <td><a class='btnpesquisa btn-outline-info copiar botaoselecao' id="botao"><span class="glyphicon glyphicon-edit"></span> Selecionar</a></td>
                                     <td class="ci" scope="row"><?php echo $controleinterno ?></td>
@@ -382,7 +408,7 @@ if ($permissao == 2) {
                             <div class="col col-3">
                                 <label for="sei" class="form-label">N° do SQL:</label>
                                 <input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="displaysql" readonly name="displaysql" required="required" value="<?php echo htmlspecialchars($numsql); ?>"></input>
-                            </div>  
+                            </div>
                             <div class="col col-3">
                                 <label for="displaydata" class="form-label">Data de Protocolo:</label>
                                 <input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="displaydata" readonly name="displaydata" required="required" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
@@ -430,7 +456,7 @@ if ($permissao == 2) {
                     <?php include 'alterarinicial.php' ?>
                 </div>
                 <div class="tab-pane" id="tab2">
-
+                    <?php include 'alterardistribuicao.php' ?>
                 </div>
                 <div class="tab-pane" id="tab3">
 
@@ -533,33 +559,29 @@ if ($permissao == 2) {
         });
 
         $(document).ready(function() {
-		var date_input = $('input[name="dataprotocolo"]');
-		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
-			format: 'dd/mm/yyyy',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-			regional: 'pt-BR'
-		})
-	})
+            var date_input = $('input[name="dataprotocolo"]');
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            date_input.datepicker({
+                format: 'dd/mm/yyyy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+                regional: 'pt-BR'
+            })
+        })
 
-    $(document).ready(function() {
-		var date_input = $('input[name="dataad"]');
-		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
-			format: 'dd/mm/yyyy',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-			regional: 'pt-BR'
-		})
-	})
-
+        $(document).ready(function() {
+            var date_input = $('input[name="dataad"]');
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            date_input.datepicker({
+                format: 'dd/mm/yyyy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+                regional: 'pt-BR'
+            })
+        })
     </script>
-
-
-
 </body>
 
 </html>

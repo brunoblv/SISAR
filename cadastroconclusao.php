@@ -170,23 +170,10 @@ if ($permissao == 2) {
 
 						if (!empty($_GET['search'])) {
 							$data = $_GET['search'];
-							$buscar_cadastros = "SELECT i.id, i.sei, i.numsql, i.tipoprocesso, i.dataprotocolo, a.dataenvio, a.coordenadoria
-							FROM inicial i
-							INNER JOIN admissibilidade a ON i.id = a.controleinterno AND a.parecer = 1
-							UNION
-							SELECT i.id, i.sei, i.numsql, i.tipoprocesso, i.dataprotocolo, r.dataenvio, r.coordenadoria
-							FROM inicial i
-							INNER JOIN reconad r ON i.id = r.controleinterno AND r.parecer = 1
-							WHERE i.sei = '%$data%'";
+							$buscar_cadastros = "SELECT * from inicial where conclusao = 0";
 						} else {
-							$buscar_cadastros = "SELECT i.id, i.sei, i.numsql, i.tipoprocesso, i.dataprotocolo, a.dataenvio, a.coordenadoria
-							FROM inicial i
-							INNER JOIN admissibilidade a ON i.id = a.controleinterno AND a.parecer = 1
-							UNION
-							SELECT i.id, i.sei, i.numsql, i.tipoprocesso, i.dataprotocolo, r.dataenvio as rdataenvio, r.coordenadoria as rcoord
-							FROM inicial i
-							INNER JOIN reconad r ON i.id = r.controleinterno AND r.parecer = 1
-							LIMIT $inicio, $qnt_result_pg";
+							$buscar_cadastros = "SELECT * from inicial where conclusao = 0
+												LIMIT $inicio, $qnt_result_pg";
 						}
 
 
@@ -506,7 +493,7 @@ if ($permissao == 2) {
 								</div>
 								<br>
 								<button type="submit" class="btn btn-primary" name="salvar">Salvar</button>
-								<button type="submit" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
+								<button type="button" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
 							</form>
 						</div>
 

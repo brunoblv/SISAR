@@ -93,7 +93,6 @@ if ($result->num_rows > 0) {
           if ($conn) {
             $buscar_cadastros = "SELECT * FROM Inicial
               WHERE numsql = '$pesquisa'
-              AND sts = 2
               AND dataprotocolo BETWEEN DATE_SUB(NOW(), INTERVAL 120 DAY) AND NOW() ORDER BY dataprotocolo DESC LIMIT 1";
 
             $query_cadastros = mysqli_query($conn, $buscar_cadastros);
@@ -105,6 +104,8 @@ if ($result->num_rows > 0) {
                 $sei = $result['sei'];
                 $dataprotocolo = $result['dataprotocolo'];
                 $numsql = $result['numsql'];
+                $conclusao = $result['conclusao'];
+                $sts = $result['sts'];
               }
 
               // Criar objetos DateTime para as datas
@@ -115,34 +116,40 @@ if ($result->num_rows > 0) {
               $diferenca = $data2->diff($data1)->format("%a");
               $diferenca = $diferenca - 1;
 
-              $alert = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-              <strong>Atenção!</strong> Esse SQL possui um protocolo indeferido nos últimos 120 dias!
+              $dataprotocolo = date("d/m/Y", strtotime($dataprotocolo));
+
+              if ($sts == 4) {
+
+                $alert = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>Atenção!</strong> Esse SQL possui um protocolo inadmitido nos últimos 120 dias!
               <br><br>
               A data de protocolo do último processo foi em ' . htmlspecialchars($dataprotocolo) . ' <strong>há ' . htmlspecialchars($diferenca) . ' dias.</strong>
               <br><br>';
 
-              if ($diferenca < 90) {
-                $aviso = "Não poderão ser protocolados processos via procedimento Aprova-Rápido";
-              } elseif ($diferenca >= 90 && $diferenca < 120) {
-                $aviso = "Poderão ser protocolados apenas pedidos de Alvará de Aprovação ou de Alvará de Execução";
-              }
+                if ($diferenca < 90) {
+                  $aviso = "Não poderão ser protocolados processos via procedimento Aprova-Rápido";
+                } elseif ($diferenca >= 90 && $diferenca < 120) {
+                  $aviso = "Poderão ser protocolados apenas pedidos de Alvará de Aprovação ou de Alvará de Execução";
+                }
 
-              $alert .= $aviso . '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                $alert .= $aviso . '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>';
-            } else {
-              // Mostra a mensagem de 0 resultados
+              } else {
+                // Mostra a mensagem de 0 resultados
 
-              $alert = '<div class="alert alert-success d-flex align-items-center" role="alert">
-              <strong>O processo pode ser protocolado!</strong> Não há processos indeferidos nos últimos 120 dias para esse SQL.
+                $alert = '<div class="alert alert-success d-flex align-items-center" role="alert">
+              <strong>O processo pode ser protocolado!</strong> Não há processos inadmitidos nos últimos 120 dias para esse SQL.
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>';
+              }
+            } else {
+              echo "Falha na conexão com o banco de dados.";
             }
-          } else {
-            echo "Falha na conexão com o banco de dados.";
           }
         }
+
         ?>
 
         <div class="form-row">
@@ -152,14 +159,15 @@ if ($result->num_rows > 0) {
           </div>
           <div class="col col-3">
             <label for="datasql" class="form-label">Data do último protocolo para esse SQL:</label>
-            <input type="text" class="form-control form-control-sm" id="datasql" readonly name="datasql" value="<?php echo htmlspecialchars($dataprotocolo); ?>"></input>
+            <input type="text" class="form-control form-control-sm" id="datasql" readonly name="datasql" value="<?php if (isset($diferenca)) {
+                                                                                                                  echo htmlspecialchars($dataprotocolo . ' há ' . $diferenca . ' dias');
+                                                                                                                } ?>"></input>
           </div>
         </div>
         <div class="form-row">
           <div class="col col-6">
             <br>
             <?php echo $alert; ?>
-
           </div>
         </div>
       </div>
@@ -177,15 +185,15 @@ if ($result->num_rows > 0) {
             </div>
             <div class="col col-3">
               <label for="numsql" class="form-label sql">SQL:</label>
-              <input type="text" class="form-control form-control-sm" id="numsql" name="numsql" readonly value="<?php echo htmlspecialchars($numsql); ?>">
+              <input type="text" class="form-control form-control-sm" id="numsql" name="numsql" value="<?php echo htmlspecialchars($numsql); ?>">
             </div>
             <div class="col col-3">
               <label for="tipo" class="form-label">Tipo:</label>
-              <input type="text" class="form-control form-control-sm" id="tipo" name="tipo">
+              <input type="text" class="form-control form-control-sm" id="tipo" name="tipo" placeholder="Verificar na TEV/COE o campo 05">
             </div>
             <div class="col col-3">
               <label for="req" class="form-label">REQ:</label>
-              <input type="text" class="form-control form-control-sm" id="req" name="req">
+              <input type="text" class="form-control form-control-sm" id="req" name="req" placeholder="Verificar na TEV/COE o campo 05">
             </div>
           </div>
           <div class="form-row">
@@ -199,7 +207,7 @@ if ($result->num_rows > 0) {
             </div>
             <div class="col col-3">
               <label for="dataprotocolo" class="form-label">Data de Protocolo pelo interessado:</label>
-              <input type="text" class="form-control form-control-sm" id="dataprotocolo" name="dataprotocolo">
+              <input type="date" class="form-control form-control-sm" id="dataprotocolo" name="dataprotocolo">
             </div>
             <div class="col col-3">
               <label for="tipoprocesso" class="form-label">Tipo de processo:</label>
@@ -248,22 +256,6 @@ if ($result->num_rows > 0) {
             </div>
           </div>
           <div class="form-row">
-             <div class="col col-3">
-              <label for="status" class="form-label">Status:</label>
-              <select class="form-select" aria-label="Default select example" name="status" id="status">
-                <option selected></option>
-                <option value="1">Análise de Admissibilidade</option>
-                <option value="2">Inadmissível/Via ordinária</option>
-                <option value="3">Em análise</option>
-                <option value="4">Deferidos</option>
-                <option value="5">Indeferidos</option>
-                <option value="6">Inválido</option>
-              </select>
-            </div>
-            <div class="col col-3">
-              <label for="descstatus" class="form-label">Descrição de Status:</label>
-              <input type="text" class="form-control form-control-sm" id="descstatus" name="descstatus">
-            </div>
             <div class="col col-3">
               <label for="decreto" class="form-label">Anterior ao Decreto ou após novo Decreto?:</label>
               <select class="form-select" aria-label="Default select example" name="decreto" id="decreto">
@@ -274,7 +266,7 @@ if ($result->num_rows > 0) {
             </div>
             <div class="col col-3">
               <label for="dataad" class="form-label">Data de início Admissibilidade:</label>
-              <input type="text" class="form-control form-control-sm" id="dataad" name="dataad">
+              <input type="date" class="form-control form-control-sm" id="dataad" name="dataad">
             </div>
           </div>
           <div class="row">
@@ -301,30 +293,6 @@ if ($result->num_rows > 0) {
   function fecharmodal() {
     $('#myModal').modal('hide');
   }
-
-  $(document).ready(function() {
-    var date_input = $('input[name="dataprotocolo"]');
-    var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-    date_input.datepicker({
-      format: 'dd/mm/yyyy',
-      container: container,
-      todayHighlight: true,
-      autoclose: true,
-      regional: 'pt-BR'
-    })
-  })
-
-  $(document).ready(function() {
-    var date_input = $('input[name="dataad"]');
-    var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-    date_input.datepicker({
-      format: 'dd/mm/yyyy',
-      container: container,
-      todayHighlight: true,
-      autoclose: true,
-      regional: 'pt-BR'
-    })
-  })
 
   $(document).ready(function() {
     $('#fisico').mask('0000-0.000.000-0');

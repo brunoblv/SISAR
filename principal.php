@@ -5,7 +5,7 @@ if (!isset($_SESSION)) {
 
 if (!isset($_SESSION['SesID'])) {
     session_destroy();
-    header("Location: login.php");
+    header("Location: index.php");
     exit;
 }
 
@@ -17,9 +17,6 @@ include 'conexao.php';
 
 <head>
     <?php include 'head.php'; ?>
-
-
-
 </head>
 
 <body>
@@ -34,10 +31,12 @@ include 'conexao.php';
                 <thead>
                     <tr>
                         <th>Nº Controle Interno</th>
-                        <th>Nº SEI</th>
-                        <th>AGPP Responsável</th>
-                        <th>Data Protocolo</th>
-                        <th>Fase atual</th>                       
+                        <th>Nº SEI</th>  
+                        <th>Nº SQL</th>                      
+                        <th>Data Protocolo</th>  
+                        <th>Etapa</th>                     
+                        <th>Data Limite</th>
+                        <th>Dias restantes</th>                         
 
                     </tr>
                 </thead>
@@ -54,10 +53,10 @@ include 'conexao.php';
                     //Calcular o início da visualização
                     $inicio = ($qnt_result_pg * $pagina) - $qnt_result_pg;
 
-                    $buscar_cadastros = "SELECT inicial.id, inicial.sei, inicial.dataprotocolo
+                    $buscar_cadastros = "SELECT inicial.id, inicial.numsql, inicial.sei, inicial.dataprotocolo, inicial.sts
                     FROM inicial
                     INNER JOIN distribuicao ON inicial.id = distribuicao.controleinterno
-                    WHERE distribuicao.adm = '" . $_SESSION['SesNome'] . "'
+                    WHERE distribuicao.adm = '" . $_SESSION['SesNome'] . "' AND conclusao = 0
                     ORDER BY inicial.id DESC LIMIT " . $inicio . ", " . $qnt_result_pg;
 
 
@@ -80,7 +79,32 @@ include 'conexao.php';
 
                         $controleinterno = $receber_cadastros['id'];
                         $sei = $receber_cadastros['sei'];
+                        $numsql = $receber_cadastros['numsql'];
                         $dataprotocolo = $receber_cadastros['dataprotocolo'];
+                        $etapa = $receber_cadastros['sts'];
+
+                        switch ($etapa){
+                            case '1':
+                                $etapa = '<td class="text-wrap table-primary">Aguardando distribuição</td>';
+                                break;
+                            case '2':
+                                $etapa = '<td class="text-wrap table-secondary">Em análise de admissibilidade</td>';
+                                break;
+                            case '3':
+                                $etapa = '<td class="text-wrap table-success">Aguardando envio para Coordenadoria SMUL/Secretarias</td>';
+                                break;
+                            case '5':
+                                $etapa = '<td class="text-wrap table-danger">Em análise técnica (SMUL/Secretarias)</td>';
+                                break;
+                            case '6':
+                                $etapa = '<td class="text-wrap table-warning">GRAPROEM favorável - Aguardando deferimento';
+                                break;
+                            case '7':
+                                $etapa = 'Deferido';
+                                break;                                           
+
+                        }
+                        
 
                         $hoje = date("Y-m-d");
                         $diferenca = abs(strtotime($hoje) - strtotime($dataprotocolo));
@@ -88,13 +112,18 @@ include 'conexao.php';
                         $datalimite = date('Y-m-d', strtotime($dataprotocolo . ' + 15 days'));
                         $diasrestantes = 15 - $dias;
 
+                        $datalimite = date("d/m/Y", strtotime($datalimite));
+                        $dataprotocolo = date("d/m/Y", strtotime($dataprotocolo));
+
                     ?>
                         <tr>
-                            <td scope="row"><?php echo $controleinterno ?>
+                            <td scope="row"><?php echo $controleinterno ?></div>
                             <td><?php echo $sei ?></td>
+                            <td><?php echo $numsql ?></td>
                             <td><?php echo $dataprotocolo ?></td>
+                            <?php echo $etapa;?>
                             <td><?php echo $datalimite ?></td>
-
+                    
                             <?php
 
                             switch (true) {

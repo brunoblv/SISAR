@@ -222,6 +222,12 @@ if ($permissao == 2) {
 										break;
 								}
 
+								if ($decreto == 1){
+									$decreto = "Sim";
+								} else {
+									$decreto = "Não";
+								}
+
 
 							?>
 								<tr>
@@ -355,7 +361,7 @@ if ($permissao == 2) {
 							<div class="col col-3">
 								<label for="tec" class="form-label">Técnico de ATECC responsável:</label>
 								<select class="form-select" id="tec" required name="tec">
-									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='TEC' ORDER BY NOME ASC"); ?>
+									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='TEC' OR cargo='' ORDER BY NOME ASC"); ?>
 									<?php while ($reg = $query->fetch_array()) { ?>
 										<option value="<?php echo $reg['nome']; ?>">
 										<?php echo $reg['nome']; ?>
@@ -366,7 +372,7 @@ if ($permissao == 2) {
 							<div class="col col-3">
 								<label for="tectroca" class="form-label">Técnico de ATECC responsável após troca:</label>
 								<select class="form-select" id="tectroca" required name="tectroca">
-									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='TEC' ORDER BY NOME ASC "); ?>
+									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='TEC' OR cargo='' ORDER BY NOME ASC "); ?>
 									<?php while ($reg = $query->fetch_array()) { ?>
 										<option value="<?php echo $reg['nome']; ?>">
 										<?php echo $reg['nome']; ?>
@@ -377,7 +383,7 @@ if ($permissao == 2) {
 							<div class="col col-3">
 								<label for="adm" class="form-label">ADM de ATECC responsável:</label>
 								<select class="form-select" id="adm" required name="adm">
-									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='ADM' ORDER BY NOME ASC  "); ?>
+									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='ADM' OR cargo='' ORDER BY NOME ASC  "); ?>
 									<?php while ($reg = $query->fetch_array()) { ?>
 										<option value="<?php echo $reg['nome']; ?>">
 											<?php echo $reg['nome']; ?>
@@ -388,7 +394,7 @@ if ($permissao == 2) {
 							<div class="col col-3">
 								<label for="admsubst" class="form-label">ADM de ATECC substituto:</label>
 								<select class="form-select" id="admsubst" required name="admsubst">
-									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='ADM' ORDER BY NOME ASC  "); ?>
+									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='ADM' OR cargo='' ORDER BY NOME ASC  "); ?>
 									<?php while ($reg = $query->fetch_array()) { ?>
 										<option value="<?php echo $reg['nome']; ?>">
 											<?php echo $reg['nome']; ?>
@@ -401,7 +407,7 @@ if ($permissao == 2) {
 							<div class="col col-3">
 								<label for="admsubst2" class="form-label">ADM de ATECC substituto do substituto:</label>
 								<select class="form-select" id="admsubst2" required name="admsubst2">
-									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='ADM' ORDER BY NOME ASC  "); ?>
+									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='ADM' OR cargo='' ORDER BY NOME ASC  "); ?>
 									<?php while ($reg = $query->fetch_array()) { ?>
 										<option value="<?php echo $reg['nome']; ?>">
 											<?php echo $reg['nome']; ?>
@@ -429,10 +435,6 @@ if ($permissao == 2) {
 							</div>
 						</div>
 						<div class="form-row">
-							<div class="col col-3">
-								<label for="dataad" class="form-label">Data de início da Admissibilidade:</label>
-								<input type="text" class="form-control form-control-sm" id="dataad" name="dataad">
-							</div>
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Processo relacionado incomum:</label>
 								<input type="text" class="form-control form-control-sm" id="pi" name="pi">

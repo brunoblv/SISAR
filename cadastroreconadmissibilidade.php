@@ -26,33 +26,6 @@ if ($permissao == 2) {
 
 ?>
 
-<script>
-	//Função para as caixas de data funcionarem corretamente.
-
-	$(document).ready(function() {
-		var date_input = $('input[name="datarecon"]');
-		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
-			format: 'dd/mm/yyyy',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-			regional: 'pt-BR'
-		})
-	})
-
-	$(document).ready(function() {
-		var date_input = $('input[name="datapubli"]');
-		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
-			format: 'dd/mm/yyyy',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-			regional: 'pt-BR'
-		})
-	})
-</script>
 <!doctype html>
 <html lang="pt-br">
 
@@ -106,9 +79,7 @@ if ($permissao == 2) {
 							<th>Tipo Processo</th>
 							<th>Tipo Alvará</th>
 							<th>Tipo Alvará</th>
-							<th>Tipo Alvará</th>
-							<th>Status</th>
-							<th>Anterior ao Decreto</th>
+							<th>Tipo Alvará</th>							
 
 						</tr>
 					</thead>
@@ -127,17 +98,17 @@ if ($permissao == 2) {
 
 						if (!empty($_GET['search'])) {
 							$data = $_GET['search'];
-							$buscar_cadastros = "SELECT inicial.*, distribuicao.tec, admissibilidade.dataad
-							FROM inicial
-							INNER JOIN distribuicao ON inicial.id = distribuicao.controleinterno
-							INNER JOIN admissibilidade ON inicial.id = admissibilidade.controleinterno
-							WHERE admissibilidade.parecer = 2 AND sei LIKE '%$data%' ORDER BY id DESC";
+							$buscar_cadastros = "SELECT i.sts, i.id, i.sei, i.numsql, i.dataprotocolo, i.tipoprocesso, i.tipoalvara1, i.tipoalvara2, i.tipoalvara3, d.tec
+							FROM INICIAL i
+							INNER JOIN DISTRIBUICAO d ON i.id = d.controleinterno
+							LEFT JOIN RECONAD r ON i.id = r.controleinterno
+							WHERE i.sts = 3 AND r.controleinterno IS NULL AND i.sei LIKE '%$data%' ORDER BY id DESC";
 						} else {
-							$buscar_cadastros = "SELECT inicial.*, distribuicao.tec, admissibilidade.dataad
-							FROM inicial
-							INNER JOIN distribuicao ON inicial.id = distribuicao.controleinterno
-							INNER JOIN admissibilidade ON inicial.id = admissibilidade.controleinterno
-							WHERE admissibilidade.parecer = 2  ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
+							$buscar_cadastros = "SELECT i.sts, i.id, i.sei, i.numsql, i.dataprotocolo, i.tipoprocesso, i.tipoalvara1, i.tipoalvara2, i.tipoalvara3, d.tec
+							FROM INICIAL i
+							INNER JOIN DISTRIBUICAO d ON i.id = d.controleinterno
+							LEFT JOIN RECONAD r ON i.id = r.controleinterno
+							WHERE i.sts = 3 AND r.controleinterno IS NULL ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
 						}
 
 
@@ -158,30 +129,21 @@ if ($permissao == 2) {
 						while ($receber_cadastros = mysqli_fetch_array($query_cadastros)) {
 
 							$controleinterno = $receber_cadastros['id'];
-							$obs = $receber_cadastros['obs'];
-							$numsql = $receber_cadastros['numsql'];
-							$tipo = $receber_cadastros['tipo'];
-							$req = $receber_cadastros['req'];
-							$fisico = $receber_cadastros['fisico'];
-							$aprovadigital = $receber_cadastros['aprovadigital'];
+							
+							$numsql = $receber_cadastros['numsql'];							
 							$sei = $receber_cadastros['sei'];
 							$dataprotocolo = $receber_cadastros['dataprotocolo'];
 							$tipoprocesso = $receber_cadastros['tipoprocesso'];
 							$tipoalvara1 = $receber_cadastros['tipoalvara1'];
 							$tipoalvara2 = $receber_cadastros['tipoalvara2'];
 							$tipoalvara3 = $receber_cadastros['tipoalvara3'];
-							$stand = $receber_cadastros['stand'];
-							$categoria = $receber_cadastros['categoria'];
-							$sts = $receber_cadastros['sts'];
-							$descstatus = $receber_cadastros['descstatus'];
-							$decreto = $receber_cadastros['decreto'];
 							$tec = $receber_cadastros['tec'];
-							$dataad = $receber_cadastros['dataad'];
+							$sts = $receber_cadastros['sts'];
+							
 
 							// Invertendo a data do SQL para o formato brasileiro
 
-							$inverted_date = date("d/m/Y", strtotime($dataprotocolo));
-							$dataad = date("d/m/Y", strtotime($dataad));
+							$inverted_date = date("d/m/Y", strtotime($dataprotocolo));							
 
 
 							switch ($tipoprocesso) {
@@ -251,9 +213,6 @@ if ($permissao == 2) {
 							}
 
 
-
-
-
 						?>
 							<tr>
 								<td><a class='btnpesquisa btn-outline-info copiar botaoselecao'><span class="glyphicon glyphicon-edit"></span>Selecionar</a></td>
@@ -261,14 +220,13 @@ if ($permissao == 2) {
 								<td class="sei"><?php echo $sei ?></td>
 								<td><?php echo $numsql ?></td>
 								<td><?php echo $tec ?></td>
-								<td><?php echo $inverted_date ?></td>
-								<td><?php echo $dataad ?></td>
+								<td><?php echo $inverted_date ?></td>								
 								<td><?php echo $tipoprocesso ?></td>
 								<td><?php echo $tipoalvara1 ?></td>
 								<td><?php echo $tipoalvara2 ?></td>
 								<td><?php echo $tipoalvara3 ?></td>
 								<td><?php echo $status ?></td>
-								<td><?php echo $decreto ?></td>
+								
 								<script>
 									$(function() {
 										$('.copiar').click(function(event) {
@@ -378,11 +336,11 @@ if ($permissao == 2) {
 
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
+								<input type="date" class="form-control form-control-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="datalimite" class="form-label">Data de limite para análise de admissiblidade:</label>
-								<input type="text" class="form-control form-control-sm" id="datalimite" readonly name="datalimite" value="<?php echo htmlspecialchars($datalimite); ?>"></input>
+								<input type="date" class="form-control form-control-sm" id="datalimite" readonly name="datalimite" value="<?php echo htmlspecialchars($datalimite); ?>"></input>
 							</div>
 						</div>
 					</div>
@@ -397,11 +355,11 @@ if ($permissao == 2) {
 								<div class="form-row">
 									<div class="col col-6">
 										<label for="datarecon" class="form-label">Data de apresentação do pedido de reconsideração da decisão interlocutória</label>
-										<input type="text" class="form-control form-control-sm" id="datarecon" name="datarecon">
+										<input type="date" class="form-control form-control-sm" id="datarecon" name="datarecon">
 									</div>
 									<div class="col col-3">
 										<label for="datapubli" class="form-label">Data de publicação da nova decisão interlocutória:</label>
-										<input type="text" class="form-control form-control-sm" id="datapubli" name="datapubli">
+										<input type="date" class="form-control form-control-sm" id="datapubli" name="datapubli">
 									</div>
 									<div class="col col-3">
 										<label for="parecer" class="form-label">Parecer da nova decisão interlocutória:</label>
@@ -413,7 +371,7 @@ if ($permissao == 2) {
 									</div>
 									<div class="col col-3">
 										<label for="decisao" class="form-label">Data de envio Coordenadoria/Secretarias:</label>
-										<input type="text" class="form-control form-control-sm" id="dataenvio" name="dataenvio">
+										<input type="date" class="form-control form-control-sm" id="dataenvio" name="dataenvio">
 									</div>
 									<div class="col col-3">
 										<label for="decisao" class="form-label">Coordenadoria/Divisão de SMUL</label>
@@ -438,7 +396,7 @@ if ($permissao == 2) {
 								</div>
 								<br>
 								<button type="submit" class="btn btn-primary" name="salvar">Salvar</button>
-								<button type="submit" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
+								<button type="button" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
 							</form>
 						</div>
 					</div>
