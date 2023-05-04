@@ -25,42 +25,21 @@ if ($permissao == 2) {
 //}
 
 ?>
-<script>
-	//Função para as caixas de data funcionarem corretamente.
-
-	$(document).ready(function() {
-		var date_input = $('input[name="dataad"]');
-		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
-			format: 'dd/mm/yyyy',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-			regional: 'pt-BR'
-		})
-	})
-
-
-</script>
 
 <!doctype html>
 <html lang="pt-br">
-
 
 <head>
 	<?php include 'head.php'; ?>
 </head>
 
 <body>
-
 	<style>
 		tr {
 			cursor: hand;
 		}
 	</style>
-
 	<!-- Page Content  -->
-
 	<div id="content" class="p-4 p-md-5 pt-5">
 		<div id="tabela">
 			<div class="card bg-light mb-3">
@@ -90,6 +69,9 @@ if ($permissao == 2) {
 								<th>Nº SEI</th>
 								<th>SQL</th>
 								<th>Data Protocolo</th>
+								<th>Data Início Admissibilidade</th>
+								<th>Data limite</th>
+								<th>Dias restantes</th>
 								<th>Tipo Processo</th>
 								<th>Tipo Alvará</th>
 								<th>Tipo Alvará</th>
@@ -146,15 +128,24 @@ if ($permissao == 2) {
 								$tipoalvara1 = $receber_cadastros['tipoalvara1'];
 								$tipoalvara2 = $receber_cadastros['tipoalvara2'];
 								$tipoalvara3 = $receber_cadastros['tipoalvara3'];
-								$stand = $receber_cadastros['stand'];								
+								$stand = $receber_cadastros['stand'];
 								$sts = $receber_cadastros['sts'];
 								$descstatus = $receber_cadastros['descstatus'];
 								$decreto = $receber_cadastros['decreto'];
+								$dataad = $receber_cadastros['dataad'];
+								$datalimite = $receber_cadastros['datalimite'];
 
-								// Invertendo a data do SQL para o formato brasileiro
+								// Cálculo de prazo de Admissibilidade e Invertendo a data do SQL para o formato brasileiro
 
-								$inverted_date = date("d/m/Y", strtotime($dataprotocolo));
+								$hoje = date("Y-m-d");
+								$diferenca = abs(strtotime($hoje) - strtotime($dataad));
+								$dias = floor($diferenca / (60 * 60 * 24));
+								$datalimite = date('Y-m-d', strtotime($dataad . ' + 15 days'));
+								$diasrestantes = 15 - $dias;
 
+								$dataprotocolo = date("d/m/Y", strtotime($dataprotocolo));
+								$dataad = date("d/m/Y", strtotime($dataad));
+								$datalimite = date("d/m/Y", strtotime($datalimite));
 
 								switch ($tipoprocesso) {
 									case 1:
@@ -222,7 +213,7 @@ if ($permissao == 2) {
 										break;
 								}
 
-								if ($decreto == 1){
+								if ($decreto == 1) {
 									$decreto = "Sim";
 								} else {
 									$decreto = "Não";
@@ -234,8 +225,23 @@ if ($permissao == 2) {
 									<td><a class='btnpesquisa btn-outline-info copiar botaoselecao' id="botao"><span class="glyphicon glyphicon-edit"></span> Selecionar</a></td>
 									<td class="ci" scope="row"><?php echo $controleinterno ?></td>
 									<td class="sei"><?php echo $sei ?></td>
-									<td><?php echo $numsql ?></td>
-									<td><?php echo $inverted_date ?></td>
+									<td class="numsql"><?php echo $numsql ?></td>
+									<td><?php echo $dataprotocolo ?></td>
+									<td class="dataad"><?php echo $dataad ?></td>
+									<td class="datalimite"><?php echo $datalimite ?></td>
+
+									<?php
+									if ($diasrestantes >= 10) {
+										echo '<td class="diasrestantes table-success">' . $diasrestantes . '</td>';
+									} elseif ($diasrestantes >= 5) {
+										echo '<td class="diasrestantes table-warning">' . $diasrestantes . '</td>';
+									} elseif ($diasrestantes > 0) {
+										echo '<td class="diasrestantes table-danger">' . $diasrestantes . '</td>';
+									} else {
+										echo '<td class="diasrestantes table-danger">Vencido!<br> Há ' . abs($diasrestantes) . ' dias </td>';
+									}
+									?>
+
 									<td><?php echo $tipoprocesso ?></td>
 									<td><?php echo $tipoalvara1 ?></td>
 									<td><?php echo $tipoalvara2 ?></td>
@@ -284,9 +290,89 @@ if ($permissao == 2) {
 													.val(copyValue);
 											});
 										});
+
+										$(function() {
+											$('.copiar').click(function(event) {
+												var copyValue =
+													// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
+													$(event.target)
+													// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
+													.closest("tr")
+													// procura a <td> com a class target-copy
+													.find("td.dataad")
+													// obtem o text no conteúdo do elemento <td>
+													.text()
+													// remove possiveis espaços no incio e fim da string
+													.trim();
+
+												// seleciona o input com id desejado
+												$('#dataad')
+													// seta o valor copiado para o input id=senha
+													.val(copyValue);
+											});
+										});
+										$(function() {
+											$('.copiar').click(function(event) {
+												var copyValue =
+													// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
+													$(event.target)
+													// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
+													.closest("tr")
+													// procura a <td> com a class target-copy
+													.find("td.numsql")
+													// obtem o text no conteúdo do elemento <td>
+													.text()
+													// remove possiveis espaços no incio e fim da string
+													.trim();
+
+												// seleciona o input com id desejado
+												$('#numsql')
+													// seta o valor copiado para o input id=senha
+													.val(copyValue);
+											});
+										});
+
+										$(function() {
+											$('.copiar').click(function(event) {
+												var copyValue =
+													// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
+													$(event.target)
+													// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
+													.closest("tr")
+													// procura a <td> com a class target-copy
+													.find("td.datalimite")
+													// obtem o text no conteúdo do elemento <td>
+													.text()
+													// remove possiveis espaços no incio e fim da string
+													.trim();
+
+												// seleciona o input com id desejado
+												$('#datalimite')
+													// seta o valor copiado para o input id=senha
+													.val(copyValue);
+											});
+										});
+										$(function() {
+											$('.copiar').click(function(event) {
+												var copyValue =
+													// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
+													$(event.target)
+													// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
+													.closest("tr")
+													// procura a <td> com a class target-copy
+													.find("td.diasrestantes")
+													// obtem o text no conteúdo do elemento <td>
+													.text()
+													// remove possiveis espaços no incio e fim da string
+													.trim();
+
+												// seleciona o input com id desejado
+												$('#diasrestantes')
+													// seta o valor copiado para o input id=senha
+													.val(copyValue);
+											});
+										});
 									</script>
-
-
 
 								</tr>
 
@@ -333,22 +419,30 @@ if ($permissao == 2) {
 					</div>
 					<div class="card-body">
 						<div class="form-row">
-							<div class="col col-3">
+							<div class="col col-2">
 								<label for="controleinterno" class="form-label">N° de Controle interno:</label>
 								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
 							</div>
-							<div class="col col-3">
+							<div class="col col-2">
 								<label for="sei" class="form-label">N° do Processo SEI:</label>
 								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="sei" readonly name="sei" value="<?php echo htmlspecialchars($sei); ?>"></input>
 							</div>
-
-							<!-- Convertendo a data para DD/MM/AAAA-->
-							<?php $inverted_date = date("d/m/Y", strtotime($dataprotocolo)); ?>
-
-							<div class="col col-3">
-								<label for="dataprotocolo" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
+							<div class="col col-2">
+								<label for="sei" class="form-label">N° SQL:</label>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="numsql" readonly name="numsql" value="<?php echo htmlspecialchars($numsql); ?>"></input>
 							</div>
+							<div class="col col-3">
+								<label for="dataad" class="form-label">Data de início da Análise de Admissibilidade:</label>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataad" readonly name="dataad" value="<?php echo htmlspecialchars($dataad); ?>"></input>
+							</div>
+							<div class="col col-3">
+								<label for="datalimite" class="form-label">Data limite para Análise de Admissibilidade:</label>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datalimite" readonly name="datalimite" value="<?php echo htmlspecialchars($datalimite); ?>"></input>
+							</div>		
+							<div class="col col-3">
+								<label for="diasrestantes" class="form-label">Dias restantes:</label>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="diasrestantes" readonly name="diasrestantes" value="<?php echo htmlspecialchars($diasrestantes); ?>"></input>
+							</div>						
 						</div>
 					</div>
 				</div>
@@ -364,7 +458,7 @@ if ($permissao == 2) {
 									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='TEC' OR cargo='' ORDER BY NOME ASC"); ?>
 									<?php while ($reg = $query->fetch_array()) { ?>
 										<option value="<?php echo $reg['nome']; ?>">
-										<?php echo $reg['nome']; ?>
+											<?php echo $reg['nome']; ?>
 										</option>
 									<?php } ?>
 								</select>
@@ -375,7 +469,7 @@ if ($permissao == 2) {
 									<?php $query = $conn->query("SELECT nome, cargo FROM usuarios WHERE cargo ='TEC' OR cargo='' ORDER BY NOME ASC "); ?>
 									<?php while ($reg = $query->fetch_array()) { ?>
 										<option value="<?php echo $reg['nome']; ?>">
-										<?php echo $reg['nome']; ?>
+											<?php echo $reg['nome']; ?>
 										</option>
 									<?php } ?>
 								</select>
@@ -416,14 +510,6 @@ if ($permissao == 2) {
 								</select>
 							</div>
 							<div class="col col-3">
-								<label for="fisico" class="form-label">Observações 1:</label>
-								<input type="text" class="form-control form-control-sm" id="obs1" name="obs1">
-							</div>
-							<div class="col col-3">
-								<label for="aprova" class="form-label">Observações 2:</label>
-								<input type="text" class="form-control form-control-sm" id="obs2" name="obs2">
-							</div>
-							<div class="col col-3">
 								<label for="baixa" class="form-label">Verificada baixa no pagamento das guias?:</label>
 								<select class="form-select" id="baixa" required name="baixa">
 									<option></option>
@@ -433,8 +519,6 @@ if ($permissao == 2) {
 									<option value="4">Isento, vinculado</option>
 								</select>
 							</div>
-						</div>
-						<div class="form-row">
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Processo relacionado incomum:</label>
 								<input type="text" class="form-control form-control-sm" id="pi" name="pi">
@@ -442,6 +526,18 @@ if ($permissao == 2) {
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Assunto do processo relacionado incomum:</label>
 								<input type="text" class="form-control form-control-sm" id="assuntopi" name="assuntopi">
+							</div>
+						</div>
+						<div class="row">
+							<div class=".col-12 .col-md-8">
+								<label class="form-label" for="obs">Observação:</label>
+								<textarea class="form-control form-control-sm textarea" id="obs" rows="" name="obs1" maxlength="300"></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class=".col-12 .col-md-8">
+								<label class="form-label" for="obs">Observação 2:</label>
+								<textarea class="form-control form-control-sm textarea" id="obs" rows="" name="obs2" maxlength="300"></textarea>
 							</div>
 						</div>
 						<br>
@@ -471,22 +567,21 @@ if ($permissao == 2) {
 			window.location = 'cadastrodistribuicao.php?search=' + search.value;
 		}
 
-
-
 		const button = document.querySelectorAll('.botaoselecao');
 		const form = document.getElementById('form');
 		const tabela = document.getElementById('tabela');
 
 		[...button].forEach((botao) => {
 			botao.addEventListener('click', () => {
+				
 				form.removeAttribute('hidden');
-				tabela.setAttribute('hidden', true);
+				tabela.setAttribute('hidden', true);				
 			});
 		});
 
 		const cancelar = document.getElementById('cancelar');
 
-		cancelar.addEventListener('click', () => {
+		cancelar.addEventListener('click', () => {			
 			form.setAttribute('hidden', true);
 			tabela.setAttribute('hidden', false);
 		});
@@ -499,10 +594,11 @@ if ($permissao == 2) {
 			divForm.hidden = true;
 			divTabela.hidden = false;
 		});
+
+		$(document).ready(function() {
+			$('#pi').mask('0000.0000/0000000-0');
+		});
 	</script>
-
-
-
 </body>
 
 </html>

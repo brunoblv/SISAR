@@ -36,6 +36,7 @@ include 'conexao.php';
                         <th>Nº Controle Interno</th>
                         <th>Nº SEI</th>
                         <th>Data Protocolo</th>
+                        <th>Data início da Análise de Admissibilidade</th>
                         <th>Data limite para Análise</th>
                         <th>Prazo em dias para Análise</th>
                     </tr>
@@ -53,7 +54,7 @@ include 'conexao.php';
                     //Calcular o início da visualização
                     $inicio = ($qnt_result_pg * $pagina) - $qnt_result_pg;
 
-                    $buscar_cadastros = "SELECT inicial.id, inicial.sei, inicial.dataprotocolo
+                    $buscar_cadastros = "SELECT inicial.id, inicial.sei, inicial.dataprotocolo, inicial.dataad
 FROM inicial
 WHERE inicial.id NOT IN (SELECT controleinterno FROM admissibilidade) ORDER BY inicial.id DESC LIMIT $inicio, $qnt_result_pg";
                     $query_cadastros = mysqli_query($conn, $buscar_cadastros);
@@ -75,19 +76,24 @@ WHERE inicial.id NOT IN (SELECT controleinterno FROM admissibilidade) ORDER BY i
 
                         $controleinterno = $receber_cadastros['id'];
                         $sei = $receber_cadastros['sei'];
+                        $dataad = $receber_cadastros['dataad'];
                         $dataprotocolo = $receber_cadastros['dataprotocolo'];
-
                         $hoje = date("Y-m-d");
-                        $diferenca = abs(strtotime($hoje) - strtotime($dataprotocolo));
+                        $diferenca = abs(strtotime($hoje) - strtotime($dataad));
                         $dias = floor($diferenca / (60 * 60 * 24));
-                        $datalimite = date('Y-m-d', strtotime($dataprotocolo . ' + 15 days'));
+                        $datalimite = date('Y-m-d', strtotime($dataad . ' + 15 days'));
                         $diasrestantes = 15 - $dias;
+
+                        $dataprotocolo = date("d/m/Y", strtotime($dataprotocolo));
+						$dataad = date("d/m/Y", strtotime($dataad));
+                        $datalimite = date("d/m/Y", strtotime($datalimite));
 
                     ?>
                         <tr>
                             <td scope="row"><?php echo $controleinterno ?>
                             <td><?php echo $sei ?></td>
                             <td><?php echo $dataprotocolo ?></td>
+                            <td><?php echo $dataad ?></td>
                             <td><?php echo $datalimite ?></td>
 
                             <?php

@@ -15,7 +15,7 @@ if (isset($_POST['salvar'])) {
     $stmt->close();
 
 
-    $status = 4;
+    $status = 3;
 
     $stmt = $mysqli->prepare("UPDATE inicial SET sts=? WHERE id='$controleinterno'");
     $stmt->bind_param("s", $status);

@@ -15,18 +15,21 @@ if(isset($_POST['salvar'])) {
     $sehab = mysqli_real_escape_string($mysqli, $_POST['sehab']); 
     $interfacesehab = mysqli_real_escape_string($mysqli, $_POST['interfacesehab']); 
     $siurb = mysqli_real_escape_string($mysqli, $_POST['siurb']); 
-    $interfacesiurb = mysqli_real_escape_string($mysqli, $_POST['interfacesiurb']);   
-  
-
-    
-    
+    $interfacesiurb = mysqli_real_escape_string($mysqli, $_POST['interfacesiurb']);
+    $tec = mysqli_real_escape_string($mysqli, $_POST['tec']);
+    $tec2 = mysqli_real_escape_string($mysqli, $_POST['tec2']);
 
 
-
-
-    $mysqli->query("INSERT INTO secretarias (controleinterno, svma, interfacesvma,smt, interfacesmt, smc, interfacesmc, sehab, interfacesehab, siurb,interfacesiurb)
-     VALUES('$controleinterno','$svma','$interfacesvma', '$smt','$interfacesmt','$smc','$interfacesmc','$sehab','$interfacesehab','$siurb','$interfacesiurb')")
+    $mysqli->query("INSERT INTO secretarias (controleinterno, svma, interfacesvma,smt, interfacesmt, smc, interfacesmc, sehab, interfacesehab, siurb,interfacesiurb, tec, tec2)
+     VALUES('$controleinterno','$svma','$interfacesvma', '$smt','$interfacesmt','$smc','$interfacesmc','$sehab','$interfacesehab','$siurb','$interfacesiurb','$tec', '$tec2')")
       or die ($mysqli->error);
+
+
+    $status = 5;
+
+    $stmt = $mysqli->prepare("UPDATE inicial SET sts=? WHERE id='$controleinterno'");
+    $stmt->bind_param("s", $status);
+    $stmt->execute();
     
     echo "<script>window.alert('Cadastrado com Sucesso'); document.location.href='principal.php'</script>";
  }

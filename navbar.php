@@ -1,11 +1,22 @@
 <style>
-	.nav-link[data-toggle].collapsed:after {
-		content: " ▾";
-	}
 
-	.nav-link[data-toggle]:not(.collapsed):after {
-		content: " ▴";
-	}
+.nav-link[data-toggle].collapsed:after {
+  content: " ▾";
+}
+
+.nav-link[data-toggle]:not(.collapsed):after {
+  content: " ▴";
+}
+
+.sem-seta[data-toggle].collapsed:after {
+  content: " ";
+}
+
+.sem-seta[data-toggle]:not(.collapsed):after {
+  content: " ";
+}
+
+	
 </style>
 
 <div class="wrapper d-flex align-items-stretch">
@@ -21,66 +32,71 @@
 			<h1><a href="principal.php" class="logo">SISAR <span>Sistema Aprova Rápido</span></a></h1>
 			<ul class="list-unstyled components mb-5">
 				<li class="active">
-					<a href="principal.php"><span class="fa fa-home mr-3"></span>Home</a>
+					<a href="principal.php"><span class="bx bx-home-alt icon mr-3"></span>Home</a>
 				</li>
-				<li class="active"><a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu1" aria-expanded="false"><span class="fa fa-home mr-3"></span>Cadastros</a>
+				<li class="active"><a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu1" aria-expanded="false"><span class="bx bxs-plus-square  mr-3"></span>Cadastros</a>
 					<div class="collapse" id="submenu1" aria-expanded="false">
 						<ul class="flex-column pl-2 nav">
 							<li>
-								<a href="cadastroinicial.php"><span class="fa fa-desktop mr-3"></span>Cadastro Inicial</a>
+								<a href="cadastroinicial.php"><span class="bx bx-plus mr-3"></span>Cadastro Inicial</a>
 							</li>
 							<li>
-								<a href="cadastrodistribuicao.php"><span class="fa fa-briefcase mr-3"></span>Distribuição</a>
+								<a href="cadastrodistribuicao.php"><span class="bx bxs-paper-plane mr-3"></span>Distribuição</a>
 							</li>
 							<li>
-								<a href="cadastroadmissibilidade.php"><span class="fa fa-user mr-3"></span>Admissibilidade</a>
+								<a href="cadastroadmissibilidade.php"><span class="bx bxs-analyse mr-3"></span>Admissibilidade</a>
 							</li>
 							<li>
-								<a href="cadastroreconadmissibilidade.php"><span class="fa fa-user mr-3"></span>Reconsideração de Admissibilidade</a>
+								<a href="cadastroreconadmissibilidade.php"><span class="bx bx-analyse mr-3"></span>Reconsideração de Admissibilidade</a>
 							</li>
 							<li>
-								<a href="cadastrosmul.php"><span class="fa fa-user mr-3"></span>Coordenadoria de SMUL</a>
+								<a href="cadastrosmul.php"><span class="bx bxs-city mr-3"></span>Coordenadoria de SMUL</a>
 							</li>
 							<li>
-								<a href="cadastrosecretarias.php"><span class="fa fa-user mr-3"></span>Outras Secretarias</a>
+								<a href="cadastrosecretarias.php"><span class="bx bxs-bank mr-3"></span>Outras Secretarias</a>
 							</li>
 							<li>
-								<a href="cadastrograproem.php"><span class="fa fa-user mr-3"></span>GRAPROEM</a>
+								<a href="cadastrograproem.php"><span class="bx bx-intersect mr-3 mr-3"></span>GRAPROEM</a>
 							</li>							
 							<li>
-								<a href="cadastroprazo.php"><span class="fa fa-user mr-3"></span>Suspensão de prazos</a>
+								<a href="cadastroprazo.php"><span class="bx bx-stopwatch mr-3"></span>Suspensão de prazos</a>
 							</li>
 							<li>
-								<a href="cadastroconclusao.php"><span class="fa fa-user mr-3"></span>Conclusão</a>
+								<a href="cadastroconclusao.php"><span class="bx bxs-check-circle mr-3"></span>Conclusão</a>
 							</li>
 						</ul>
 					</div>
 				</li>
 				<li class="active">
-					<a href="consultarsql.php"><span class="fa fa-home mr-3"></span>Consultar SQL</a>
+					<a href="consultarsql.php"><span class="bx bx-search-alt mr-3"></span>Consultar SQL</a>
 				</li>
-				<li class="active"><a class="nav-link collapsed text-truncate" href="#submenu2" data-toggle="collapse" data-target="#submenu2" aria-expanded="false"><span class="fa fa-home mr-3"></span>Controle de Prazos</a>
+				<li class="active"><a class="nav-link collapsed text-truncate" href="#submenu2" data-toggle="collapse" data-target="#submenu2" aria-expanded="false"><span class="bx bx-calendar mr-3"></span>Controle de Prazos</a>
 					<div class="collapse" id="submenu2" aria-expanded="false">
+					<ul class="flex-column pl-2 nav">
+							<li>
+								<a href="controleprazos.php"><span class="bx bx-calendar-check mr-3"></span>Controle de prazo Geral</a>
+							</li>							
+						</ul>
 						<ul class="flex-column pl-2 nav">
 							<li>
-								<a href="prazoad.php"><span class="fa fa-desktop mr-3"></span>Prazo para Análise de Admissibilidade</a>
+								<a href="prazoad.php"><span class="bx bx-calendar-check mr-3"></span>Prazo para Análise de Admissibilidade</a>
 							</li>							
 						</ul>
 					</div>
 				</li>
 				<li class="active">
-					<a href="alterar.php"><span class="fa fa-home mr-3"></span>Alteração de Dados</a>
+					<a href="alterar.php"><span class="bx bx-edit mr-3"></span>Alteração de Dados</a>
 				</li>				
 				<li class="active">
-					<a href="principal.php"><span class="fa fa-home mr-3"></span>Cadastro de Usuários</a>
+					<a href="principal.php"><span class="bx bxs-user-account mr-3"></span>Cadastro de Usuários</a>
 				</li>
 			</ul>
-
-
-			<div class="footer">
+			<div class="footer"><span class="bx bxs-user mr-3"></span><?php echo $_SESSION['SesNome'];?> 
 				
 			</div>
-			<?php echo $_SESSION['SesNome'];?> 
+
+
+			
 		</div>
 	</nav>
 	<script src="js/jquery.min.js"></script>

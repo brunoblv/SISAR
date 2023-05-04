@@ -4,6 +4,54 @@
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+
+ 
+
+ * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* == Colors == */
+  --body-color: #E4E9F7;
+  --sidebar-color: #FFF;
+  --primary-color: #695CFE;
+  --primary-color-light: #F6F5FF;
+  --toggle-color: #DDD;
+  --text-color: #707070;
+
+  /* == Transition == */
+  --tran-02: all 0.2s ease;
+  --tran-03: all 0.3s ease;
+  --tran-04: all 0.4s ease;
+  --tran-05: all 0.5s ease;
+}
+
+body {
+  height: 0.1vh;
+  background: var(--body-color);
+  transition: var(--tran-03);
+}
+
+body.dark {
+  --body-color: #18191A;
+  --sidebar-color: #242526;
+  --primary-color: #3A3B3C;
+  --primary-color-light: #3A3B3C;
+  --toggle-color: #FFF;
+  --text-color: #CCC;
+  transition: var(--tran-03);
+}
+
+
+
+
+
+ 
+
+
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -34,6 +82,8 @@
   --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
+
+
 
 body {
   margin: 0;
@@ -4788,6 +4838,10 @@ input[type="button"].btn-block {
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
+}
+
+.sem-seta {
+
 }
 
 .nav-link:hover,

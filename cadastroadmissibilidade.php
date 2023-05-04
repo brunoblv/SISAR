@@ -99,9 +99,9 @@ if ($permissao == 2) {
 
 						if (!empty($_GET['search'])) {
 							$data = $_GET['search'];
-							$buscar_cadastros = "SELECT Inicial.*, distribuicao.tec FROM inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno WHERE id IN (SELECT controleinterno FROM distribuicao) AND id NOT IN (SELECT controleinterno FROM admissibilidade) AND sei LIKE '%$data%' ORDER BY id DESC";
+							$buscar_cadastros = "SELECT Inicial.*, distribuicao.tec FROM inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno WHERE inicial.id IN (SELECT controleinterno FROM distribuicao) AND inicial.id NOT IN (SELECT controleinterno FROM admissibilidade) AND sei LIKE '%$data%' ORDER BY id DESC";
 						} else {
-							$buscar_cadastros = "SELECT Inicial.*, distribuicao.tec FROM inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno  WHERE id IN (SELECT controleinterno FROM distribuicao)AND id NOT IN (SELECT controleinterno FROM admissibilidade) ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
+							$buscar_cadastros = "SELECT Inicial.*, distribuicao.tec FROM inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno  WHERE inicial.id IN (SELECT controleinterno FROM distribuicao)AND inicial.id NOT IN (SELECT controleinterno FROM admissibilidade) ORDER BY inicial.id DESC LIMIT $inicio, $qnt_result_pg";
 						}
 
 
@@ -130,6 +130,7 @@ if ($permissao == 2) {
 							$aprovadigital = $receber_cadastros['aprovadigital'];
 							$sei = $receber_cadastros['sei'];
 							$dataprotocolo = $receber_cadastros['dataprotocolo'];
+							$dataad = $receber_cadastros['dataad'];
 							$tipoprocesso = $receber_cadastros['tipoprocesso'];
 							$tipoalvara1 = $receber_cadastros['tipoalvara1'];
 							$tipoalvara2 = $receber_cadastros['tipoalvara2'];
@@ -326,17 +327,18 @@ if ($permissao == 2) {
 							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
 							<?php
 
-							$inverted_date = date("d/m/Y", strtotime($dataprotocolo));
-
-							$datalimite = date('Y-m-d', strtotime($dataprotocolo . ' + 15 days'));
+							
+							$datalimite = date('Y-m-d', strtotime($dataad . ' + 15 days'));
 
 							$datalimite = date("d/m/Y", strtotime($datalimite));
 
+							$dataad = date("d/m/Y", strtotime($dataad));
+
 							?>
 
-							<div class="col col-2">
-								<label for="dataprotocolo" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
+							<div class="col col-3">
+								<label for="dataprotocolo" class="form-label">Data de início da Análise de Admissibilidade</label>
+								<input type="text" class="form-control form-control-sm" id="dataad" readonly name="dataad" value="<?php echo htmlspecialchars($dataad); ?>"></input>
 							</div>
 							<div class="col col-2">
 								<label for="datalimite" class="form-label">Data limite de análise:</label>

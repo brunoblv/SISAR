@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 if (!isset($_SESSION['SesID'])) {
   session_destroy();
-  header("Location: login.php");
+  header("Location: index.php");
   exit;
 }
 
@@ -71,7 +71,7 @@ if ($result->num_rows > 0) {
           <div class="form-row">
             <div class="d-flex align-items-center">
               <div>
-                <label for="datasql" class="form-label">SQL:</label>
+                <label for="datasql" class="form-label">Nº SQL:</label>
                 <input type="text" class="form-control form-control-sm" id="buscasql" name="buscasql"></input>
               </div>
               <div class="ml-2">
@@ -189,11 +189,11 @@ if ($result->num_rows > 0) {
             </div>
             <div class="col col-3">
               <label for="tipo" class="form-label">Tipo:</label>
-              <input type="text" class="form-control form-control-sm" id="tipo" name="tipo" placeholder="Verificar na TEV/COE o campo 05">
+              <input type="text" class="form-control form-control-sm" id="tipo" name="tipo" placeholder="Verificar na TEV/COE o campo 05" maxlength="1">
             </div>
             <div class="col col-3">
               <label for="req" class="form-label">REQ:</label>
-              <input type="text" class="form-control form-control-sm" id="req" name="req" placeholder="Verificar na TEV/COE o campo 05">
+              <input type="text" class="form-control form-control-sm" id="req" name="req" placeholder="Verificar na TEV/COE o campo 05" maxlength="3">
             </div>
           </div>
           <div class="form-row">
@@ -247,15 +247,69 @@ if ($result->num_rows > 0) {
               </select>
             </div>
             <div class="col col-3">
-              <label for="stand" class="form-label">Há pedido de stand de vendas?:</label>
+              <label for="stand" class="form-label">Há pedido de stand de vendas?</label>
               <select class="form-select" aria-label="Default select example" name="stand" id="stand">
                 <option selected></option>
                 <option value="1">Sim</option>
-                <option value="2">Não</option>
+                <option value="0">Não</option>
               </select>
             </div>
-          </div>
-          <div class="form-row">
+            <div class="col col-3">
+              <label for="outorga" class="form-label">Há pedido de Outorga Onerosa?</label>
+              <select class="form-select" aria-label="Default select example" name="outorga" id="outorga">
+                <option selected></option>
+                <option value="1">Sim</option>
+                <option value="0">Não</option>
+              </select>
+            </div>
+            <div class="col col-3">
+              <label for="CEPAC" class="form-label">Há pedido de CEPAC?</label>
+              <select class="form-select" aria-label="Default select example" name="cepac" id="cepac">
+                <option selected></option>
+                <option value="1">Sim</option>
+                <option value="0">Não</option>
+              </select>
+            </div>
+            <div class="col col-3">
+              <label for="ou" class="form-label">Há pedido de Operação urbana?</label>
+              <select class="form-select" aria-label="Default select example" name="ou" id="ou">
+                <option selected></option>
+                <option value="1">Sim</option>
+                <option value="0">Não</option>
+              </select>
+            </div>
+            <div class="col col-3">
+              <label for="AIU" class="form-label">Há pedido de AIU?</label>
+              <select class="form-select" aria-label="Default select example" name="aiu" id="aiu">
+                <option selected></option>
+                <option value="1">Sim</option>
+                <option value="0">Não</option>
+              </select>
+            </div>
+            <div class="col col-3">
+              <label for="RIVI" class="form-label">Há pedido de RIVI?</label>
+              <select class="form-select" aria-label="Default select example" name="rivi" id="rivi">
+                <option selected></option>
+                <option value="1">Sim</option>
+                <option value="0">Não</option>
+              </select>
+            </div>
+            <div class="col col-3">
+              <label for="aquecimento" class="form-label">Há pedido de Aquecimento Solar?</label>
+              <select class="form-select" aria-label="Default select example" name="aquecimento" id="aquecimento">
+                <option selected></option>
+                <option value="1">Sim</option>
+                <option value="0">Não</option>
+              </select>
+            </div>
+            <div class="col col-3">
+              <label for="gerador" class="form-label">Há pedido de Polo gerador de tráfego?</label>
+              <select class="form-select" aria-label="Default select example" name="gerador" id="gerador">
+                <option selected></option>
+                <option value="1">Sim</option>
+                <option value="0">Não</option>
+              </select>
+            </div>                    
             <div class="col col-3">
               <label for="decreto" class="form-label">Anterior ao Decreto ou após novo Decreto?:</label>
               <select class="form-select" aria-label="Default select example" name="decreto" id="decreto">
@@ -265,10 +319,11 @@ if ($result->num_rows > 0) {
               </select>
             </div>
             <div class="col col-3">
-              <label for="dataad" class="form-label">Data de início Admissibilidade:</label>
+              <label for="dataad" class="form-label">Data de início da Análise de Admissibilidade:</label>
               <input type="date" class="form-control form-control-sm" id="dataad" name="dataad">
             </div>
           </div>
+          <br>                   
           <div class="row">
             <div class=".col-12 .col-md-8">
               <label class="form-label" for="obs">Observação:</label>
@@ -283,7 +338,7 @@ if ($result->num_rows > 0) {
 </body>
 
 <script>
-  //Função para as caixas de data funcionarem corretamente.
+
 
 
   $(document).ready(function() {

@@ -152,7 +152,13 @@ if ($permissao == 2) {
                                 $descstatus = $receber_cadastros['descstatus'];
                                 $decreto = $receber_cadastros['decreto'];
                                 $dataad = $receber_cadastros['dataad'];
-
+                                $outorga = $receber_cadastros['outorga'];
+                                $cepac = $receber_cadastros['cepac'];
+                                $ou = $receber_cadastros['ou'];
+                                $aiu = $receber_cadastros['aiu'];
+                                $rivi = $receber_cadastros['rivi'];
+                                $aquecimento = $receber_cadastros['aquecimento'];
+                                $gerador = $receber_cadastros['gerador'];
 
                                 $inverted_date = date("d/m/Y", strtotime($dataprotocolo));
                                 $inverted_datead  = date("d/m/Y", strtotime($dataad));

@@ -13,6 +13,7 @@ if (isset($_POST['salvar'])) {
     $datapubli = date("Y-m-d", strtotime(str_replace('/', '-', $datapubli)));
     $dataenvio = mysqli_real_escape_string($mysqli, $_POST['dataenvio']);
     $dataenvio = date("Y-m-d", strtotime(str_replace('/', '-', $dataenvio)));
+    $coordenadoria = mysqli_real_escape_string($mysqli, $_POST['coordenadoria']);
 
     $stmt = $mysqli->prepare("INSERT INTO reconad (controleinterno, parecer, datarecon, datapubli, dataenvio) VALUES (?, ?, ?, ?, ?)");
 
@@ -28,8 +29,8 @@ if (isset($_POST['salvar'])) {
         $conclusao = "1";
     }
 
-    $stmt = $mysqli->prepare("UPDATE admissibilidade SET dataenvio=? WHERE controleinterno=?");
-    $stmt->bind_param("ss", $dataenvio, $controleinterno);
+    $stmt = $mysqli->prepare("UPDATE admissibilidade SET dataenvio=?, coordenadoria=?  WHERE controleinterno=?");
+    $stmt->bind_param("sss", $dataenvio, $coordenadoria,  $controleinterno);
     $stmt->execute();
 
     $stmt = $mysqli->prepare("UPDATE inicial SET sts=?, conclusao=? WHERE id=?");

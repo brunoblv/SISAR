@@ -78,6 +78,7 @@ if ($permissao == 2) {
 							<th>Tipo Alvará</th>
 							<th>Tipo Alvará</th>
 							<th>Tipo Alvará</th>
+							<th>Data envio</th>
 							<th>Status</th>
 							<th>Anterior ao Decreto</th>
 
@@ -98,9 +99,23 @@ if ($permissao == 2) {
 
 						if (!empty($_GET['search'])) {
 							$data = $_GET['search'];
-							$buscar_cadastros = "SELECT Inicial.*, distribuicao.tec FROM inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno WHERE sts='4' AND sei LIKE '%$data%' ORDER BY id DESC";
+							$buscar_cadastros = "SELECT
+						Inicial.*, 
+						distribuicao.tec,
+						admissibilidade.dataenvio 
+						FROM
+						inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno
+						JOIN admissibilidade ON inicial.id = admissibilidade.controleinterno
+						WHERE sts='5' AND sei LIKE '%$data%' ORDER BY id DESC";
 						} else {
-							$buscar_cadastros = "SELECT Inicial.*, distribuicao.tec FROM inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno  WHERE sts='4' ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
+							$buscar_cadastros = "SELECT
+							Inicial.*, 
+							distribuicao.tec,
+							admissibilidade.dataenvio 
+							FROM
+							inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno
+							JOIN admissibilidade ON inicial.id = admissibilidade.controleinterno
+							WHERE sts='5' ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
 						}
 
 
@@ -137,10 +152,12 @@ if ($permissao == 2) {
 							$sts = $receber_cadastros['sts'];
 							$descstatus = $receber_cadastros['descstatus'];
 							$decreto = $receber_cadastros['decreto'];
+							$dataenvio = $receber_cadastros['dataenvio'];
 
 							// Invertendo a data do SQL para o formato brasileiro
 
-							$inverted_date = date("d/m/Y", strtotime($dataprotocolo));
+							$dataprotocolo_br = date("d/m/Y", strtotime($dataprotocolo));
+							$dataenvio_br = date("d/m/Y", strtotime($dataenvio));
 
 
 							switch ($tipoprocesso) {
@@ -218,11 +235,12 @@ if ($permissao == 2) {
 								<td class="sei"><?php echo $sei ?></td>
 								<td><?php echo $numsql ?></td>
 								<td><?php echo $tec ?></td>
-								<td><?php echo $inverted_date ?></td>
-								<td><?php echo $tipoprocesso ?></td>
-								<td><?php echo $tipoalvara1 ?></td>
-								<td><?php echo $tipoalvara2 ?></td>
+								<td class="dataprotocolo"><?php echo $dataprotocolo_br ?></td>
+								<td class="tipoprocesso"><?php echo $tipoprocesso ?></td>
+								<td class="tipoalvara1"><?php echo $tipoalvara1 ?></td>
+								<td class="tipoalvara2"><?php echo $tipoalvara2 ?></td>
 								<td><?php echo $tipoalvara3 ?></td>
+								<td class="dataenvio"><?php echo $dataenvio_br ?></td>
 								<td><?php echo $status ?></td>
 								<td><?php echo $decreto ?></td>
 								<script>
@@ -266,6 +284,66 @@ if ($permissao == 2) {
 												.val(copyValue);
 										});
 									});
+									$(function() {
+										$('.copiar').click(function(event) {
+											var copyValue =
+												// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
+												$(event.target)
+												// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
+												.closest("tr")
+												// procura a <td> com a class target-copy
+												.find("td.dataprotocolo")
+												// obtem o text no conteúdo do elemento <td>
+												.text()
+												// remove possiveis espaços no incio e fim da string
+												.trim();
+
+											// seleciona o input com id desejado
+											$('#dataprotocolo')
+												// seta o valor copiado para o input id=senha
+												.val(copyValue);
+										});
+									});
+									$(function() {
+										$('.copiar').click(function(event) {
+											var copyValue =
+												// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
+												$(event.target)
+												// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
+												.closest("tr")
+												// procura a <td> com a class target-copy
+												.find("td.tipoprocesso")
+												// obtem o text no conteúdo do elemento <td>
+												.text()
+												// remove possiveis espaços no incio e fim da string
+												.trim();
+
+											// seleciona o input com id desejado
+											$('#tipoprocesso')
+												// seta o valor copiado para o input id=senha
+												.val(copyValue);
+										});
+									});
+									$(function() {
+										$('.copiar').click(function(event) {
+											var copyValue =
+												// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
+												$(event.target)
+												// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
+												.closest("tr")
+												// procura a <td> com a class target-copy
+												.find("td.dataenvio")
+												// obtem o text no conteúdo do elemento <td>
+												.text()
+												// remove possiveis espaços no incio e fim da string
+												.trim();
+
+											// seleciona o input com id desejado
+											$('#dataenvio')
+												// seta o valor copiado para o input id=senha
+												.val(copyValue);
+										});
+									});
 								</script>
 							</tr>
 						<?php }; ?>
@@ -274,11 +352,11 @@ if ($permissao == 2) {
 			</div>
 			<nav aria-label="Page navigation example">
 				<ul class="pagination">
-					<li class="page-item"><a class="page-link" href="cadastroprimeirainstancia.php?pagina=1">Primeira</a></li>
+					<li class="page-item"><a class="page-link" href="cadastrograproem.php?pagina=1">Primeira</a></li>
 
 					<?php for ($pag_ant = $pagina - $max_links; $pag_ant <= $pagina - 1; $pag_ant++) {
 						if ($pag_ant >= 1) {
-							echo "<li class='page-item'><a class='page-link' href='cadastroprimeirainstancia.php?pagina=$pag_ant'>$pag_ant</a></li>";
+							echo "<li class='page-item'><a class='page-link' href='cadastrograproem.php?pagina=$pag_ant'>$pag_ant</a></li>";
 						}
 					} ?>
 
@@ -286,12 +364,12 @@ if ($permissao == 2) {
 
 					<?php for ($pag_dep = $pagina + 1; $pag_dep <= $pagina + $max_links; $pag_dep++) {
 						if ($pag_dep <= $quantidade_pg) {
-							echo "<li class='page-item'><a class='page-link' href='cadastroprimeirainstancia.php?pagina=$pag_dep'>$pag_dep</a></li>";
+							echo "<li class='page-item'><a class='page-link' href='cadastrograproem.php?pagina=$pag_dep'>$pag_dep</a></li>";
 						}
 					}
 
 
-					echo "<li class='page-item'><a class='page-link' href='cadastroprimeirainstancia.php?pagina=$quantidade_pg'>Última</a></li>";
+					echo "<li class='page-item'><a class='page-link' href='cadastrograproem.php?pagina=$quantidade_pg'>Última</a></li>";
 
 					echo '</ul>';
 					echo '</nav>';
@@ -310,11 +388,11 @@ if ($permissao == 2) {
 						<div class="form-row">
 							<div class="col col-2">
 								<label for="sei" class="form-label">N° de Controle interno:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno" value="<?php echo htmlspecialchars($controleinterno); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno"></input>
 							</div>
 							<div class="col col-2">
 								<label for="sei" class="form-label">N° do Processo SEI:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="sei" readonly name="sei" value="<?php echo htmlspecialchars($sei); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="sei" readonly name="sei" ></input>
 							</div>
 
 							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
@@ -363,11 +441,33 @@ if ($permissao == 2) {
 								$instancia = 1;
 								$graproem = 1;
 							}
-							?>
+
+							$datalimite_at = '';						
+
+							
+							if ($tipoprocesso == 'Próprio de SMUL') {
+								if ($graproem == 1) {
+								  $datalimite_at = date('d-m-y', strtotime($dataenvio . ' +30 days'));
+								} elseif ($graproem > 1) {
+								  if ($tipoalvara1 == 'Nada' && ($tipoalvara2 == 'Alvara de Aprovação' || $tipoalvara2 == 'Alvara de Execução')) {
+									$datalimite_at = date('D-m-y', strtotime($dataenvio . ' +30 days'));
+								  } elseif ($tipoalvara1 == 'nada' && $tipoalvara2 == 'Alvara de Aprovação e Execução') {
+									$datalimite_at = date('D-m-y', strtotime($dataenvio . ' +60 days'));
+								  } elseif ($tipoalvara1 == 'Projeto Modificativo') {
+									$datalimite_at = date('D-m-y', strtotime($dataenvio . ' +60 days'));
+								  }
+								}
+							  }		
+
+							?>							
 
 							<div class="col col-2">
 								<label for="dataprotocolo" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo"></input>
+							</div>
+							<div class="col col-2">
+								<label for="tipoprocesso" class="form-label">Tipo de Processo:</label>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso"></input>
 							</div>
 							<div class="col col-2">
 								<label for="instancia" class="form-label">Instância atual:</label>
@@ -376,6 +476,14 @@ if ($permissao == 2) {
 							<div class="col col-2">
 								<label for="instancia" class="form-label">GRAPROEM atual:</label>
 								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="graproem" readonly name="graproem" value="<?php echo htmlspecialchars($graproem); ?>"></input>
+							</div>
+							<div class="col col-2">
+								<label for="dataenvio" class="form-label">Data de início da primeira Análise Técnica:</label>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataenvio" readonly name="dataenvio"></input>
+							</div>
+							<div class="col col-2">
+								<label for="instancia" class="form-label">Data limite para análise da Coordenadoria/Secretaria:</label>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datelimite" readonly name="datalimite"  value="<?php echo $datalimite_at?>"></input>
 							</div>
 						</div>
 					</div>
@@ -396,7 +504,7 @@ if ($permissao == 2) {
 											<th>Instância</th>
 											<th>GRAPROEM</th>
 											<th>Parecer</th>
-											<th>obs</th>
+											<th>OBS</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -445,35 +553,29 @@ if ($permissao == 2) {
 							<div class="col col-4">
 								<label for="instancia" class="form-label">Instância:</label>
 								<select class="form-select" aria-label="Default select example" name="instancia" id="instancia">
-									<option selected></option>
-									<option value="1">1ª Instância</option>
-									<option value="2">2ª Instância</option>
-									<option value="3">3ª Instância</option>
+									<option value="1" <?php if ($instancia == 1) echo ' selected'; ?>>1ª Instância</option>
+									<option value="2" <?php if ($instancia == 2) echo ' selected'; ?>>2ª Instância</option>
+									<option value="3" <?php if ($instancia == 3) echo ' selected'; ?>>3ª Instância</option>
 								</select>
 							</div>
 							<div class="col col-4">
 								<label for="graproem" class="form-label">GRAPROEM:</label>
 								<select class="form-select" aria-label="Default select example" name="graproem" id="graproem">
-									<option selected></option>
-									<option value="1">1º GRAPROEM</option>
-									<option value="2">2º GRAPROEM</option>
-									<option value="3">GRAPROEM Complementar</option>
+									<option value="1" <?php if ($instancia == 1) echo ' selected'; ?>>1º GRAPROEM</option>
+									<option value="2" <?php if ($instancia == 2) echo ' selected'; ?>>2º GRAPROEM</option>
+									<option value="3" <?php if ($instancia == 3) echo ' selected'; ?>>GRAPROEM Complementar</option>
 								</select>
 							</div>
 							<div class="col col-4">
 								<label for="datainicio" class="form-label">Data de início da análise pela coordenadoria/secretarias:</label>
 								<input type="date" class="form-control form-control-sm" id="datainicio" name="datainicio">
-							</div>
-							<div class="col col-4">
-								<label for="datalimite" class="form-label">Data limite para análise pela coordenadoria/secretarias:</label>
-								<input type="date" class="form-control form-control-sm" id="datalimite" name="datalimite">
-							</div>
+							</div>							
 							<div class="col col-4">
 								<label for="dataagendada" class="form-label">Data agendada da reunião do GRAPROEM:</label>
 								<input type="date" class="form-control form-control-sm" id="dataagendada" name="dataagendada">
 							</div>
 							<div class="col col-4">
-								<label for="datareal" class="form-label">Data da realização do primeiro GRAPROEM:</label>
+								<label for="datareal" class="form-label">Data da realização do GRAPROEM:</label>
 								<input type="date" class="form-control form-control-sm" id="datareal" name="datareal">
 							</div>
 							<div class="col col-4">
@@ -568,7 +670,7 @@ if ($permissao == 2) {
 		});
 
 		function searchData() {
-			window.location = 'cadastroadmissibilidade.php?search=' + search.value;
+			window.location = 'cadastrograproem.php?search=' + search.value;
 		}
 
 		const button = document.querySelectorAll('.botaoselecao');
@@ -620,4 +722,5 @@ if ($permissao == 2) {
 		});
 	</script>
 </body>
+
 </html>

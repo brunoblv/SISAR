@@ -20,10 +20,22 @@ if(isset($_POST['salvar'])) {
     $alv1 = mysqli_real_escape_string($mysqli, $_POST['alv1']);
     $alv2 = mysqli_real_escape_string($mysqli, $_POST['alv2']);
     $alv3 = mysqli_real_escape_string($mysqli, $_POST['alv3']);
-    $stand = mysqli_real_escape_string($mysqli, $_POST['stand']);  
+    $stand = mysqli_real_escape_string($mysqli, $_POST['stand']); 
+    $outorga = mysqli_real_escape_string($mysqli, $_POST['outorga']); 
+    $cepac = mysqli_real_escape_string($mysqli, $_POST['cepac']); 
+    $ou = mysqli_real_escape_string($mysqli, $_POST['ou']); 
+    $aiu = mysqli_real_escape_string($mysqli, $_POST['aiu']); 
+    $rivi = mysqli_real_escape_string($mysqli, $_POST['rivi']); 
+    $aquecimento = mysqli_real_escape_string($mysqli, $_POST['aquecimento']); 
+    $gerador = mysqli_real_escape_string($mysqli, $_POST['gerador']);        
+    
     $decreto = mysqli_real_escape_string($mysqli, $_POST['decreto']);
     $dataad = mysqli_real_escape_string($mysqli, $_POST['dataad']);
-    $conclusao = 0;
+    $dataad = date("Y-m-d",strtotime(str_replace('/','-',$dataad)));
+    $conclusao = 0;	
+	$datalimite = date('Y-m-d', strtotime($dataad . ' + 15 days'));
+    $datalimite = date("Y-m-d",strtotime(str_replace('/','-',$datalimite)));
+
 
     $date = date('Y-m-d', strtotime("-120 days"));
     $buscar_cadastros = "SELECT COUNT(id) AS numprotocolo FROM inicial WHERE numsql = '$numsql' AND dataprotocolo >= '$date'";
@@ -35,8 +47,9 @@ if(isset($_POST['salvar'])) {
     $status = '1';
 
 
-    $stmt = $mysqli->prepare("INSERT INTO inicial (conclusao, obs, numsql, tipo, req, fisico, aprovadigital, sei, dataprotocolo, tipoprocesso, tipoalvara1, tipoalvara2, tipoalvara3, stand, sts, descstatus, decreto) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("isssssssssssssss", $conclusao, $obs, $numsql, $tipo, $req, $fisico, $digital, $sei, $dataprotocolo, $tipoprocesso, $alv1, $alv2, $alv3, $stand, $status, $decreto);
+    $stmt = $mysqli->prepare("INSERT INTO inicial (conclusao, obs, numsql, tipo, req, fisico, aprovadigital, sei, dataprotocolo, tipoprocesso, tipoalvara1, tipoalvara2,
+     tipoalvara3, stand, sts, decreto, dataad, datalimite, outorga, cepac, ou, aiu, rivi, aquecimento, gerador) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("issssssssssssssssssssssss", $conclusao, $obs, $numsql, $tipo, $req, $fisico, $digital, $sei, $dataprotocolo, $tipoprocesso, $alv1, $alv2, $alv3, $stand, $status, $decreto, $dataad, $datalimite, $outorga, $cepac, $ou, $aiu, $rivi, $aquecimento, $gerador);
     $stmt->execute();    
     
     if ($prot == 0){
@@ -46,5 +59,3 @@ if(isset($_POST['salvar'])) {
     }
    
  }
-?>
-

@@ -25,82 +25,6 @@ if ($permissao == 2) {
 //}
 
 ?>
-
-<script>
-	//Função para as caixas de data funcionarem corretamente.
-
-	$(document).ready(function() {
-		var date_input = $('input[name="dataoutorga"]');
-		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
-			format: 'dd/mm/yyyy',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-			regional: 'pt-BR'
-		})
-	})
-
-	$(document).ready(function() {
-		var date_input = $('input[name="dataresposta"]');
-		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
-			format: 'dd/mm/yyyy',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-			regional: 'pt-BR'
-		})
-	})
-
-	$(document).ready(function() {
-		var date_input = $('input[name="dataemissao"]');
-		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
-			format: 'dd/mm/yyyy',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-			regional: 'pt-BR'
-		})
-	})
-
-	$(document).ready(function() {
-		var date_input = $('input[name="dataapostilamento"]');
-		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
-			format: 'dd/mm/yyyy',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-			regional: 'pt-BR'
-		})
-	})
-
-	$(document).ready(function() {
-		var date_input = $('input[name="datatermo"]');
-		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
-			format: 'dd/mm/yyyy',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-			regional: 'pt-BR'
-		})
-	})
-
-	$(document).ready(function() {
-		var date_input = $('input[name="dataconclusao"]');
-		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
-			format: 'dd/mm/yyyy',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-			regional: 'pt-BR'
-		})
-	})
-</script>
 <!doctype html>
 <html lang="pt-br">
 
@@ -200,14 +124,10 @@ if ($permissao == 2) {
 							$tipoprocesso = $receber_cadastros['tipoprocesso'];
 							$dataenvio = $receber_cadastros['dataenvio'];
 							$coordenadoria = $receber_cadastros['coordenadoria'];
-
-
-
+							$outorga = $receber_cadastros['outorga'];
 
 
 							// Invertendo a data do SQL para o formato brasileiro
-
-
 
 
 							switch ($tipoprocesso) {
@@ -267,10 +187,6 @@ if ($permissao == 2) {
 
 							$dataprotocolo_br = date("d/m/Y", strtotime($dataprotocolo));
 							$dataenvio_br = date("d/m/Y", strtotime($dataenvio));
-
-
-
-
 
 						?>
 							<tr>
@@ -545,8 +461,22 @@ if ($permissao == 2) {
 		});
 
 		$(document).ready(function() {
-		$('#numeroalvara').mask('AAAA/00000-00');
-	});
+			$('#numeroalvara').mask('AAAA/00000-00');
+		});
+
+
+		var temoutorga = '<?php echo $outorga; ?>'
+
+		var outorga = document.getElementById("outorga");
+
+		switch (temoutorga) {
+			case '0':
+				outorga.value = 2;
+				break;
+			case '1':
+				outorga.value = 1;
+				break;
+		}
 	</script>
 	</div>
 	</div>

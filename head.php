@@ -1,10 +1,9 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SisATIC - Sistema de Gerenciamento ATIC</title>
+<title>SISAR- Sistema Aprova Rápido</title>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
@@ -14,10 +13,12 @@
 <link rel="stylesheet" href="./css/style_sidebar_.css">
 
 <link href="https://rawgit.com/t4t5/sweetalert/master/dist/sweetalert.css" rel="stylesheet" />
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <script src="https://rawgit.com/t4t5/sweetalert/master/dist/sweetalert.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
 
 
 <!-- Include Date Range Picker -->

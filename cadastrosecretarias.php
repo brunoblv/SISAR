@@ -25,34 +25,6 @@ if ($permissao == 2) {
 //}
 
 ?>
-
-<script>
-	//Função para as caixas de data funcionarem corretamente.
-
-	$(document).ready(function() {
-		var date_input = $('input[name="datarecon"]');
-		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
-			format: 'dd/mm/yyyy',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-			regional: 'pt-BR'
-		})
-	})
-
-	$(document).ready(function() {
-		var date_input = $('input[name="datapubli"]');
-		var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
-			format: 'dd/mm/yyyy',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-			regional: 'pt-BR'
-		})
-	})
-</script>
 <!doctype html>
 <html lang="pt-br">
 
@@ -77,7 +49,7 @@ if ($permissao == 2) {
 		<div id="tabela">
 			<div class="card bg-light mb-3">
 				<div class="card-header">
-					<strong>Cadastro coordenadoria de SMUL</strong>
+					<strong>Cadastro Secretarias</strong>
 				</div>
 				<div class="card-body">
 					<div class="form-row">
@@ -122,22 +94,17 @@ if ($permissao == 2) {
 
 						if (!empty($_GET['search'])) {
 							$data = $_GET['search'];
-							$buscar_cadastros = "SELECT i.id, i.sei, i.numsql, i.tipoprocesso, i.dataprotocolo, a.dataenvio, a.coordenadoria
-							FROM inicial i 
-							INNER JOIN admissibilidade a ON i.tipoprocesso = 2 AND i.id = a.controleinterno AND a.parecer = 1
-							UNION
-							SELECT i.id, i.sei, i.numsql, i.tipoprocesso, i.dataprotocolo, r.dataenvio, r.coordenadoria
-							FROM inicial i
-							INNER JOIN reconad r ON i.tipoprocesso=2 and i.id = r.controleinterno AND r.parecer = 1 and i.id not in (select controleinterno from reconad)
-							LIMIT 0, 25 AND i.sei LIKE '%$data%'";
+							$buscar_cadastros = "SELECT Inicial.id, Inicial.dataad, inicial.dataprotocolo, Inicial.sei, Inicial.numsql, Inicial.tipoprocesso, Admissibilidade.dataenvio, Admissibilidade.coordenadoria
+							FROM Inicial
+							JOIN Admissibilidade ON Inicial.id = Admissibilidade.controleinterno
+							
+							WHERE Inicial.sts = 3 AND Inicial.id NOT IN (SELECT controleinterno FROM secretarias) AND inicial.sei LIKE '%$data%'";
 						} else {
-							$buscar_cadastros = "SELECT i.id, i.sei, i.numsql, i.tipoprocesso, i.dataprotocolo, a.dataenvio, a.coordenadoria
-							FROM inicial i 
-							INNER JOIN admissibilidade a ON i.tipoprocesso=2 AND i.id = a.controleinterno AND a.parecer = 1
-							UNION
-							SELECT i.id, i.sei, i.numsql, i.tipoprocesso, i.dataprotocolo, r.dataenvio as rdataenvio, r.coordenadoria as rcoord
-							FROM inicial i
-							INNER JOIN reconad r ON i.tipoprocesso=2 and i.id = r.controleinterno AND r.parecer = 1 and i.id not in (select controleinterno from reconad)
+							$buscar_cadastros = "SELECT Inicial.id, Inicial.dataad, inicial.dataprotocolo, Inicial.sei, Inicial.numsql, Inicial.tipoprocesso, Admissibilidade.dataenvio, Admissibilidade.coordenadoria
+							FROM Inicial
+							JOIN Admissibilidade ON Inicial.id = Admissibilidade.controleinterno
+							
+							WHERE Inicial.sts = 3 AND Inicial.id NOT IN (SELECT controleinterno FROM secretarias)
 							LIMIT $inicio, $qnt_result_pg";
 						}
 
@@ -161,6 +128,7 @@ if ($permissao == 2) {
 							$controleinterno = $receber_cadastros['id'];
 							$numsql = $receber_cadastros['numsql'];
 							$sei = $receber_cadastros['sei'];
+							$dataad = $receber_cadastros['dataad'];
 							$dataprotocolo = $receber_cadastros['dataprotocolo'];
 							$tipoprocesso = $receber_cadastros['tipoprocesso'];
 							$dataenvio = $receber_cadastros['dataenvio'];
@@ -224,12 +192,9 @@ if ($permissao == 2) {
 							}
 
 
-							$dataprotocolo_br = date("d/m/Y", strtotime($dataprotocolo));
-							$dataenvio_br = date("d/m/Y", strtotime($dataenvio));
-
-
-
-
+							$dataad = date("d/m/Y", strtotime($dataad));
+							$dataenvio = date("d/m/Y", strtotime($dataenvio));
+							$dataprotocolo = date("d/m/Y", strtotime($dataprotocolo));
 
 						?>
 							<tr>
@@ -237,8 +202,8 @@ if ($permissao == 2) {
 								<td class="ci" scope="row"><?php echo $controleinterno ?></td>
 								<td class="sei"><?php echo $sei ?></td>
 								<td><?php echo $numsql ?></td>
-								<td><?php echo $dataprotocolo_br ?></td>
-								<td><?php echo $dataenvio_br ?></td>
+								<td><?php echo $dataad ?></td>
+								<td><?php echo $dataenvio ?></td>
 								<td><?php echo $tipoprocesso ?></td>
 								<td><?php echo $coordenadoria ?></td>
 
@@ -371,7 +336,7 @@ if ($permissao == 2) {
 
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Coordenadoria/Divisão em SMUL:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($coordenadoria); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="coordenadoria" readonly name="coordenadoria" value="<?php echo htmlspecialchars($coordenadoria); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="datalimite" class="form-label">Data de Protocolo:</label>
@@ -385,7 +350,7 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-3">
 								<label for="tipoprocesso" class="form-label">Data de envio para as Secretarias:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" value="<?php echo htmlspecialchars($dataenvio_br); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataenvio" readonly name="dataenvio" value="<?php echo htmlspecialchars($dataenvio); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Data limite para análise técnica das Secretarias:</label>
@@ -400,12 +365,24 @@ if ($permissao == 2) {
 				</div>
 				<div class="card bg-light mb-3">
 					<div class="card-header">
-						<strong>Dados das Secretarias</strong>
+						<strong>Dados SMUL e Outras Secretarias</strong>
 					</div>
 					<div class="card-body">
 						<div>
 							<form class="need-validation" no validade method="POST" action="addsecretarias.php" autocomplete="off" name="frm" onsubmit=" return verificarControleInterno();">
-								<div class="form-row">
+								<div class="smul form-row">
+									<div class="col col-4">
+										<label for="tec" class="form-label">Técnico da Coordenadoria responsável:</label>
+										<input type="text" class="form-control form-control-sm" id="tec" name="tec">
+									</div>
+									<div class="col col-4">
+										<label for="tec2" class="form-label">Técnico da Coordenadoria após redistribuição:</label>
+										<input type="text" class="form-control form-control-sm" id="tec2" name="tec2">
+									</div>
+								</div>
+								<br>
+								<br>
+								<div class="outras form-row">
 									<div class="col col-3">
 										<input class="form-check-input" type="hidden" value="0" id="interfacesvma" name="interfacesvma">
 										<input class="form-check-input" type="checkbox" value="1" id="interfacesvma" name="interfacesvma">
@@ -467,7 +444,7 @@ if ($permissao == 2) {
 								</div>
 								<div class="form-row">
 									<div class="col col-3">
-									<input class="form-check-input" type="checkbox" value="0" id="interfacesiurb" name="interfacesiurb">
+										<input class="form-check-input" type="checkbox" value="0" id="interfacesiurb" name="interfacesiurb">
 										<input class="form-check-input" type="checkbox" value="1" id="interfacesiurb" name="interfacesiurb">
 										<label class="form-check-label" for="flexCheckDefault">
 											Possui interface com SIURB
@@ -481,10 +458,11 @@ if ($permissao == 2) {
 									</div>
 								</div>
 								<br>
+								<br>
 								<div class="form-row">
 									<div class="col col-3">
 										<button type="submit" class="btn btn-primary" name="salvar">Salvar</button>
-										<button type="submit" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
+										<button type="button" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
 									</div>
 								</div>
 							</form>
@@ -538,8 +516,7 @@ if ($permissao == 2) {
 		btnCancelar.addEventListener('click', function() {
 			divForm.hidden = true;
 			divTabela.hidden = false;
-		});	
-	
+		});
 	</script>
 	</div>
 	</div>

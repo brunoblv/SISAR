@@ -122,17 +122,20 @@ if ($permissao == 2) {
 
 						if (!empty($_GET['search'])) {
 							$data = $_GET['search'];
-							$buscar_cadastros = "SELECT i.id, i.sei, i.numsql, i.dataprotocolo, i.tipoprocesso, i.sts, a.dataenvio, a.coordenadoria 
-								FROM INICIAL i 
-								INNER JOIN ADMISSIBILIDADE a ON a.controleinterno = i.id							
-								WHERE i.sts = '2' AND i.sei LIKE '%$data%'";
+							$buscar_cadastros = "SELECT Inicial.id, Inicial.dataad, inicial.dataprotocolo, Inicial.sei, Inicial.numsql, Inicial.tipoprocesso, Admissibilidade.dataenvio, Admissibilidade.coordenadoria
+							FROM Inicial
+							JOIN Admissibilidade ON Inicial.id = Admissibilidade.controleinterno
+							
+							WHERE Inicial.sts = 3 AND Inicial.id NOT IN (SELECT controleinterno FROM smul) AND inicial.sei LIKE '%$data%'";
 						} else {
-							$buscar_cadastros = "SELECT i.id, i.sei, i.numsql, i.dataprotocolo, i.tipoprocesso, a.dataenvio, a.coordenadoria 
-								FROM INICIAL i 
-								INNER JOIN ADMISSIBILIDADE a ON a.controleinterno = i.id
-								WHERE i.sts = '2'							
-								ORDER BY i.id DESC LIMIT $inicio, $qnt_result_pg";
+							$buscar_cadastros = "SELECT Inicial.id, Inicial.dataad, inicial.dataprotocolo, Inicial.sei, Inicial.numsql, Inicial.tipoprocesso, Admissibilidade.dataenvio, Admissibilidade.coordenadoria
+							FROM Inicial
+							JOIN Admissibilidade ON Inicial.id = Admissibilidade.controleinterno
+							
+							WHERE Inicial.sts = 3 AND Inicial.id NOT IN (SELECT controleinterno FROM smul)
+							LIMIT $inicio, $qnt_result_pg";
 						}
+
 						
 
 						$query_cadastros = mysqli_query($conn, $buscar_cadastros);

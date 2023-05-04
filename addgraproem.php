@@ -37,7 +37,7 @@ if (isset($_POST['salvar'])) {
     $datareal = '0000-00-00';
   }
   if (isset($_POST['motivo'])) {
-    $motivo = mysqli_real_escape_string($mysqli, $_POST['motivo']);    
+    $motivo = mysqli_real_escape_string($mysqli, $_POST['motivo']);
   } else {
     $motivo = '0';
   }
@@ -121,17 +121,56 @@ if (isset($_POST['salvar'])) {
 
   $obs = mysqli_real_escape_string($mysqli, $_POST['obs']);
 
-  
+  $descricao = '';
+  $datafim = '';
+
+  if ($graproem == 1) {
+    $descricao = 'Análise Técnica';
+  } else {
+    $descricao = 'Reanálise Técnica';
+  }
 
   $stmt = $mysqli->prepare("INSERT INTO graproem (controleinterno, instancia, graproem, datainicio, datalimite, dataagendada, datareal, motivo, datasmul, datasvma, 
   datasmc, datasmt, datasehab, datasiurb, parecer, datapubli, datacumprimento, complementar, datapublicomplementar, dataresposta, datacoord, obs) 
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");  
 
-  $stmt->bind_param("isssssssssssssssssssss", $controleinterno, $instancia, $graproem, $datainicio, $datalimite, $dataagendada, $datareal, $motivo, $datasmul, $datasvma, 
-  $datasmc, $datasmt, $datasehab, $datasiurb, $parecer, $datapubli, $datacumprimento, $complementar, $datapublicomplementar, $dataresposta, $datacoord,$obs);
-
+  $stmt->bind_param(
+    "isssssssssssssssssssss",
+    $controleinterno,
+    $instancia,
+    $graproem,
+    $datainicio,
+    $datalimite,
+    $dataagendada,
+    $datareal,
+    $motivo,
+    $datasmul,
+    $datasvma,
+    $datasmc,
+    $datasmt,
+    $datasehab,
+    $datasiurb,
+    $parecer,
+    $datapubli,
+    $datacumprimento,
+    $complementar,
+    $datapublicomplementar,
+    $dataresposta,
+    $datacoord,
+    $obs
+  );
   $stmt->execute();
 
+  $datas = array($datasmul, $datasvma, $datasmc, $datasmt, $datasehab, $datasiurb);
+  $datafim = max($datas);
+
+  $stmt = $mysqli->prepare("INSERT INTO controle_prazo (controleinterno, descricao, instancia, graproem, datainicio, datafim) VALUES (?,?,?,?,?,?)");
+  $stmt->bind_param("isssss", $controleinterno, $descricao, $instancia, $graproem, $datainicio, $datafim);
+  $stmt->execute();  
+
+  $stmt = $mysqli->prepare("UPDATE controle_prazo SET dias = ABS(DATEDIFF(?,?)) WHERE controleinterno=?");
+  $stmt->bind_param("ssi", $datainicio, $datafim, $controleinterno);
+  $stmt->execute();
 
   echo "<script>window.alert('Cadastrado com Sucesso'); document.location.href='principal.php'</script>";
 }

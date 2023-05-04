@@ -37,6 +37,12 @@ if(isset($_POST['salvar'])) {
         echo "<script>window.alert('Cadastrado com Sucesso'); document.location.href='principal.php'</script>";
     }
 
+    $status = 2;
+    
+    $stmt = $mysqli->prepare("UPDATE inicial SET sts=? WHERE id='$controleinterno'");
+    $stmt->bind_param("s", $status);
+    $stmt->execute();
+
     // fechar a conexão com o banco de dados
     $stmt->close();
     $mysqli->close();
