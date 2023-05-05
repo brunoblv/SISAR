@@ -180,6 +180,12 @@ if ($result->num_rows > 0) {
         <form class="need-validation" novalidade method="POST" action="addcadastroinicial.php" autocomplete="off">
           <div class="form-row">
             <div class="col col-3">
+              <label for="novocontrole" class="form-label">Número de Controle interno:</label>
+              <input type="text" class="form-control form-control-sm" id="controleinterno" readonly name="controleinterno" value="<?php echo htmlspecialchars($next_id); ?>"></input>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col col-3">
               <label for="sei" class="form-label sei">Nº SEI:</label>
               <input type="text" class="form-control form-control-sm" id="sei" name="sei" required="required">
             </div>
@@ -309,7 +315,7 @@ if ($result->num_rows > 0) {
                 <option value="1">Sim</option>
                 <option value="0">Não</option>
               </select>
-            </div>                    
+            </div>
             <div class="col col-3">
               <label for="decreto" class="form-label">Anterior ao Decreto ou após novo Decreto?:</label>
               <select class="form-select" aria-label="Default select example" name="decreto" id="decreto">
@@ -323,7 +329,7 @@ if ($result->num_rows > 0) {
               <input type="date" class="form-control form-control-sm" id="dataad" name="dataad">
             </div>
           </div>
-          <br>                   
+          <br>
           <div class="row">
             <div class=".col-12 .col-md-8">
               <label class="form-label" for="obs">Observação:</label>
@@ -338,9 +344,6 @@ if ($result->num_rows > 0) {
 </body>
 
 <script>
-
-
-
   $(document).ready(function() {
     $('#myModal').modal('show');
   })

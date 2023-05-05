@@ -149,8 +149,7 @@ if ($permissao == 2) {
 							$tipoalvara2 = $receber_cadastros['tipoalvara2'];
 							$tipoalvara3 = $receber_cadastros['tipoalvara3'];
 							$stand = $receber_cadastros['stand'];
-							$sts = $receber_cadastros['sts'];
-							$descstatus = $receber_cadastros['descstatus'];
+							$sts = $receber_cadastros['sts'];							
 							$decreto = $receber_cadastros['decreto'];
 							$dataenvio = $receber_cadastros['dataenvio'];
 
@@ -392,7 +391,7 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-2">
 								<label for="sei" class="form-label">N° do Processo SEI:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="sei" readonly name="sei" ></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="sei" readonly name="sei"></input>
 							</div>
 
 							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
@@ -431,6 +430,7 @@ if ($permissao == 2) {
 												WHERE controleinterno = '$controleinterno'
 												ORDER BY id DESC
 												LIMIT 1";
+
 							$query_cadastros = mysqli_query($conn, $buscar_cadastros);
 							if ($query_cadastros && mysqli_num_rows($query_cadastros) > 0) {
 
@@ -440,26 +440,9 @@ if ($permissao == 2) {
 							} else {
 								$instancia = 1;
 								$graproem = 1;
-							}
+							}							
 
-							$datalimite_at = '';						
-
-							
-							if ($tipoprocesso == 'Próprio de SMUL') {
-								if ($graproem == 1) {
-								  $datalimite_at = date('d-m-y', strtotime($dataenvio . ' +30 days'));
-								} elseif ($graproem > 1) {
-								  if ($tipoalvara1 == 'Nada' && ($tipoalvara2 == 'Alvara de Aprovação' || $tipoalvara2 == 'Alvara de Execução')) {
-									$datalimite_at = date('D-m-y', strtotime($dataenvio . ' +30 days'));
-								  } elseif ($tipoalvara1 == 'nada' && $tipoalvara2 == 'Alvara de Aprovação e Execução') {
-									$datalimite_at = date('D-m-y', strtotime($dataenvio . ' +60 days'));
-								  } elseif ($tipoalvara1 == 'Projeto Modificativo') {
-									$datalimite_at = date('D-m-y', strtotime($dataenvio . ' +60 days'));
-								  }
-								}
-							  }		
-
-							?>							
+							?>
 
 							<div class="col col-2">
 								<label for="dataprotocolo" class="form-label">Data de Protocolo:</label>
@@ -483,7 +466,7 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-2">
 								<label for="instancia" class="form-label">Data limite para análise da Coordenadoria/Secretaria:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datelimite" readonly name="datalimite"  value="<?php echo $datalimite_at?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datelimite" readonly name="datalimite" value="<?php echo $datalimite_at ?>"></input>
 							</div>
 						</div>
 					</div>
@@ -569,7 +552,7 @@ if ($permissao == 2) {
 							<div class="col col-4">
 								<label for="datainicio" class="form-label">Data de início da análise pela coordenadoria/secretarias:</label>
 								<input type="date" class="form-control form-control-sm" id="datainicio" name="datainicio">
-							</div>							
+							</div>
 							<div class="col col-4">
 								<label for="dataagendada" class="form-label">Data agendada da reunião do GRAPROEM:</label>
 								<input type="date" class="form-control form-control-sm" id="dataagendada" name="dataagendada">
@@ -719,7 +702,8 @@ if ($permissao == 2) {
 				dataenvio.setAttribute('required', true);
 				coordenadoria.setAttribute('required', true);
 			}
-		});
+		});	
+
 	</script>
 </body>
 

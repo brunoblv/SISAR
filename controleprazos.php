@@ -52,26 +52,13 @@ if ($result->num_rows > 0) {
       <table class="table table-bordered table-hover">
         <thead>
           <tr class="linha-tabela">
-            <th class="table-primary" colspan="35">Primeira Instância</th>
-            <th class="table-primary" colspan="22">Segunda Instância</th>
-            <th class="table-primary" colspan="22">Terceira Instância</th>
-          </tr>
-          <tr class="linha-tabela">
-            <td class="table-primary" colspan="4">Informações do Processo</td>
-            <td class="table-primary" colspan="4">Protocolo</td>
-            <td class="table-primary" colspan="5">Análise de Admissiblidade</td>
-            <td class="table-primary" colspan="6">Análise Técnica</td>
-            <td class="table-primary" colspan="4">Comunique-se</td>
-            <td class="table-primary" colspan="6">Reanálise Técnica</td>
-            <td class="table-primary" colspan="6">Observações Especiais</td>
-            <td class="table-primary" colspan="6">Análise Técnica</td>
-            <td class="table-primary" colspan="4">Comunique-se</td>
-            <td class="table-primary" colspan="6">Reanálise Técnica</td>
-            <td class="table-primary" colspan="6">Observações Especiais</td>
-            <td class="table-primary" colspan="6">Análise Técnica</td>
-            <td class="table-primary" colspan="4">Comunique-se</td>
-            <td class="table-primary" colspan="6">Reanálise Técnica</td>
-            <td class="table-primary" colspan="6">Observações Especiais</td>
+            <th class="table-primary" colspan="4">Informações do Processo</th>
+            <th class="table-primary" colspan="4">Protocolo</th>
+            <th class="table-primary" colspan="5">Análise de Admissiblidade</th>
+            <th class="table-primary" colspan="6">Análise Técnica</th>
+            <th class="table-primary" colspan="4">Comunique-se</th>
+            <th class="table-primary" colspan="6">Reanálise Técnica</th>
+            <th class="table-primary" colspan="6">Observações Especiais</th>
           </tr>
         </thead>
         <tbody>
@@ -111,51 +98,6 @@ if ($result->num_rows > 0) {
             <td class="table-success">Nº dias após análise de admissibilidade</td>
             <td class="table-success">Motivo de Suspensão</td>
             <td class="table-success">Observações</td>
-            <td class="table-success">Início</td>
-            <td class="table-success">Final</td>
-            <td class="table-success">Parecer</td>
-            <td class="table-success">Situação</td>
-            <td class="table-success">Prazo</td>
-            <td class="table-success">Real</td>
-            <td class="table-success">Início</td>
-            <td class="table-success">Final</td>
-            <td class="table-success">Prazo</td>
-            <td class="table-success">Real</td>
-            <td class="table-success">Início</td>
-            <td class="table-success">Final</td>
-            <td class="table-success">Parecer</td>
-            <td class="table-success">Situação</td>
-            <td class="table-success">Prazo</td>
-            <td class="table-success">Real</td>
-            <td class="table-success">Processo em linha recursal?</td>
-            <td class="table-success">Suspensão do prazo?</td>
-            <td class="table-success">Nº dias durante análise de admissibilidade</td>
-            <td class="table-success">Nº dias após análise de admissibilidade</td>
-            <td class="table-success">Motivo de Suspensão</td>
-            <td class="table-success">Observações</td>
-            <td class="table-success">Início</td>
-            <td class="table-success">Final</td>
-            <td class="table-success">Parecer</td>
-            <td class="table-success">Situação</td>
-            <td class="table-success">Prazo</td>
-            <td class="table-success">Real</td>
-            <td class="table-success">Início</td>
-            <td class="table-success">Final</td>
-            <td class="table-success">Prazo</td>
-            <td class="table-success">Real</td>
-            <td class="table-success">Início</td>
-            <td class="table-success">Final</td>
-            <td class="table-success">Parecer</td>
-            <td class="table-success">Situação</td>
-            <td class="table-success">Prazo</td>
-            <td class="table-success">Real</td>
-            <td class="table-success">Processo em linha recursal?</td>
-            <td class="table-success">Suspensão do prazo?</td>
-            <td class="table-success">Nº dias durante análise de admissibilidade</td>
-            <td class="table-success">Nº dias após análise de admissibilidade</td>
-            <td class="table-success">Motivo de Suspensão</td>
-            <td class="table-success">Observações</td>
-
           </tr>
 
           <?php
@@ -171,61 +113,49 @@ if ($result->num_rows > 0) {
           $inicio = ($qnt_result_pg * $pagina) - $qnt_result_pg;
 
 
-          $buscar_cadastros = "SELECT
-          i.id as controleinterno,
+          #$buscar_cadastros = "SELECT i.*, COALESCE(cp.descricao, 'N/A') AS descricao_cp, COALESCE(a.parecer, 'N/A') AS parecer_a, 
+          #COALESCE(cp.datainicio, 'N/A') AS datainicio_cp, COALESCE(cp.datafim, 'N/A') AS datafim_cp
+          #FROM inicial i
+          #LEFT JOIN controle_prazo cp ON i.id = cp.controleinterno AND cp.descricao = 'Análise de Admissibilidade'
+          #LEFT JOIN admissibilidade a ON i.id = a.controleinterno
+          #ORDER BY i.id DESC LIMIT $inicio, $qnt_result_pg"; 
+
+          $buscar_cadastros = "SELECT 
+          i.id AS controleinterno,    
           i.sei,
           i.tipoprocesso,
           i.tipoalvara1,
           i.tipoalvara2,
           i.tipoalvara3,
           i.dataprotocolo,
-          i.dataad AS datainicio_ad,
-          a.parecer AS parecer_ad,
+          i.dataad,
+          a.parecer AS parecer_AD,
           a.dataenvio AS dataenvio_ad,
-          i1.instancia,
-          i1.graproem,
-          i1.datainicio,         
-          i1.datasmul,
-          i1.datasvma,
-          i1.datasmc,
-          i1.datasmt,
-          i1.datasehab,
-          i1.datasiurb,
-          i1.parecer,
-          i2.instancia,
-          i2.graproem,
-          i2.datainicio,         
-          i2.datasmul,
-          i2.datasvma,
-          i2.datasmc,
-          i2.datasmt,
-          i2.datasehab,
-          i2.datasiurb,
-          i2.parecer,
-          i3.instancia,
-          i3.graproem,
-          i3.datainicio,          
-          i3.datasmul,
-          i3.datasvma,
-          i3.datasmc,
-          i3.datasmt,
-          i3.datasehab,
-          i3.datasiurb,
-          i3.parecer
-
-          FROM
-          inicial i
-          LEFT JOIN 
-          admissibilidade a ON i.id = a.controleinterno 
-          LEFT JOIN 
-          graproem i1 ON i.id = i1.controleinterno AND i1.instancia = 1
-          LEFT JOIN 
-          graproem i2 ON i.id = i2.controleinterno AND i2.instancia = 1
-          LEFT JOIN 
-          graproem i3 ON i.id = i3.controleinterno AND i3.instancia = 1        
+          ad.datainicio AS datainicio_ad,
+          ad.datafim AS datafim_ad,
+          ad.dias AS real_ad,
+          tec.datainicio AS tecnica_inicio,
+          tec.datafim AS tecnica_final,
+          tec.dias AS tecnica_real,    
+          co.datainicio AS comunique_inicio,
+          co.datafim AS comunique_final,
+          co.dias AS comunique_real,   
+          re.datainicio AS reanalise_inicio,
+          re.datafim AS reanalise_final,
+          re.dias AS reanalise_parecer    
           
-          ";
-
+      FROM 
+          inicial i
+      LEFT JOIN 
+          admissibilidade A ON i.id = a.controleinterno
+      LEFT JOIN 
+          controle_prazo AD ON i.id = ad.controleinterno AND ad.descricao = 'Análise de Admissibilidade'
+      LEFT JOIN 
+          controle_prazo TEC ON i.id = tec.controleinterno AND TEC.descricao = 'Análise Técnica'
+      LEFT JOIN 
+          controle_prazo co ON i.id = co.controleinterno AND co.descricao = 'Comunique-se'
+      LEFT JOIN 
+          controle_prazo re ON i.id = re.controleinterno AND re.descricao = 'Reanálise Técnica'";
 
 
           $query_cadastros = mysqli_query($conn, $buscar_cadastros);
@@ -251,37 +181,14 @@ if ($result->num_rows > 0) {
             $tipoalvara1 = $receber_cadastros['tipoalvara1'];
             $tipoalvara2 = $receber_cadastros['tipoalvara2'];
             $tipoalvara3 = $receber_cadastros['tipoalvara3'];
-            $dataad = $receber_cadastros['datainicio_ad'];
+            $dataad = $receber_cadastros['dataad'];
             $dataenvio = $receber_cadastros['dataenvio_ad'];
             $suspensaoprazo = 0;
 
-            $datainicio_ad = isset($receber_cadastros['datainicio_ad']) ? $receber_cadastros['datainicio_ad'] : 'N/A';
-
-            $datafim_ad = isset($receber_cadastros['dataenvio_ad']) ? $receber_cadastros['dataenvio_ad'] : 'N/A';
-            // Se o processo foi admissível ou não como Aprova Rápido
-            $parecer_ad = isset($receber_cadastros['parecer_ad']) ? $receber_cadastros['parecer_ad'] : 'N/A';
-            // a data de inicio da análise técnica é a mesma da data de envio para as Coordenadorias/Secretarias
-            $datainicio_at = isset($receber_cadastros['dataenvio_ad']) ? $receber_cadastros['dataenvio_ad'] : 'N/A';
-            // a data final da análise técnica é a o campo datasmul caso o tipo de processo seja "próprio de SMUL" ou a maior data de todas as coordenadorias se o tipo de processo for "Múltiplas Interfaces"
-            if ($tipoprocesso == 1) {
-              $datafim_at = isset($receber_cadastros['i1.datasmul']) ? $receber_cadastros['i1.datasmul'] : 'N/A';
-            } else {
-              $campos_data = array(
-                $receber_cadastros['i1.datasmul'],
-                $receber_cadastros['i1.datasvma'],
-                $receber_cadastros['i1.datasmc'],
-                $receber_cadastros['i1.datasmt'],
-                $receber_cadastros['i1.datasehab'],
-                $receber_cadastros['i1.datasiurb']
-              );             
-              // Ordena os valores do array em ordem decrescente de data
-              rsort($campos_data);
-              // Define o valor da variável $datafim_at como a data mais recente encontrada nos campos especificados
-              $datafim_at = !empty($campos_data) ? $campos_data[0] : 'N/A';
-            }
-
-
-
+            $datainicio_AD = isset($receber_cadastros['datainicio_ad']) ? $receber_cadastros['datainicio_ad'] : 'N/A';
+            $datafim_AD = isset($receber_cadastros['datafim_ad']) ? $receber_cadastros['datafim_ad'] : 'N/A';
+            $parecer_AD = isset($receber_cadastros['parecer_AD']) ? $receber_cadastros['parecer_AD'] : 'N/A';
+            $real_AD = isset($receber_cadastros['real_ad']) ? $receber_cadastros['real_ad'] : 'N/A';
             // Cálculo de prazo de Admissibilidade e Invertendo a data do SQL para o formato brasileiro
 
             $hoje = date("Y-m-d");
@@ -291,11 +198,34 @@ if ($result->num_rows > 0) {
             $diasrestantes = 15 - $dias;
 
 
-            $totaldiasprot = abs(strtotime($datainicio_ad) - strtotime($dataprotocolo));
-            $totaldiasprot = floor($totaldiasprot / (60 * 60 * 24));
+            $diferencaProt = abs(strtotime($datainicio_AD) - strtotime($dataprotocolo));
+            $diferencaProt = floor($diferencaProt / (60 * 60 * 24));
 
-            $totaldiasad = abs(strtotime($datafim_ad) - strtotime($datainicio_ad));
-            $totaldiasad = floor($totaldiasad / (60 * 60 * 24));
+                      
+            if ($dataprotocolo != $dataad) {
+              if ($dataenvio == "") {
+                $resultado = "N/A";
+              } else {
+                $dias = (strtotime($dataenvio) - strtotime($dataad)) / 86400 - $suspensaoprazo;
+                if (date("N", strtotime($dataad)) == 6) {
+                  $dias -= 3;
+                } elseif (date("N", strtotime($dataad)) == 7) {
+                  $dias -= 2;
+                } else {
+                  $dias -= 1;
+                }
+                $resultado = $dias < 0 ? 0 : $dias;
+              }
+            } else {
+              $resultado = "";
+            }
+
+            echo 'O valor de $dataprotocolo é:' . $dataprotocolo . "<br>";
+            echo 'O valor de $dataenvio é:' . $dataenvio  . "<br>";
+            echo 'O valor de $dataad é:' . $dataad  . "<br>";
+            echo 'O valor de $dataprotocolo é:' . $dataprotocolo  . "<br>";
+
+
 
             $dataprotocolo = date("d/m/Y", strtotime($dataprotocolo));
             $dataad = date("d/m/Y", strtotime($dataad));
@@ -348,15 +278,15 @@ if ($result->num_rows > 0) {
 
             $tipoalvara = $tipoalvara1 . '/' . $tipoalvara2 . '/' . $tipoalvara3;
 
-            switch ($parecer_ad) {
+            switch ($parecer_AD) {
               case 'N/A':
-                $parecer_ad = 'N/A';
+                $parecer_AD = 'N/A';
                 break;
               case '1':
-                $parecer_ad = 'Admissível';
+                $parecer_AD = 'Admissível';
                 break;
               case '2':
-                $parecer_ad = 'Inadmissível';
+                $parecer_AD = 'Inadmissível';
                 break;
             }
           ?>
@@ -368,25 +298,10 @@ if ($result->num_rows > 0) {
               <td><?php echo $dataprotocolo ?></td>
               <td><?php echo $dataad ?></td>
               <td>2</td>
-              <td><?php echo $totaldiasprot ?></td>
-              <td><?php echo $datainicio_ad ?></td>
-              <td><?php echo $datafim_ad ?></td>
-              <td><?php echo $parecer_ad ?></td>
-              <td>15</td>
-              <?php
-              if ($totaldiasad > 15) {
-                echo '<td class="table-danger">' . $totaldiasad . '</td>';
-              } else {
-
-                echo '<td>' . $totaldiasad . '</td>';
-              } ?>
-              <td><?php echo $datafim_at ?></td>          
-
-
-
-
-
-
+              <td><?php echo $resultado ?></td>
+              <td><?php echo $datainicio_AD ?></td>
+              <td><?php echo $datafim_AD ?></td>
+              <td><?php echo $parecer_AD ?></td>
             </tr>
           <?php }; ?>
         </tbody>

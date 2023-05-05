@@ -6,7 +6,8 @@ $mysqli = new mysqli($host,$user,$password,$db_name) or die(mysqli_error($mysqli
     
                
 
-if(isset($_POST['salvar'])) {	
+if(isset($_POST['salvar'])) {
+    $controleinterno = mysqli_real_escape_string($mysqli, $_POST['controleinterno']);	
 	$obs = mysqli_real_escape_string($mysqli, $_POST['obs']);
     $numsql = mysqli_real_escape_string($mysqli, $_POST['numsql']);
     $tipo = mysqli_real_escape_string($mysqli, $_POST['tipo']);
@@ -50,7 +51,17 @@ if(isset($_POST['salvar'])) {
     $stmt = $mysqli->prepare("INSERT INTO inicial (conclusao, obs, numsql, tipo, req, fisico, aprovadigital, sei, dataprotocolo, tipoprocesso, tipoalvara1, tipoalvara2,
      tipoalvara3, stand, sts, decreto, dataad, datalimite, outorga, cepac, ou, aiu, rivi, aquecimento, gerador) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("issssssssssssssssssssssss", $conclusao, $obs, $numsql, $tipo, $req, $fisico, $digital, $sei, $dataprotocolo, $tipoprocesso, $alv1, $alv2, $alv3, $stand, $status, $decreto, $dataad, $datalimite, $outorga, $cepac, $ou, $aiu, $rivi, $aquecimento, $gerador);
-    $stmt->execute();    
+    $stmt->execute();   
+    
+    $descricao = "Protocolo";
+
+    $stmt = $mysqli->prepare("INSERT INTO controle_prazo (controleinterno, descricao, datainicio, datafim) VALUES (?,?,?,?)");
+    $stmt->bind_param("isss", $controleinterno, $descricao, $dataprotocolo, $dataad);
+    $stmt->execute();      
+
+    $stmt = $mysqli->prepare("UPDATE controle_prazo SET dias = ABS(DATEDIFF(?,?)) WHERE controleinterno=?");
+    $stmt->bind_param("ssi", $dataad, $dataprotocolo, $controleinterno);
+    $stmt->execute();  
     
     if ($prot == 0){
         echo "<script>window.alert('Cadastrado com Sucesso!'); document.location.href='principal.php'</script>";

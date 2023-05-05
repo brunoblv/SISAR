@@ -101,14 +101,14 @@ if ($permissao == 2) {
 							$buscar_cadastros = "SELECT i.sts, i.id, i.sei, i.numsql, i.dataprotocolo, i.tipoprocesso, i.tipoalvara1, i.tipoalvara2, i.tipoalvara3, d.tec
 							FROM INICIAL i
 							INNER JOIN DISTRIBUICAO d ON i.id = d.controleinterno
-							LEFT JOIN RECONAD r ON i.id = r.controleinterno
+							LEFT JOIN reconsideracao_admissibilidade r ON i.id = r.controleinterno
 							WHERE i.sts = 3 AND r.controleinterno IS NULL AND i.sei LIKE '%$data%' ORDER BY id DESC";
 						} else {
 							$buscar_cadastros = "SELECT i.sts, i.id, i.sei, i.numsql, i.dataprotocolo, i.tipoprocesso, i.tipoalvara1, i.tipoalvara2, i.tipoalvara3, d.tec
 							FROM INICIAL i
 							INNER JOIN DISTRIBUICAO d ON i.id = d.controleinterno
-							LEFT JOIN RECONAD r ON i.id = r.controleinterno
-							WHERE i.sts = 3 AND r.controleinterno IS NULL ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
+							LEFT JOIN reconsideracao_admissibilidade r ON i.id = r.controleinterno
+							WHERE i.sts = 4 AND r.controleinterno IS NULL ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
 						}
 
 

@@ -306,7 +306,29 @@ if ($permissao == 2) {
 
 							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
 							<?php
+							$stmt = $conn->prepare("SELECT Inicial.id, Inicial.dataad, inicial.dataprotocolo, Inicial.sei, Inicial.numsql, Inicial.tipoprocesso, Admissibilidade.dataenvio, Admissibilidade.coordenadoria
+							FROM Inicial
+							JOIN Admissibilidade ON Inicial.id = Admissibilidade.controleinterno
+							WHERE inicial.id = ?");
+							$stmt->bind_param("i", $controleinterno);
+							$stmt->execute();
+							$result = $stmt->get_result();
+							
 
+							while ($row = mysqli_fetch_array($result)) {
+								$controleinterno = $row['id'];
+								$numsql = $row['numsql'];
+								$sei = $row['sei'];
+								$dataad = $row['dataad'];
+								$dataad_br = date("d/m/Y", strtotime($dataprotocolo));
+								$dataprotocolo = $row['dataprotocolo'];
+								$dataprotocolo_br = date("d/m/Y", strtotime($dataprotocolo));
+								$tipoprocesso = $row['tipoprocesso'];								
+								$dataenvio = $row['dataenvio'];								
+								$coordenadoria = $row['coordenadoria'];
+								$dataenvio_br = date("d/m/Y", strtotime($dataenvio));
+								$sei = $row['sei'];
+							}
 
 
 							if ($tipoprocesso == 1) {
@@ -322,6 +344,15 @@ if ($permissao == 2) {
 								$datalimiteprazo = date('Y-m-d', strtotime($dataprotocolo . ' + 60 days'));
 								//echo $datalimiteanalise;
 								//echo $datalimiteprazo;
+							}
+
+							switch ($tipoprocesso) {
+								case 1:
+									$tipoprocesso = 'Próprio de SMUL';
+									break;
+								case 2:
+									$tipoprocesso = 'Múltiplas Interfaces';
+									break;
 							}
 
 
@@ -340,7 +371,7 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-3">
 								<label for="datalimite" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datalimite" readonly name="datalimite" value="<?php echo htmlspecialchars($dataprotocolo2); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datalimite" readonly name="datalimite" value="<?php echo htmlspecialchars($dataprotocolo_br); ?>"></input>
 							</div>
 						</div>
 						<div class="form-row">
@@ -350,16 +381,12 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-3">
 								<label for="tipoprocesso" class="form-label">Data de envio para as Secretarias:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataenvio" readonly name="dataenvio" value="<?php echo htmlspecialchars($dataenvio); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataenvio" readonly name="dataenvio" value="<?php echo htmlspecialchars($dataenvio_br); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Data limite para análise técnica das Secretarias:</label>
 								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($datalimiteanalise); ?>"></input>
-							</div>
-							<div class="col col-3">
-								<label for="dataprotocolo" class="form-label">Data limite para 45/75 dias:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($datalimiteprazo); ?>"></input>
-							</div>
+							</div>							
 						</div>
 					</div>
 				</div>

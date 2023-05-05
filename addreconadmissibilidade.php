@@ -15,7 +15,7 @@ if (isset($_POST['salvar'])) {
     $dataenvio = date("Y-m-d", strtotime(str_replace('/', '-', $dataenvio)));
     $coordenadoria = mysqli_real_escape_string($mysqli, $_POST['coordenadoria']);
 
-    $stmt = $mysqli->prepare("INSERT INTO reconad (controleinterno, parecer, datarecon, datapubli, dataenvio) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $mysqli->prepare("INSERT INTO reconsideracao_admissibilidade (controleinterno, parecer, datarecon, datapubli, dataenvio) VALUES (?, ?, ?, ?, ?)");
 
     $stmt->bind_param("ssss", $controleinterno, $parecer, $datarecon, $datapubli, $dataenvio);
 

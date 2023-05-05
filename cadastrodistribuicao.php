@@ -75,8 +75,7 @@ if ($permissao == 2) {
 								<th>Tipo Processo</th>
 								<th>Tipo Alvará</th>
 								<th>Tipo Alvará</th>
-								<th>Tipo Alvará</th>
-								<th>Status</th>
+								<th>Tipo Alvará</th>								
 								<th>Anterior ao Decreto</th>
 							</tr>
 						</thead>
@@ -129,11 +128,10 @@ if ($permissao == 2) {
 								$tipoalvara2 = $receber_cadastros['tipoalvara2'];
 								$tipoalvara3 = $receber_cadastros['tipoalvara3'];
 								$stand = $receber_cadastros['stand'];
-								$sts = $receber_cadastros['sts'];
-								$descstatus = $receber_cadastros['descstatus'];
+								$sts = $receber_cadastros['sts'];								
 								$decreto = $receber_cadastros['decreto'];
 								$dataad = $receber_cadastros['dataad'];
-								$datalimite = $receber_cadastros['datalimite'];
+								
 
 								// Cálculo de prazo de Admissibilidade e Invertendo a data do SQL para o formato brasileiro
 
@@ -245,8 +243,7 @@ if ($permissao == 2) {
 									<td><?php echo $tipoprocesso ?></td>
 									<td><?php echo $tipoalvara1 ?></td>
 									<td><?php echo $tipoalvara2 ?></td>
-									<td><?php echo $tipoalvara3 ?></td>
-									<td><?php echo $status ?></td>
+									<td><?php echo $tipoalvara3 ?></td>									
 									<td><?php echo $decreto ?></td>
 
 									<script>

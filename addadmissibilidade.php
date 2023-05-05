@@ -10,6 +10,9 @@ if(isset($_POST['salvar'])) {
     $sub = mysqli_real_escape_string($mysqli, $_POST['sub']); 
     $categoria = mysqli_real_escape_string($mysqli, $_POST['categoria']); 
     $dataad = mysqli_real_escape_string($mysqli, $_POST['dataad']); 
+    $dataad = mysqli_real_escape_string($mysqli, $_POST['dataad']); 
+    $dataad = date("Y-m-d",strtotime(str_replace('/','-',$dataad))); 
+
 
     if(!isset($_POST['coordenadoria'])) {
         $coordenadoria = 0;
@@ -81,15 +84,13 @@ if(isset($_POST['salvar'])) {
 
     $descricao = 'Análise de Admissibilidade';
 
-    $stmt = $mysqli->prepare("INSERT INTO controle_prazo (controleinterno, descricao, datainicio, datafim) VALUES (?,?,?,?)");
-    $stmt->bind_param("isss", $controleinterno, $descricao, $dataad, $dataenvio);
-    $stmt->execute();   
-   
+    $dias = abs(strtotime($dataenvio) - strtotime($dataad));
+    $dias = floor($dias / (60 * 60 * 24));
 
-    $stmt = $mysqli->prepare("UPDATE controle_prazo SET dias = ABS(DATEDIFF(?,?)) WHERE controleinterno=?");
-    $stmt->bind_param("ssi", $dataad, $dataenvio, $controleinterno);
-    $stmt->execute();
-    
+    $stmt = $mysqli->prepare("INSERT INTO controle_prazo (controleinterno, descricao, datainicio, datafim, dias) VALUES (?,?,?,?,?)");
+    $stmt->bind_param("issss", $controleinterno, $descricao, $dataad, $dataenvio, $dias);
+    $stmt->execute();   
+
     
     echo "<script>window.alert('Cadastrado com Sucesso'); document.location.href='principal.php'</script>";
 }

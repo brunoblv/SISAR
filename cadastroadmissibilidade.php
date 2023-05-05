@@ -75,6 +75,9 @@ if ($permissao == 2) {
 							<th>SQL</th>
 							<th>Técnico ATECC</th>
 							<th>Data Protocolo</th>
+							<th>Data início Admissibilidade</th>
+							<th>Data limite</th>
+							<th>Dias restantes</th>
 							<th>Tipo Processo</th>
 							<th>Tipo Alvará</th>
 							<th>Tipo Alvará</th>
@@ -135,14 +138,23 @@ if ($permissao == 2) {
 							$tipoalvara1 = $receber_cadastros['tipoalvara1'];
 							$tipoalvara2 = $receber_cadastros['tipoalvara2'];
 							$tipoalvara3 = $receber_cadastros['tipoalvara3'];
-							$stand = $receber_cadastros['stand'];							
-							$sts = $receber_cadastros['sts'];
-							$descstatus = $receber_cadastros['descstatus'];
+							$stand = $receber_cadastros['stand'];
+							$sts = $receber_cadastros['sts'];							
 							$decreto = $receber_cadastros['decreto'];
 
-							// Invertendo a data do SQL para o formato brasileiro
 
-							$inverted_date = date("d/m/Y", strtotime($dataprotocolo));
+							//calculando quantos dias faltam para vencer a análise de admissibilidade
+							$hoje = date("Y-m-d");
+							$diferenca = abs(strtotime($hoje) - strtotime($dataad));
+							$dias = floor($diferenca / (60 * 60 * 24));
+							$datalimite = date('Y-m-d', strtotime($dataad . ' + 15 days'));
+							$diasrestantes = 15 - $dias;
+
+
+							// Invertendo a data do SQL para o formato brasileiro
+							$dataprotocolo_br = date("d/m/Y", strtotime($dataprotocolo));
+							$dataad_br = date("d/m/Y", strtotime($dataad));
+							$datalimite_br = date("d/m/Y", strtotime($datalimite));
 
 
 							switch ($tipoprocesso) {
@@ -211,7 +223,7 @@ if ($permissao == 2) {
 									break;
 							}
 
-							if ($decreto == 1){
+							if ($decreto == 1) {
 								$decreto = "Sim";
 							} else {
 								$decreto = "Não";
@@ -226,7 +238,20 @@ if ($permissao == 2) {
 								<td class="sei"><?php echo $sei ?></td>
 								<td><?php echo $numsql ?></td>
 								<td><?php echo $tec ?></td>
-								<td><?php echo $inverted_date ?></td>
+								<td><?php echo $dataprotocolo_br ?></td>
+								<td><?php echo $dataad_br ?></td>
+								<td><?php echo $datalimite_br ?></td>
+								<?php
+								if ($diasrestantes >= 10) {
+									echo '<td class="diasrestantes table-success">' . $diasrestantes . '</td>';
+								} elseif ($diasrestantes >= 5) {
+									echo '<td class="diasrestantes table-warning">' . $diasrestantes . '</td>';
+								} elseif ($diasrestantes > 0) {
+									echo '<td class="diasrestantes table-danger">' . $diasrestantes . '</td>';
+								} else {
+									echo '<td class="diasrestantes table-danger">Vencido!<br> Há ' . abs($diasrestantes) . ' dias </td>';
+								}
+								?>
 								<td><?php echo $tipoprocesso ?></td>
 								<td><?php echo $tipoalvara1 ?></td>
 								<td><?php echo $tipoalvara2 ?></td>
@@ -327,7 +352,7 @@ if ($permissao == 2) {
 							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
 							<?php
 
-							
+
 							$datalimite = date('Y-m-d', strtotime($dataad . ' + 15 days'));
 
 							$datalimite = date("d/m/Y", strtotime($datalimite));
@@ -337,7 +362,7 @@ if ($permissao == 2) {
 							?>
 
 							<div class="col col-3">
-								<label for="dataprotocolo" class="form-label">Data de início da Análise de Admissibilidade</label>
+								<label for="dataad" class="form-label">Data de início da Análise de Admissibilidade</label>
 								<input type="text" class="form-control form-control-sm" id="dataad" readonly name="dataad" value="<?php echo htmlspecialchars($dataad); ?>"></input>
 							</div>
 							<div class="col col-2">
@@ -355,11 +380,11 @@ if ($permissao == 2) {
 						<div class="form-row">
 							<div class="col col-3">
 								<label for="decisao" class="form-label">Data de publicação da decisão interlocutória</label>
-								<input type="date" class="form-control form-control-sm" id="dataad" name="dataad">
+								<input type="date" class="form-control form-control-sm" id="datapubli" name="datapubli">
 							</div>
 							<div class="col col-3">
 								<label for="decisao" class="form-label">Parecer da decisão interlocutória</label>
-								<select class="form-select" aria-label="Default select example" name="parecer" id="parecer">
+								<select class="form-select" aria-label="Default select example" name="parecer" id="parecer" required>
 									<option selected></option>
 									<option value='1'>Admissível</option>
 									<option value='2'>Inadmissível</option>
@@ -541,9 +566,6 @@ if ($permissao == 2) {
 	</script>
 	</div>
 	</div>
-
-
-
 
 </body>
 

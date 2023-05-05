@@ -48,12 +48,9 @@
 							</li>
 							<li>
 								<a href="cadastroreconadmissibilidade.php"><span class="bx bx-analyse mr-3"></span>Reconsideração de Admissibilidade</a>
-							</li>
+							</li>							
 							<li>
-								<a href="cadastrosmul.php"><span class="bx bxs-city mr-3"></span>Coordenadoria de SMUL</a>
-							</li>
-							<li>
-								<a href="cadastrosecretarias.php"><span class="bx bxs-bank mr-3"></span>Outras Secretarias</a>
+								<a href="cadastrosecretarias.php"><span class="bx bxs-bank mr-3"></span>Coord. SMUL/Secretarias</a>
 							</li>
 							<li>
 								<a href="cadastrograproem.php"><span class="bx bx-intersect mr-3 mr-3"></span>GRAPROEM</a>
