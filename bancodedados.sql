@@ -173,33 +173,3 @@ CREATE TABLE IF NOT EXISTS suspensao_prazo (
 );
 
 
-CREATE TABLE IF NOT EXISTS `graproem` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `controleinterno` int(11) NOT NULL,
-  `complementar` tinyint(1) NOT NULL,
-  `dataagendada` date DEFAULT NULL,
-  `datacoord` date DEFAULT NULL,
-  `datacumprimento` date DEFAULT NULL,
-  `datainicio` date DEFAULT NULL,
-  `datalimite` date DEFAULT NULL,
-  `datapubli` date DEFAULT NULL,
-  `datapublicomplementar` date DEFAULT NULL,
-  `datareal` date DEFAULT NULL,
-  `dataresposta` date DEFAULT NULL,
-  `datasehab` date DEFAULT NULL,
-  `datasiurb` date DEFAULT NULL,
-  `datasmc` date DEFAULT NULL,
-  `datasmt` date DEFAULT NULL,
-  `datasmul` date DEFAULT NULL,
-  `datasvma` date DEFAULT NULL,
-  `graproem` int(1) NOT NULL,
-  `instancia` int(1) NOT NULL,
-  `motivo` int(1) NOT NULL,
-  `obs` text,
-  `parecer` int(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_graproem_inicial` (`controleinterno`),
-  CONSTRAINT `fk_graproem_inicial` FOREIGN KEY (`controleinterno`) REFERENCES `inicial` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-

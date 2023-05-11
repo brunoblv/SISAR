@@ -58,7 +58,7 @@ if ($permissao == 2) {
 								<input class="form-control form-control-sm form-control form-control-sm-sm" type="search" placeholder="Pesquisar com o N° SEI" name="pesquisar" id="pesquisar">
 							</div>
 							<div class="ml-2">
-								<button class="btnpesquisa btn-outline-success" onclick="searchData()" type="submit">Pesquisar</button>
+								<button class="btnpesquisa btn-outline-success" onclick="searchData()" type="submit" name="pesquisa" id="pesquisa">Pesquisar</button>
 							</div>
 						</div>
 					</div>
@@ -149,7 +149,7 @@ if ($permissao == 2) {
 							$tipoalvara2 = $receber_cadastros['tipoalvara2'];
 							$tipoalvara3 = $receber_cadastros['tipoalvara3'];
 							$stand = $receber_cadastros['stand'];
-							$sts = $receber_cadastros['sts'];							
+							$sts = $receber_cadastros['sts'];
 							$decreto = $receber_cadastros['decreto'];
 							$dataenvio = $receber_cadastros['dataenvio'];
 
@@ -229,7 +229,7 @@ if ($permissao == 2) {
 							$tec = $receber_cadastros['tec'];
 						?>
 							<tr>
-								<td><a class='btnpesquisa btn-outline-info copiar botaoselecao'><span class="glyphicon glyphicon-edit"></span>Selecionar</a></td>
+								<td><a href="#" class='btnpesquisa btn-outline-info copiar botaoselecao'><span class="glyphicon glyphicon-edit"></span>Selecionar</a></td>
 								<td class="ci" scope="row"><?php echo $controleinterno ?></td>
 								<td class="sei"><?php echo $sei ?></td>
 								<td><?php echo $numsql ?></td>
@@ -257,89 +257,11 @@ if ($permissao == 2) {
 												// remove possiveis espaços no incio e fim da string
 												.trim();
 
+											console.log('copyvalue: ', copyValue)
+
 											// seleciona o input com id desejado
 											$('#controleinterno')
-												// seta o valor copiado para o input id=senha
-												.val(copyValue);
-										});
-									});
-									$(function() {
-										$('.copiar').click(function(event) {
-											var copyValue =
-												// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
-												$(event.target)
-												// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
-												.closest("tr")
-												// procura a <td> com a class target-copy
-												.find("td.sei")
-												// obtem o text no conteúdo do elemento <td>
-												.text()
-												// remove possiveis espaços no incio e fim da string
-												.trim();
-
-											// seleciona o input com id desejado
-											$('#sei')
-												// seta o valor copiado para o input id=senha
-												.val(copyValue);
-										});
-									});
-									$(function() {
-										$('.copiar').click(function(event) {
-											var copyValue =
-												// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
-												$(event.target)
-												// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
-												.closest("tr")
-												// procura a <td> com a class target-copy
-												.find("td.dataprotocolo")
-												// obtem o text no conteúdo do elemento <td>
-												.text()
-												// remove possiveis espaços no incio e fim da string
-												.trim();
-
-											// seleciona o input com id desejado
-											$('#dataprotocolo')
-												// seta o valor copiado para o input id=senha
-												.val(copyValue);
-										});
-									});
-									$(function() {
-										$('.copiar').click(function(event) {
-											var copyValue =
-												// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
-												$(event.target)
-												// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
-												.closest("tr")
-												// procura a <td> com a class target-copy
-												.find("td.tipoprocesso")
-												// obtem o text no conteúdo do elemento <td>
-												.text()
-												// remove possiveis espaços no incio e fim da string
-												.trim();
-
-											// seleciona o input com id desejado
-											$('#tipoprocesso')
-												// seta o valor copiado para o input id=senha
-												.val(copyValue);
-										});
-									});
-									$(function() {
-										$('.copiar').click(function(event) {
-											var copyValue =
-												// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
-												$(event.target)
-												// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
-												.closest("tr")
-												// procura a <td> com a class target-copy
-												.find("td.dataenvio")
-												// obtem o text no conteúdo do elemento <td>
-												.text()
-												// remove possiveis espaços no incio e fim da string
-												.trim();
-
-											// seleciona o input com id desejado
-											$('#dataenvio')
-												// seta o valor copiado para o input id=senha
+												// seta o valor copiado para o input id=controleinterno
 												.val(copyValue);
 										});
 									});
@@ -374,7 +296,6 @@ if ($permissao == 2) {
 					echo '</nav>';
 
 
-
 					?>
 		</div>
 		<div id="form" hidden>
@@ -387,7 +308,7 @@ if ($permissao == 2) {
 						<div class="form-row">
 							<div class="col col-2">
 								<label for="sei" class="form-label">N° de Controle interno:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno" oninput="realizarPesquisa()"></input>
 							</div>
 							<div class="col col-2">
 								<label for="sei" class="form-label">N° do Processo SEI:</label>
@@ -396,12 +317,6 @@ if ($permissao == 2) {
 
 							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
 							<?php
-
-							$inverted_date = date("d/m/Y", strtotime($dataprotocolo));
-
-							$datalimite = date('Y-m-d', strtotime($dataprotocolo . ' + 15 days'));
-
-							$datalimite = date("d/m/Y", strtotime($datalimite));
 
 							$buscar_cadastros = "SELECT
 													CASE 
@@ -427,9 +342,11 @@ if ($permissao == 2) {
 														ELSE 1
 													END AS numgraproem
 												FROM graproem
-												WHERE controleinterno = '$controleinterno'
+												WHERE controleinterno = '$ci'
 												ORDER BY id DESC
 												LIMIT 1";
+
+
 
 							$query_cadastros = mysqli_query($conn, $buscar_cadastros);
 							if ($query_cadastros && mysqli_num_rows($query_cadastros) > 0) {
@@ -440,17 +357,53 @@ if ($permissao == 2) {
 							} else {
 								$instancia = 1;
 								$graproem = 1;
-							}							
+							}
+
+							$prazo = '';
+
+
+							if ($tipoprocesso == 1) {
+								if ($graproem == 1) {
+									$prazo = 30;
+								} elseif ($graproem > 1 && ($tipoalvara1 == 1 || $tipoalvara2 == 1 || $tipoalvara2 == 3)) {
+									$prazo = 30;
+								} elseif ($graproem > 1 && $tipoalvara1 == 1 && $tipoalvara2 == 2) {
+									$prazo = 60;
+								} elseif ($graproem > 1 && $tipoalvara1 == 2) {
+									$prazo = 60;
+								}
+							} elseif ($tipoprocesso == 2) {
+								if ($graproem == 1) {
+									$prazo = 60;
+								} elseif ($graproem > 1 && $tipoalvara1 == 1 && $tipoalvara2 == 1) {
+									$prazo = 25;
+								} elseif ($graproem > 1 && ($tipoalvara1 == 1 && ($tipoalvara2 == 1 || $tipoalvara2 == 3))) {
+									$prazo = 55;
+								} elseif ($graproem > 1 && $tipoalvara1 == 2) {
+									$prazo = 55;
+								}
+							}
+
+							$datalimite_at = date('Y/m/d', strtotime($dataenvio . " + $prazo days"));
+
+							echo $tipoalvara1 . '<br>';
+							echo $tipoalvara2 . '<br>';
+							echo $tipoalvara3 . '<br>';
+							echo $dataenvio . '<br>';
+							echo $prazo  . '<br>';
+							echo $datalimite_at  . '<br>';
+							echo $sei  . '<br>';
+
 
 							?>
 
 							<div class="col col-2">
 								<label for="dataprotocolo" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($dataprotocolo_br); ?>"></input>
 							</div>
 							<div class="col col-2">
 								<label for="tipoprocesso" class="form-label">Tipo de Processo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" value="<?php echo htmlspecialchars($tipoprocesso_txt); ?>"></input>
 							</div>
 							<div class="col col-2">
 								<label for="instancia" class="form-label">Instância atual:</label>
@@ -462,7 +415,7 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-2">
 								<label for="dataenvio" class="form-label">Data de início da primeira Análise Técnica:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataenvio" readonly name="dataenvio"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataenvio" readonly name="dataenvio" value="<?php echo htmlspecialchars($dataenvio_br); ?>"></input>
 							</div>
 							<div class="col col-2">
 								<label for="instancia" class="form-label">Data limite para análise da Coordenadoria/Secretaria:</label>
@@ -478,8 +431,12 @@ if ($permissao == 2) {
 					<div class="card-body">
 						<div class="form-row">
 							<?php
-							$buscar_cadastros = "SELECT * FROM GRAPROEM WHERE controleinterno = '$controleinterno'";
-							$query_cadastros = mysqli_query($conn, $buscar_cadastros); ?>
+							$stmt = $conn->prepare("SELECT * FROM GRAPROEM WHERE controleinterno = ?");
+							$stmt->bind_param("i", $controleinterno);
+							$stmt->execute();
+							$result = $stmt->get_result();
+
+							?>
 							<div class="table table-sm">
 								<table class="table table-bordered table-sm">
 									<thead>
@@ -493,12 +450,11 @@ if ($permissao == 2) {
 									<tbody>
 										<?php
 
-										while ($receber_cadastros = mysqli_fetch_array($query_cadastros)) {
+										while ($row = mysqli_fetch_array($result)) {
 
-											$instancia = $receber_cadastros['instancia'];
-											$obs = $receber_cadastros['obs'];
-											$graproem = $receber_cadastros['graproem'];
-											$parecer = $receber_cadastros['parecer'];
+											$instancia = $row['instancia'];
+											$graproem = $row['graproem'];
+											$parecer = $row['parecer'];
 
 											switch ($instancia) {
 												case '1':
@@ -509,6 +465,17 @@ if ($permissao == 2) {
 													break;
 												case '3':
 													$instancia = '3ª Instância';
+											}
+
+											switch ($graproem) {
+												case '1':
+													$graproem = '1º Graproem';
+													break;
+												case '2':
+													$instancia = '2º Graproem';
+													break;
+												case '3':
+													$instancia = '3º Graproem';
 											}
 
 										?>
@@ -551,7 +518,15 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-4">
 								<label for="datainicio" class="form-label">Data de início da análise pela coordenadoria/secretarias:</label>
-								<input type="date" class="form-control form-control-sm" id="datainicio" name="datainicio">
+
+								<?php
+								if ($instancia == 1 && $graproem == 1) {
+									echo '<input type="date" class="form-control form-control-sm" id="datainicio" name="datainicio" value="' . $dataenvio . '">';
+								} else {
+									echo '<input type="date" class="form-control form-control-sm" id="datainicio" name="datainicio">';
+								}
+								?>
+
 							</div>
 							<div class="col col-4">
 								<label for="dataagendada" class="form-label">Data agendada da reunião do GRAPROEM:</label>
@@ -682,28 +657,7 @@ if ($permissao == 2) {
 			divForm.hidden = true;
 			divTabela.hidden = false;
 		});
-
-		const selectElement = document.getElementById('parecer');
-		const motivosElement = document.querySelector('.motivos');
-		const dataenvio = document.getElementById('dataenvio');
-		const coordenadoria = document.getElementById('coordenadoria');
-
-		selectElement.addEventListener('change', function() {
-			if (this.value === '2') {
-				motivosElement.style.display = 'block';
-				dataenvio.readOnly = true;
-				coordenadoria.disabled = true;
-				dataenvio.removeAttribute('required');
-				coordenadoria.removeAttribute('required');
-			} else {
-				motivosElement.style.display = 'none';
-				dataenvio.readOnly = false;
-				coordenadoria.disabled = false;
-				dataenvio.setAttribute('required', true);
-				coordenadoria.setAttribute('required', true);
-			}
-		});	
-
+			
 	</script>
 </body>
 

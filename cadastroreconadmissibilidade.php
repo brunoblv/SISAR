@@ -24,6 +24,8 @@ if ($permissao == 2) {
 //  header("location: erropermissao.php");
 //}
 
+$mysqli = new mysqli($host, $user, $password, $db_name) or die(mysqli_error($mysqli));
+
 ?>
 
 <!doctype html>
@@ -79,7 +81,7 @@ if ($permissao == 2) {
 							<th>Tipo Processo</th>
 							<th>Tipo Alvará</th>
 							<th>Tipo Alvará</th>
-							<th>Tipo Alvará</th>							
+							<th>Tipo Alvará</th>
 
 						</tr>
 					</thead>
@@ -113,7 +115,7 @@ if ($permissao == 2) {
 
 
 						$query_cadastros = mysqli_query($conn, $buscar_cadastros);
-						//Paginação - Somar a quantidade de processos                   
+						//Paginação - Somar a quantidade de processos
 
 
 						$result_pg = "SELECT COUNT(id) AS num_result FROM inicial";
@@ -129,8 +131,7 @@ if ($permissao == 2) {
 						while ($receber_cadastros = mysqli_fetch_array($query_cadastros)) {
 
 							$controleinterno = $receber_cadastros['id'];
-							
-							$numsql = $receber_cadastros['numsql'];							
+							$numsql = $receber_cadastros['numsql'];
 							$sei = $receber_cadastros['sei'];
 							$dataprotocolo = $receber_cadastros['dataprotocolo'];
 							$tipoprocesso = $receber_cadastros['tipoprocesso'];
@@ -139,11 +140,11 @@ if ($permissao == 2) {
 							$tipoalvara3 = $receber_cadastros['tipoalvara3'];
 							$tec = $receber_cadastros['tec'];
 							$sts = $receber_cadastros['sts'];
-							
+
 
 							// Invertendo a data do SQL para o formato brasileiro
 
-							$inverted_date = date("d/m/Y", strtotime($dataprotocolo));							
+							$inverted_date = date("d/m/Y", strtotime($dataprotocolo));
 
 
 							switch ($tipoprocesso) {
@@ -220,13 +221,13 @@ if ($permissao == 2) {
 								<td class="sei"><?php echo $sei ?></td>
 								<td><?php echo $numsql ?></td>
 								<td><?php echo $tec ?></td>
-								<td><?php echo $inverted_date ?></td>								
+								<td><?php echo $inverted_date ?></td>
 								<td><?php echo $tipoprocesso ?></td>
 								<td><?php echo $tipoalvara1 ?></td>
 								<td><?php echo $tipoalvara2 ?></td>
 								<td><?php echo $tipoalvara3 ?></td>
 								<td><?php echo $status ?></td>
-								
+
 								<script>
 									$(function() {
 										$('.copiar').click(function(event) {
@@ -303,8 +304,23 @@ if ($permissao == 2) {
 					echo '</nav>';
 
 
+					$stmt = $mysqli->prepare("SELECT * FROM inicial WHERE id = ?");
+					$stmt->bind_param("i", $controleinterno);
+					$stmt->execute();
+					$result = $stmt->get_result();
+
+					$dataprotocolo_br = '';
+
+					while ($row = mysqli_fetch_array($result)) {
+						$dataprotocolo = $row['dataprotocolo'];
+					}
+
+					$datalimite = date('Y-m-d', strtotime($dataprotocolo . ' + 15 days'));
+
 
 					?>
+
+
 		</div>
 		<div id="form" hidden>
 			<form class="need-validation" no validade method="POST" action="addreconadmissibilidade.php" autocomplete="off" name="formulario" id="formulario">
@@ -323,20 +339,9 @@ if ($permissao == 2) {
 								<input type="text" class="form-control form-control-sm" id="sei" readonly name="sei" value="<?php echo htmlspecialchars($sei); ?>"></input>
 							</div>
 
-							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
-							<?php
-
-							$inverted_date = date("d/m/Y", strtotime($dataprotocolo));
-
-							$datalimite = date('Y-m-d', strtotime($dataprotocolo . ' + 15 days'));
-
-							$datalimite = date("d/m/Y", strtotime($datalimite));
-
-							?>
-
 							<div class="col col-3">
 								<label for="dataprotocolo" class="form-label">Data de Protocolo:</label>
-								<input type="date" class="form-control form-control-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($inverted_date); ?>"></input>
+								<input type="date" class="form-control form-control-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($dataprotocolo); ?>"></input>
 							</div>
 							<div class="col col-3">
 								<label for="datalimite" class="form-label">Data de limite para análise de admissiblidade:</label>
@@ -371,7 +376,7 @@ if ($permissao == 2) {
 									</div>
 									<div class="col col-3">
 										<label for="decisao" class="form-label">Data de envio Coordenadoria/Secretarias:</label>
-										<input type="date" class="form-control form-control-sm" id="dataenvio" name="dataenvio">
+										<input type="date" class="form-control form-control-sm" id="dataenvio" name="dataenvio" onchange="atualizarDataReuniao()">
 									</div>
 									<div class="col col-3">
 										<label for="decisao" class="form-label">Coordenadoria/Divisão de SMUL</label>
@@ -392,6 +397,10 @@ if ($permissao == 2) {
 											<option value="13">SERVIN/DSIGP</option>
 											<option value="14">SERVIN/DCIMP</option>
 										</select>
+									</div>
+									<div class="col col-3">
+										<label for="datareuniao" class="form-label">Data Agendada GRAPROEM</label>
+										<input type="date" class="form-control form-control-sm" id="datareuniao" name="datareuniao" readonly>
 									</div>
 								</div>
 								<br>
@@ -445,6 +454,34 @@ if ($permissao == 2) {
 			divForm.hidden = true;
 			divTabela.hidden = false;
 		});
+
+		function atualizarDataReuniao() {
+			var dataenvio = new Date(document.getElementById("dataenvio").value);
+			var datareuniao = new Date(dataenvio);
+
+			// Adicionar 60 dias à data da reunião
+			datareuniao.setDate(datareuniao.getDate() + 60);
+
+			// Verificar se a data da reunião é uma quarta-feira
+			while (datareuniao.getDay() !== 2) { // 3 representa a quarta-feira (domingo = 0, segunda-feira = 1, ..., sábado = 6)
+				datareuniao.setDate(datareuniao.getDate() - 1); // Adicionar um dia até encontrar uma quarta-feira
+			}
+
+			// Verificar se a data da reunião está dentro do prazo de 60 dias a partir da data de envio
+			var limite = new Date(dataenvio);
+			limite.setDate(limite.getDate() + 60);
+			if (datareuniao > limite) {
+				while (datareuniao.getDay() !== 2) { // Verificar se a data é uma quarta-feira
+					datareuniao.setDate(datareuniao.getDate() - 1); // Subtrair um dia até encontrar uma quarta-feira
+				}
+			}	
+
+			// Formatar a data no formato "YYYY-MM-DD"
+			var dataFormatada = datareuniao.toISOString().split("T")[0];
+
+			// Atualizar o valor do campo "datareuniao"
+			document.getElementById("datareuniao").value = dataFormatada;
+		}
 	</script>
 	</div>
 	</div>

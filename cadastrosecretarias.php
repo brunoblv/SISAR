@@ -310,7 +310,7 @@ if ($permissao == 2) {
 							FROM Inicial
 							JOIN Admissibilidade ON Inicial.id = Admissibilidade.controleinterno
 							WHERE inicial.id = ?");
-							$stmt->bind_param("i", $controleinterno);
+							$stmt->bind_param("i", $ci);
 							$stmt->execute();
 							$result = $stmt->get_result();
 							

@@ -139,7 +139,7 @@ if ($permissao == 2) {
 							$tipoalvara2 = $receber_cadastros['tipoalvara2'];
 							$tipoalvara3 = $receber_cadastros['tipoalvara3'];
 							$stand = $receber_cadastros['stand'];
-							$sts = $receber_cadastros['sts'];							
+							$sts = $receber_cadastros['sts'];
 							$decreto = $receber_cadastros['decreto'];
 
 
@@ -392,7 +392,7 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-3">
 								<label for="decisao" class="form-label">Data de envio Coordenadoria/Secretarias:</label>
-								<input type="date" class="form-control form-control-sm" id="dataenvio" name="dataenvio">
+								<input type="date" class="form-control form-control-sm" id="dataenvio" name="dataenvio" onchange="atualizarDataReuniao()">
 							</div>
 							<div class="col col-3">
 								<label for="decisao" class="form-label">Coordenadoria/Divisão de SMUL</label>
@@ -457,6 +457,11 @@ if ($permissao == 2) {
 							<div class="col col-3">
 								<label for="categoria" class="form-label">Categoria de Uso:</label>
 								<input type="text" class="form-control form-control-sm" id="categoria" name="categoria">
+							</div>
+
+							<div class="col col-3">
+								<label for="datareuniao" class="form-label">Data Agendada GRAPROEM</label>
+								<input type="date" class="form-control form-control-sm" id="datareuniao" name="datareuniao" readonly>
 							</div>
 						</div>
 						<br>
@@ -563,7 +568,36 @@ if ($permissao == 2) {
 				coordenadoria.setAttribute('required', true);
 			}
 		});
+
+		function atualizarDataReuniao() {
+			var dataenvio = new Date(document.getElementById("dataenvio").value);
+			var datareuniao = new Date(dataenvio);
+
+			// Adicionar 60 dias à data da reunião
+			datareuniao.setDate(datareuniao.getDate() + 60);
+
+			// Verificar se a data da reunião é uma quarta-feira
+			while (datareuniao.getDay() !== 2) { // 3 representa a quarta-feira (domingo = 0, segunda-feira = 1, ..., sábado = 6)
+				datareuniao.setDate(datareuniao.getDate() - 1); // Adicionar um dia até encontrar uma quarta-feira
+			}
+
+			// Verificar se a data da reunião está dentro do prazo de 60 dias a partir da data de envio
+			var limite = new Date(dataenvio);
+			limite.setDate(limite.getDate() + 60);
+			if (datareuniao > limite) {
+				while (datareuniao.getDay() !== 3) { // Verificar se a data é uma quarta-feira
+					datareuniao.setDate(datareuniao.getDate() - 1); // Subtrair um dia até encontrar uma quarta-feira
+				}
+			}
+
+			// Formatar a data no formato "YYYY-MM-DD"
+			var dataFormatada = datareuniao.toISOString().split("T")[0];
+
+			// Atualizar o valor do campo "datareuniao"
+			document.getElementById("datareuniao").value = dataFormatada;
+		}
 	</script>
+
 	</div>
 	</div>
 
