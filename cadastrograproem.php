@@ -106,7 +106,7 @@ if ($permissao == 2) {
 						FROM
 						inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno
 						JOIN admissibilidade ON inicial.id = admissibilidade.controleinterno
-						WHERE sts='5' AND sei LIKE '%$data%' ORDER BY id DESC";
+						WHERE sts='5' AND inicial.id = '$data' ORDER BY id DESC";
 						} else {
 							$buscar_cadastros = "SELECT
 							Inicial.*, 
@@ -308,7 +308,7 @@ if ($permissao == 2) {
 						<div class="form-row">
 							<div class="col col-2">
 								<label for="sei" class="form-label">N° de Controle interno:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno" oninput="realizarPesquisa()"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="controleinterno" readonly name="controleinterno"></input>
 							</div>
 							<div class="col col-2">
 								<label for="sei" class="form-label">N° do Processo SEI:</label>
@@ -342,7 +342,7 @@ if ($permissao == 2) {
 														ELSE 1
 													END AS numgraproem
 												FROM graproem
-												WHERE controleinterno = '$ci'
+												WHERE controleinterno = '$data'
 												ORDER BY id DESC
 												LIMIT 1";
 
@@ -403,7 +403,7 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-2">
 								<label for="tipoprocesso" class="form-label">Tipo de Processo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" value="<?php echo htmlspecialchars($tipoprocesso_txt); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" value="<?php echo htmlspecialchars($tipoprocesso); ?>"></input>
 							</div>
 							<div class="col col-2">
 								<label for="instancia" class="form-label">Instância atual:</label>

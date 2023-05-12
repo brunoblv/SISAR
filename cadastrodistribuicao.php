@@ -556,7 +556,7 @@ if ($permissao == 2) {
 
 		search.addEventListener("keydown", function(event) {
 			if (event.key === "Enter") {
-				searchData();
+				searchData();				
 			}
 		});
 
