@@ -330,7 +330,7 @@ if ($permissao == 2) {
 														WHEN parecer = 2 AND instancia = 3 AND graproem = 3 THEN 2
 														ELSE 1
 													END AS numinstancia,
-													CASE 
+													CASE
 														WHEN parecer = 2 AND instancia = 1 AND graproem = 1 THEN 2
 														WHEN parecer = 2 AND instancia = 1 AND graproem = 2 THEN 3
 														WHEN parecer = 3 AND instancia = 1 THEN 1
