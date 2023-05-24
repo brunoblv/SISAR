@@ -5,7 +5,7 @@ if (!isset($_SESSION)) {
 
 if (!isset($_SESSION['SesID'])) {
 	session_destroy();
-	header("Location: login.php");
+	header("Location: index.php");
 	exit;
 }
 include 'conexao.php';
@@ -19,10 +19,14 @@ if ($permissao == 2) {
 	header("location: erropermissao.php");
 }
 
-//if ($row ==3){   
+if (isset($_SESSION['valor'])) {
+	$valor = $_SESSION['valor'];
 
-//  header("location: erropermissao.php");
-//}
+	// Use o valor recebido como necessário
+	echo $valor;
+}
+
+
 
 ?>
 <!doctype html>
@@ -229,7 +233,7 @@ if ($permissao == 2) {
 							$tec = $receber_cadastros['tec'];
 						?>
 							<tr>
-								<td><a href="#" class='btnpesquisa btn-outline-info copiar botaoselecao'><span class="glyphicon glyphicon-edit"></span>Selecionar</a></td>
+								<td><a href="#" class='btnpesquisa btn-outline-info copiar botaoselecao' name="selecionar"><span class="glyphicon glyphicon-edit"></span>Selecionar</a></td>
 								<td class="ci" scope="row"><?php echo $controleinterno ?></td>
 								<td class="sei"><?php echo $sei ?></td>
 								<td><?php echo $numsql ?></td>
@@ -239,33 +243,9 @@ if ($permissao == 2) {
 								<td class="tipoalvara1"><?php echo $tipoalvara1 ?></td>
 								<td class="tipoalvara2"><?php echo $tipoalvara2 ?></td>
 								<td><?php echo $tipoalvara3 ?></td>
-								<td class="dataenvio"><?php echo $dataenvio_br ?></td>
+								<td class="dataat"><?php echo $dataenvio_br ?></td>
 								<td><?php echo $status ?></td>
 								<td><?php echo $decreto ?></td>
-								<script>
-									$(function() {
-										$('.copiar').click(function(event) {
-											var copyValue =
-												// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
-												$(event.target)
-												// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
-												.closest("tr")
-												// procura a <td> com a class target-copy
-												.find("td.ci")
-												// obtem o text no conteúdo do elemento <td>
-												.text()
-												// remove possiveis espaços no incio e fim da string
-												.trim();
-
-											console.log('copyvalue: ', copyValue)
-
-											// seleciona o input com id desejado
-											$('#controleinterno')
-												// seta o valor copiado para o input id=controleinterno
-												.val(copyValue);
-										});
-									});
-								</script>
 							</tr>
 						<?php }; ?>
 					</tbody>
@@ -342,7 +322,7 @@ if ($permissao == 2) {
 														ELSE 1
 													END AS numgraproem
 												FROM graproem
-												WHERE controleinterno = '$data'
+												WHERE controleinterno = '1'
 												ORDER BY id DESC
 												LIMIT 1";
 
@@ -386,20 +366,12 @@ if ($permissao == 2) {
 
 							$datalimite_at = date('Y/m/d', strtotime($dataenvio . " + $prazo days"));
 
-							echo $tipoalvara1 . '<br>';
-							echo $tipoalvara2 . '<br>';
-							echo $tipoalvara3 . '<br>';
-							echo $dataenvio . '<br>';
-							echo $prazo  . '<br>';
-							echo $datalimite_at  . '<br>';
-							echo $sei  . '<br>';
-
 
 							?>
 
 							<div class="col col-2">
 								<label for="dataprotocolo" class="form-label">Data de Protocolo:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo" value="<?php echo htmlspecialchars($dataprotocolo_br); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataprotocolo" readonly name="dataprotocolo"></input>
 							</div>
 							<div class="col col-2">
 								<label for="tipoprocesso" class="form-label">Tipo de Processo:</label>
@@ -415,11 +387,11 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-2">
 								<label for="dataenvio" class="form-label">Data de início da primeira Análise Técnica:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="dataenvio" readonly name="dataenvio" value="<?php echo htmlspecialchars($dataenvio_br); ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datainicioat" readonly name="datainicioat"></input>
 							</div>
 							<div class="col col-2">
 								<label for="instancia" class="form-label">Data limite para análise da Coordenadoria/Secretaria:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datelimite" readonly name="datalimite" value="<?php echo $datalimite_at ?>"></input>
+								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datelimite" readonly name="datalimite"></input>
 							</div>
 						</div>
 					</div>
@@ -618,6 +590,7 @@ if ($permissao == 2) {
 			</form>
 		</div>
 	</div>
+
 	<script>
 		var search = document.getElementById('pesquisar');
 
@@ -657,7 +630,130 @@ if ($permissao == 2) {
 			divForm.hidden = true;
 			divTabela.hidden = false;
 		});
-			
+
+		$(function() {
+			$('.copiar').click(function(event) {
+				var copyValue = $(event.target)
+					.closest("tr")
+					.find("td.ci")
+					.text()
+					.trim();
+
+				console.log('copyvalue: ', copyValue);
+
+				$('#controleinterno').val(copyValue);
+
+				$.ajax({
+					url: 'pegaci.php',
+					method: 'POST',
+					data: {
+						valor: copyValue
+					},
+					success: function(response) {
+						console.log('Valor enviado com sucesso!');
+					},
+					error: function(xhr, status, error) {
+						console.log('Ocorreu um erro ao enviar o valor.');
+					}
+				});
+			});
+		});
+
+		$(function() {
+			$('.copiar').click(function(event) {
+				var copyValue =
+					// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
+					$(event.target)
+					// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
+					.closest("tr")
+					// procura a <td> com a class target-copy
+					.find("td.sei")
+					// obtem o text no conteúdo do elemento <td>
+					.text()
+					// remove possiveis espaços no incio e fim da string
+					.trim();
+
+				console.log('copyvalue: ', copyValue)
+
+				// seleciona o input com id desejado
+				$('#sei')
+					// seta o valor copiado para o input id=controleinterno
+					.val(copyValue);
+
+			});
+		});
+
+		$(function() {
+			$('.copiar').click(function(event) {
+				var copyValue =
+					// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
+					$(event.target)
+					// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
+					.closest("tr")
+					// procura a <td> com a class target-copy
+					.find("td.dataprotocolo")
+					// obtem o text no conteúdo do elemento <td>
+					.text()
+					// remove possiveis espaços no incio e fim da string
+					.trim();
+
+				console.log('copyvalue: ', copyValue)
+
+				// seleciona o input com id desejado
+				$('#dataprotocolo')
+					// seta o valor copiado para o input id=controleinterno
+					.val(copyValue);
+
+			});
+		});
+
+		$(function() {
+			$('.copiar').click(function(event) {
+				var copyValue =
+					// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
+					$(event.target)
+					// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
+					.closest("tr")
+					// procura a <td> com a class target-copy
+					.find("td.dataat")
+					// obtem o text no conteúdo do elemento <td>
+					.text()
+					// remove possiveis espaços no incio e fim da string
+					.trim();
+
+				console.log('copyvalue: ', copyValue)
+
+				// seleciona o input com id desejado
+				$('#datainicioat')
+					// seta o valor copiado para o input id=controleinterno
+					.val(copyValue);
+
+			});
+		});
+
+		$(function() {
+			$('.copiar').click(function(event) {
+				var copyValue =
+					// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
+					$(event.target)
+					// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
+					.closest("tr")
+					// procura a <td> com a class target-copy
+					.find("td.datalimite")
+					// obtem o text no conteúdo do elemento <td>
+					.text()
+					// remove possiveis espaços no incio e fim da string
+					.trim();
+
+				console.log('copyvalue: ', copyValue)
+
+				// seleciona o input com id desejado
+				$('#datalimite')
+					// seta o valor copiado para o input id=controleinterno
+					.val(copyValue);
+
+			});
+		});
 	</script>
 </body>
 
