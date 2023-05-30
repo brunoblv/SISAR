@@ -19,15 +19,6 @@ if ($permissao == 2) {
 	header("location: erropermissao.php");
 }
 
-if (isset($_SESSION['valor'])) {
-	$valor = $_SESSION['valor'];
-
-	// Use o valor recebido como necessário
-	echo $valor;
-}
-
-
-
 ?>
 <!doctype html>
 <html lang="pt-br">
@@ -44,6 +35,10 @@ if (isset($_SESSION['valor'])) {
 	<style>
 		tr {
 			cursor: hand;
+		}
+
+		table {
+			table-layout: auto;
 		}
 	</style>
 
@@ -82,8 +77,11 @@ if (isset($_SESSION['valor'])) {
 							<th>Tipo Alvará</th>
 							<th>Tipo Alvará</th>
 							<th>Tipo Alvará</th>
-							<th>Data envio</th>
-							<th>Status</th>
+							<th>Data Reunião</th>
+							<th>Data Início</th>
+							<th>Prazo</th>
+							<th>Data Limite</th>
+							<th>Dias restantes</th>
 							<th>Anterior ao Decreto</th>
 
 						</tr>
@@ -106,16 +104,16 @@ if (isset($_SESSION['valor'])) {
 							$buscar_cadastros = "SELECT
 						Inicial.*, 
 						distribuicao.tec,
-						admissibilidade.dataenvio 
+						admissibilidade.dataenvio, admissibilidade.datareuniao  
 						FROM
 						inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno
 						JOIN admissibilidade ON inicial.id = admissibilidade.controleinterno
-						WHERE sts='5' AND inicial.id = '$data' ORDER BY id DESC";
+						WHERE sts='5' AND sei = '$data' ORDER BY id DESC";
 						} else {
 							$buscar_cadastros = "SELECT
 							Inicial.*, 
 							distribuicao.tec,
-							admissibilidade.dataenvio 
+							admissibilidade.dataenvio, admissibilidade.datareuniao  
 							FROM
 							inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno
 							JOIN admissibilidade ON inicial.id = admissibilidade.controleinterno
@@ -148,20 +146,56 @@ if (isset($_SESSION['valor'])) {
 							$aprovadigital = $receber_cadastros['aprovadigital'];
 							$sei = $receber_cadastros['sei'];
 							$dataprotocolo = $receber_cadastros['dataprotocolo'];
-							$tipoprocesso = $receber_cadastros['tipoprocesso'];
+							$tipoprocesso = $receber_cadastros['tipoprocesso'];							
 							$tipoalvara1 = $receber_cadastros['tipoalvara1'];
 							$tipoalvara2 = $receber_cadastros['tipoalvara2'];
 							$tipoalvara3 = $receber_cadastros['tipoalvara3'];
 							$stand = $receber_cadastros['stand'];
-							$sts = $receber_cadastros['sts'];
 							$decreto = $receber_cadastros['decreto'];
 							$dataenvio = $receber_cadastros['dataenvio'];
+							$datareuniao = $receber_cadastros['datareuniao'];
 
 							// Invertendo a data do SQL para o formato brasileiro
 
 							$dataprotocolo_br = date("d/m/Y", strtotime($dataprotocolo));
 							$dataenvio_br = date("d/m/Y", strtotime($dataenvio));
 
+							$prazo = '';
+
+							$graproem = 1;
+
+
+							if ($tipoprocesso == 1) {
+								if ($graproem == 1) {
+									$prazo = 30;
+								} elseif ($graproem > 1 && ($tipoalvara1 == 1 || $tipoalvara2 == 1 || $tipoalvara2 == 3)) {
+									$prazo = 30;
+								} elseif ($graproem > 1 && $tipoalvara1 == 1 && $tipoalvara2 == 2) {
+									$prazo = 60;
+								} elseif ($graproem > 1 && $tipoalvara1 == 2) {
+									$prazo = 60;
+								}
+							} elseif ($tipoprocesso == 2) {
+								if ($graproem == 1) {
+									$prazo = 60;
+								} elseif ($graproem > 1 && $tipoalvara1 == 1 && $tipoalvara2 == 1) {
+									$prazo = 25;
+								} elseif ($graproem > 1 && ($tipoalvara1 == 1 && ($tipoalvara2 == 1 || $tipoalvara2 == 3))) {
+									$prazo = 55;
+								} elseif ($graproem > 1 && $tipoalvara1 == 2) {
+									$prazo = 55;
+								}
+							}
+
+							$datalimite_at = date('Y/m/d', strtotime($dataenvio . " + $prazo days"));
+
+							$hoje = date("Y-m-d");
+							$diferenca = strtotime($datalimite_at) - strtotime($hoje);
+							$diasrestantes = floor($diferenca / (60 * 60 * 24));
+
+							$datalimitebr = date('d/m/Y', strtotime($datalimite_at));
+							$datareuniaobr = date('d/m/Y', strtotime($datareuniao));
+							
 
 							switch ($tipoprocesso) {
 								case 1:
@@ -208,28 +242,6 @@ if (isset($_SESSION['valor'])) {
 									break;
 							}
 
-							switch ($sts) {
-								case 1:
-									$sts = 'Análise de Admissibilidade';
-									break;
-								case 2:
-									$sts = 'Inadmissível/Via ordinária';
-									break;
-								case 3:
-									$sts = 'Em análise';
-									break;
-								case 4:
-									$sts = 'Deferido';
-									break;
-								case 5:
-									$sts = 'Indeferido';
-									break;
-								case 6:
-									$sts = 'Inválido';
-									break;
-							}
-
-
 							$tec = $receber_cadastros['tec'];
 						?>
 							<tr>
@@ -243,8 +255,21 @@ if (isset($_SESSION['valor'])) {
 								<td class="tipoalvara1"><?php echo $tipoalvara1 ?></td>
 								<td class="tipoalvara2"><?php echo $tipoalvara2 ?></td>
 								<td><?php echo $tipoalvara3 ?></td>
+								<td class="datareuniao"><?php echo $datareuniaobr ?></td>								
 								<td class="dataat"><?php echo $dataenvio_br ?></td>
-								<td><?php echo $status ?></td>
+								<td><?php echo $prazo ?></td>
+								<td class="datalimite"><?php echo $datalimitebr ?></td>
+								<?php
+								if ($diasrestantes >= 10) {
+									echo '<td class="diasrestantes table-success">' . $diasrestantes . '</td>';
+								} elseif ($diasrestantes >= 5) {
+									echo '<td class="diasrestantes table-warning">' . $diasrestantes . '</td>';
+								} elseif ($diasrestantes > 0) {
+									echo '<td class="diasrestantes table-danger">' . $diasrestantes . '</td>';
+								} else {
+									echo '<td class="diasrestantes table-danger">Vencido!<br> Há ' . abs($diasrestantes) . ' dias </td>';
+								}
+								?>
 								<td><?php echo $decreto ?></td>
 							</tr>
 						<?php }; ?>
@@ -298,75 +323,6 @@ if (isset($_SESSION['valor'])) {
 							<!-- Convertendo a data de Protocolo para DD/MM/AAAA-->
 							<?php
 
-							$buscar_cadastros = "SELECT
-													CASE
-														WHEN parecer = 2 AND instancia = 1 AND graproem = 1 THEN 1
-														WHEN parecer = 2 AND instancia = 1 AND graproem = 2 THEN 1
-														WHEN parecer = 3 AND instancia = 1 THEN 2
-														WHEN parecer = 2 AND instancia = 2 AND graproem = 2 THEN 2
-														WHEN parecer = 2 AND instancia = 2 AND graproem = 3 THEN 2
-														WHEN parecer = 3 AND instancia = 2 THEN 3
-														WHEN parecer = 2 AND instancia = 3 AND graproem = 2 THEN 2
-														WHEN parecer = 2 AND instancia = 3 AND graproem = 3 THEN 2
-														ELSE 1
-													END AS numinstancia,
-													CASE
-														WHEN parecer = 2 AND instancia = 1 AND graproem = 1 THEN 2
-														WHEN parecer = 2 AND instancia = 1 AND graproem = 2 THEN 3
-														WHEN parecer = 3 AND instancia = 1 THEN 1
-														WHEN parecer = 2 AND instancia = 2 AND graproem = 2 THEN 2
-														WHEN parecer = 2 AND instancia = 2 AND graproem = 3 THEN 3
-														WHEN parecer = 3 AND instancia = 2 THEN 1
-														WHEN parecer = 2 AND instancia = 3 AND graproem = 2 THEN 2
-														WHEN parecer = 2 AND instancia = 3 AND graproem = 3 THEN 3
-														ELSE 1
-													END AS numgraproem
-												FROM graproem
-												WHERE controleinterno = '1'
-												ORDER BY id DESC
-												LIMIT 1";
-
-
-
-							$query_cadastros = mysqli_query($conn, $buscar_cadastros);
-							if ($query_cadastros && mysqli_num_rows($query_cadastros) > 0) {
-
-								$receber_cadastros = mysqli_fetch_array($query_cadastros);
-								$instancia = $receber_cadastros['numinstancia'];
-								$graproem = $receber_cadastros['numgraproem'];
-							} else {
-								$instancia = 1;
-								$graproem = 1;
-							}
-
-							$prazo = '';
-
-
-							if ($tipoprocesso == 1) {
-								if ($graproem == 1) {
-									$prazo = 30;
-								} elseif ($graproem > 1 && ($tipoalvara1 == 1 || $tipoalvara2 == 1 || $tipoalvara2 == 3)) {
-									$prazo = 30;
-								} elseif ($graproem > 1 && $tipoalvara1 == 1 && $tipoalvara2 == 2) {
-									$prazo = 60;
-								} elseif ($graproem > 1 && $tipoalvara1 == 2) {
-									$prazo = 60;
-								}
-							} elseif ($tipoprocesso == 2) {
-								if ($graproem == 1) {
-									$prazo = 60;
-								} elseif ($graproem > 1 && $tipoalvara1 == 1 && $tipoalvara2 == 1) {
-									$prazo = 25;
-								} elseif ($graproem > 1 && ($tipoalvara1 == 1 && ($tipoalvara2 == 1 || $tipoalvara2 == 3))) {
-									$prazo = 55;
-								} elseif ($graproem > 1 && $tipoalvara1 == 2) {
-									$prazo = 55;
-								}
-							}
-
-							$datalimite_at = date('Y/m/d', strtotime($dataenvio . " + $prazo days"));
-
-
 							?>
 
 							<div class="col col-2">
@@ -377,132 +333,27 @@ if (isset($_SESSION['valor'])) {
 								<label for="tipoprocesso" class="form-label">Tipo de Processo:</label>
 								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="tipoprocesso" readonly name="tipoprocesso" value="<?php echo htmlspecialchars($tipoprocesso); ?>"></input>
 							</div>
-							<div class="col col-2">
-								<label for="instancia" class="form-label">Instância atual:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="instancia" readonly name="instancia" value="<?php echo htmlspecialchars($instancia); ?>"></input>
-							</div>
-							<div class="col col-2">
-								<label for="instancia" class="form-label">GRAPROEM atual:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="graproem" readonly name="graproem" value="<?php echo htmlspecialchars($graproem); ?>"></input>
-							</div>
-							<div class="col col-2">
-								<label for="dataenvio" class="form-label">Data de início da primeira Análise Técnica:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datainicioat" readonly name="datainicioat"></input>
-							</div>
-							<div class="col col-2">
-								<label for="instancia" class="form-label">Data limite para análise da Coordenadoria/Secretaria:</label>
-								<input type="text" class="form-control form-control-sm form-control form-control-sm-sm" id="datelimite" readonly name="datalimite"></input>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="card bg-light mb-3">
-					<div class="card-header">
-						<strong>Histórico das instâncias</strong>
-					</div>
-					<div class="card-body">
-						<div class="form-row">
-							<?php
-							$stmt = $conn->prepare("SELECT * FROM GRAPROEM WHERE controleinterno = ?");
-							$stmt->bind_param("i", $controleinterno);
-							$stmt->execute();
-							$result = $stmt->get_result();
-
-							?>
-							<div class="table table-sm">
-								<table class="table table-bordered table-sm">
-									<thead>
-										<tr>
-											<th>Instância</th>
-											<th>GRAPROEM</th>
-											<th>Parecer</th>
-											<th>OBS</th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php
-
-										while ($row = mysqli_fetch_array($result)) {
-
-											$instancia = $row['instancia'];
-											$graproem = $row['graproem'];
-											$parecer = $row['parecer'];
-
-											switch ($instancia) {
-												case '1':
-													$instancia = '1ª Instância';
-													break;
-												case '2':
-													$instancia = '2ª Instância';
-													break;
-												case '3':
-													$instancia = '3ª Instância';
-											}
-
-											switch ($graproem) {
-												case '1':
-													$graproem = '1º Graproem';
-													break;
-												case '2':
-													$instancia = '2º Graproem';
-													break;
-												case '3':
-													$instancia = '3º Graproem';
-											}
-
-										?>
-											<tr>
-												<td class="ci" scope="row"><?php echo $instancia ?></td>
-												<td class="sei"><?php echo $graproem ?></td>
-												<td><?php echo $parecer ?></td>
-												<td><?php echo $obs ?></td>
-
-											</tr>
-										<?php }; ?>
-									</tbody>
-								</table>
-							</div>
 						</div>
 					</div>
 				</div>
 
 				<div class="card bg-light mb-3">
 					<div class="card-header">
-						<strong>GRAPROEM</strong>
+						<strong>Análise Técnica</strong>
 					</div>
 					<div class="card-body">
 						<div class="form-row">
-							<div class="col col-4">
-								<label for="instancia" class="form-label">Instância:</label>
-								<select class="form-select" aria-label="Default select example" name="instancia" id="instancia">
-									<option value="1" <?php if ($instancia == 1) echo ' selected'; ?>>1ª Instância</option>
-									<option value="2" <?php if ($instancia == 2) echo ' selected'; ?>>2ª Instância</option>
-									<option value="3" <?php if ($instancia == 3) echo ' selected'; ?>>3ª Instância</option>
-								</select>
-							</div>
-							<div class="col col-4">
-								<label for="graproem" class="form-label">GRAPROEM:</label>
-								<select class="form-select" aria-label="Default select example" name="graproem" id="graproem">
-									<option value="1" <?php if ($instancia == 1) echo ' selected'; ?>>1º GRAPROEM</option>
-									<option value="2" <?php if ($instancia == 2) echo ' selected'; ?>>2º GRAPROEM</option>
-									<option value="3" <?php if ($instancia == 3) echo ' selected'; ?>>GRAPROEM Complementar</option>
-								</select>
-							</div>
 							<div class="col col-4">
 								<label for="datainicio" class="form-label">Data de início da análise pela coordenadoria/secretarias:</label>
-
-								<?php
-								if ($instancia == 1 && $graproem == 1) {
-									echo '<input type="date" class="form-control form-control-sm" id="datainicio" name="datainicio" value="' . $dataenvio . '">';
-								} else {
-									echo '<input type="date" class="form-control form-control-sm" id="datainicio" name="datainicio">';
-								}
-								?>
-
+								<input type="text" class="form-control form-control-sm" id="datainicio" name="datainicio" readonly>
+							</div>
+							<div class="col col-4">
+								<label for="datainicio" class="form-label">Data de limite de análise pela coordenadoria/secretarias:</label>
+								<input type="text" class="form-control form-control-sm" id="datalimite" name="datalimite" readonly>
 							</div>
 							<div class="col col-4">
 								<label for="dataagendada" class="form-label">Data agendada da reunião do GRAPROEM:</label>
-								<input type="date" class="form-control form-control-sm" id="dataagendada" name="dataagendada">
+								<input type="text" class="form-control form-control-sm" id="dataagendada" name="dataagendada" readonly>
 							</div>
 							<div class="col col-4">
 								<label for="datareal" class="form-label">Data da realização do GRAPROEM:</label>
@@ -524,10 +375,6 @@ if (isset($_SESSION['valor'])) {
 							<div class="col col-4">
 								<label for="datapubli" class="form-label">Data de publicação do parecer do GRAPROEM ou Coordenadoria:</label>
 								<input type="date" class="form-control form-control-sm" id="datapubli" name="datapubli">
-							</div>
-							<div class="col col-4">
-								<label for="datacumprimento" class="form-label">Data de cumprimento do Comunique-se:</label>
-								<input type="date" class="form-control form-control-sm" id="datacumprimento" name="datacumprimento">
 							</div>
 							<div class="col col-4">
 								<label for="datasmul" class="form-label">Data final da análise pela coordenadoria de SMUL:</label>
@@ -553,6 +400,90 @@ if (isset($_SESSION['valor'])) {
 								<label for="datafinalsiurb" class="form-label">Data final da análise SIURB:</label>
 								<input type="date" class="form-control form-control-sm" id="datasiurb" name="datasiurb">
 							</div>
+							<div class=".col-12 .col-md-8">
+								<label class="form-label" for="obs">Observação:</label>
+								<textarea class="form-control form-control-sm textarea" id="obs" rows="" name="obs" maxlength="300"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card bg-light mb-3">
+					<div class="card-header">
+						<strong>Reanálise Técnica</strong>
+					</div>
+					<div class="card-body">
+						<div class="form-row">
+							<div class="col col-4">
+								<label for="datainicio" class="form-label">Data de cumprimento do Comunique-se:</label>
+								<input type="date" class="form-control form-control-sm" id="datacumprimento_r" name="datacumprimento_r">
+							</div>
+							<div class="col col-4">
+								<label for="datainicio" class="form-label">Data de limite de análise pela coordenadoria/secretarias:</label>
+								<input type="date" class="form-control form-control-sm" id="datalimite_r" name="datalimite_r">
+							</div>
+							<div class="col col-4">
+								<label for="dataagendada" class="form-label">Data agendada da reunião do GRAPROEM:</label>
+								<input type="date" class="form-control form-control-sm" id="dataagendada_r" name="dataagendada_r">
+							</div>
+							<div class="col col-4">
+								<label for="datareal" class="form-label">Data da realização do GRAPROEM:</label>
+								<input type="date" class="form-control form-control-sm" id="datareal_r" name="datareal_r">
+							</div>
+							<div class="col col-4">
+								<label for="motivo" class="form-label">Motivo da realização do GRAPROEM ser em data distinta</label>
+								<input type="text" class="form-control form-control-sm" id="motivo_r" name="motivo_r">
+							</div>
+							<div class="col col-4">
+								<label for="parecer" class="form-label">Parecer do GRAPROEM ou Coordenadoria:</label>
+								<select class="form-select" aria-label="Default select example" name="parecer_r" id="parecer_r">
+									<option selected></option>
+									<option value="1">Parecer favorável</option>
+									<option value="2">Comunique-se</option>
+									<option value="3">Parecer contrário</option>
+								</select>
+							</div>
+							<div class="col col-4">
+								<label for="datapubli" class="form-label">Data de publicação do parecer do GRAPROEM ou Coordenadoria:</label>
+								<input type="date" class="form-control form-control-sm" id="datapublicacao_r" name="datapubli_r">
+							</div>
+							<div class="col col-4">
+								<label for="datasmul" class="form-label">Data final da análise pela coordenadoria de SMUL:</label>
+								<input type="date" class="form-control form-control-sm" id="datasmul_r" name="datasmul_r">
+							</div>
+							<div class="col col-4">
+								<label for="datasvma" class="form-label">Data final da análise SVMA:</label>
+								<input type="date" class="form-control form-control-sm" id="datasvma_r" name="datasvma_r">
+							</div>
+							<div class="col col-4">
+								<label for="datasmc" class="form-label">Data final da análise SMC:</label>
+								<input type="date" class="form-control form-control-sm" id="datasmc_r" name="datasmc_r">
+							</div>
+							<div class="col col-4">
+								<label for="datasmt" class="form-label">Data final da análise SMT:</label>
+								<input type="date" class="form-control form-control-sm" id="datasmt_r" name="datasmt_r">
+							</div>
+							<div class="col col-4">
+								<label for="datasehab" class="form-label">Data final da análise SEHAB:</label>
+								<input type="date" class="form-control form-control-sm" id="datasehab_r" name="datasehab_r">
+							</div>
+							<div class="col col-4">
+								<label for="datafinalsiurb" class="form-label">Data final da análise SIURB:</label>
+								<input type="date" class="form-control form-control-sm" id="datasiurb_r" name="datasiurb_r">
+							</div>
+							<div class=".col-12 .col-md-8">
+								<label class="form-label" for="obs">Observação:</label>
+								<textarea class="form-control form-control-sm textarea" id="obs_r" rows="" name="obs_r" maxlength="300"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card bg-light mb-3">
+					<div class="card-header">
+						<strong>Análise Complementar</strong>
+					</div>
+					<div class="card-body">
+						<div class="form-row">
 							<div class="col col-4">
 								<label for="complementar" class="form-label">Houve Comunique-se complementar?</label>
 								<select class="form-select" aria-label="Default select example" name="complementar" id="complementar">
@@ -566,27 +497,81 @@ if (isset($_SESSION['valor'])) {
 								<input type="date" class="form-control form-control-sm" id="datapublicomplementar" name="datapublicomplementar">
 							</div>
 							<div class="col col-4">
-								<label for="dataresposta" class="form-label">Data de resposta do Comunique-se complementar:</label>
-								<input type="date" class="form-control form-control-sm" id="dataresposta" name="dataresposta">
+								<label for="datacumprimento_c" class="form-label">Data de resposta do Comunique-se complementar:</label>
+								<input type="date" class="form-control form-control-sm" id="datacumprimento_c" name="datacumprimento_c">
 							</div>
 							<div class="col col-4">
-								<label for="datacoord" class="form-label">Data de publicação do despacho pela coordenadoria</label>
+								<label for="datainicio" class="form-label">Data de limite de análise pela coordenadoria/secretarias:</label>
+								<input type="date" class="form-control form-control-sm" id="datalimite_c" name="datalimite_c">
+							</div>
+							<div class="col col-4">
+								<label for="dataagendada" class="form-label">Data agendada da reunião do GRAPROEM:</label>
+								<input type="date" class="form-control form-control-sm" id="dataagendada_c" name="dataagendada_c">
+							</div>
+							<div class="col col-4">
+								<label for="datareal" class="form-label">Data da realização do GRAPROEM:</label>
+								<input type="date" class="form-control form-control-sm" id="datareal_c" name="datareal_c">
+							</div>
+							<div class="col col-4">
+								<label for="motivo" class="form-label">Motivo da realização do GRAPROEM ser em data distinta</label>
+								<input type="text" class="form-control form-control-sm" id="motivo_c" name="motivo_c">
+							</div>
+							<div class="col col-4">
+								<label for="parecer" class="form-label">Parecer do GRAPROEM ou Coordenadoria:</label>
+								<select class="form-select" aria-label="Default select example" name="parecer_c" id="parecer_c">
+									<option selected></option>
+									<option value="1">Parecer favorável</option>
+									<option value="2">Comunique-se</option>
+									<option value="3">Parecer contrário</option>
+								</select>
+							</div>
+							<div class="col col-4">
+								<label for="datapubli" class="form-label">Data de publicação do parecer do GRAPROEM ou Coordenadoria:</label>
+								<input type="date" class="form-control form-control-sm" id="datapubli_c" name="datapubli_c">
+							</div>
+							<div class="col col-4">
+								<label for="datasmul" class="form-label">Data final da análise pela coordenadoria de SMUL:</label>
+								<input type="date" class="form-control form-control-sm" id="datasmul_c" name="datasmul_c">
+							</div>
+							<div class="col col-4">
+								<label for="datasvma" class="form-label">Data final da análise SVMA:</label>
+								<input type="date" class="form-control form-control-sm" id="datasvma_c" name="datasvma_c">
+							</div>
+							<div class="col col-4">
+								<label for="datasmc" class="form-label">Data final da análise SMC:</label>
+								<input type="date" class="form-control form-control-sm" id="datasmc_c" name="datasmc_c">
+							</div>
+							<div class="col col-4">
+								<label for="datasmt" class="form-label">Data final da análise SMT:</label>
+								<input type="date" class="form-control form-control-sm" id="datasmt_c" name="datasmt_c">
+							</div>
+							<div class="col col-4">
+								<label for="datasehab" class="form-label">Data final da análise SEHAB:</label>
+								<input type="date" class="form-control form-control-sm" id="datasehab_c" name="datasehab_c">
+							</div>
+							<div class="col col-4">
+								<label for="datafinalsiurb" class="form-label">Data final da análise SIURB:</label>
+								<input type="date" class="form-control form-control-sm" id="datasiurb_c" name="datasiurb_c">
+							</div>
+							<div class="col col-4">
+								<label for="datafinalsiurb" class="form-label">Data de publicação do despacho pela coordenadoria de SMUL:</label>
 								<input type="date" class="form-control form-control-sm" id="datacoord" name="datacoord">
 							</div>
-						</div>
-						<div class=".col-12 .col-md-8">
-							<label class="form-label" for="obs">Observação:</label>
-							<textarea class="form-control form-control-sm textarea" id="obs" rows="" name="obs" maxlength="300"></textarea>
-						</div>
-					</div>
-					<br>
-					<div class="form-row">
-						<div class="col col-3">
-							<button type="submit" class="btn btn-primary" name="salvar">Salvar</button>
-							<button type="button" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
+							<div class=".col-12 .col-md-8">
+								<label class="form-label" for="obs">Observação:</label>
+								<textarea class="form-control form-control-sm textarea" id="obs_c" rows="" name="obs_c" maxlength="300"></textarea>
+							</div>
 						</div>
 					</div>
 				</div>
+				<br>
+				<div class="form-row">
+					<div class="col col-3">
+						<button type="submit" class="btn btn-primary" name="salvar">Salvar</button>
+						<button type="button" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
+					</div>
+				</div>
+
 			</form>
 		</div>
 	</div>
@@ -643,19 +628,6 @@ if (isset($_SESSION['valor'])) {
 
 				$('#controleinterno').val(copyValue);
 
-				$.ajax({
-					url: 'pegaci.php',
-					method: 'POST',
-					data: {
-						valor: copyValue
-					},
-					success: function(response) {
-						console.log('Valor enviado com sucesso!');
-					},
-					error: function(xhr, status, error) {
-						console.log('Ocorreu um erro ao enviar o valor.');
-					}
-				});
 			});
 		});
 
@@ -724,7 +696,7 @@ if (isset($_SESSION['valor'])) {
 				console.log('copyvalue: ', copyValue)
 
 				// seleciona o input com id desejado
-				$('#datainicioat')
+				$('#datainicio')
 					// seta o valor copiado para o input id=controleinterno
 					.val(copyValue);
 
@@ -754,6 +726,30 @@ if (isset($_SESSION['valor'])) {
 
 			});
 		});
+		$(function() {
+			$('.copiar').click(function(event) {
+				var copyValue =
+					// inicia seletor jQuery com o objeto clicado (no caso o elemento <a class="copiar">)
+					$(event.target)
+					// closest (https://api.jquery.com/closest/) retorna o seletor no tr da linha clicada 
+					.closest("tr")
+					// procura a <td> com a class target-copy
+					.find("td.datareuniao")
+					// obtem o text no conteúdo do elemento <td>
+					.text()
+					// remove possiveis espaços no incio e fim da string
+					.trim();
+
+				console.log('copyvalue: ', copyValue)
+
+				// seleciona o input com id desejado
+				$('#dataagendada')
+					// seta o valor copiado para o input id=controleinterno
+					.val(copyValue);
+
+			});
+		});
+		
 	</script>
 </body>
 

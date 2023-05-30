@@ -64,11 +64,56 @@
 						</ul>
 					</div>
 				</li>
+				<li class="active"><a class="nav-link collapsed text-truncate" href="#submenu2" data-toggle="collapse" data-target="#submenu2" aria-expanded="false"><span class="bx bxs-plus-square  mr-3"></span>Primeira Instância</a>
+					<div class="collapse" id="submenu2" aria-expanded="false">
+						<ul class="flex-column pl-2 nav">
+							<li>
+								<a href="cadastrograproem11.php"><span class="bx bx-plus mr-3"></span>1º GRAPROEM</a>
+							</li>
+							<li>
+								<a href="cadastrograproem12.php"><span class="bx bxs-paper-plane mr-3"></span>2º GRAPROEM</a>
+							</li>
+							<li>
+								<a href="cadastrograproem13.php"><span class="bx bxs-analyse mr-3"></span>3º GRAPROEM</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li class="active"><a class="nav-link collapsed text-truncate" href="#submenu4" data-toggle="collapse" data-target="#submenu4" aria-expanded="false"><span class="bx bxs-plus-square  mr-3"></span>Segunda Instância</a>
+					<div class="collapse" id="submenu4" aria-expanded="false">
+						<ul class="flex-column pl-2 nav">
+							<li>
+								<a href="cadastrograproem21.php"><span class="bx bx-plus mr-3"></span>1º GRAPROEM</a>
+							</li>
+							<li>
+								<a href="cadastrograproem22.php"><span class="bx bxs-paper-plane mr-3"></span>2º GRAPROEM</a>
+							</li>
+							<li>
+								<a href="cadastrograproem23.php"><span class="bx bxs-analyse mr-3"></span>3º GRAPROEM</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li class="active"><a class="nav-link collapsed text-truncate" href="#submenu5" data-toggle="collapse" data-target="#submenu5" aria-expanded="false"><span class="bx bxs-plus-square  mr-3"></span>Terceira Instância</a>
+					<div class="collapse" id="submenu5" aria-expanded="false">
+						<ul class="flex-column pl-2 nav">
+							<li>
+								<a href="cadastrograproem31.php"><span class="bx bx-plus mr-3"></span>1º GRAPROEM</a>
+							</li>
+							<li>
+								<a href="cadastrograproem32.php"><span class="bx bxs-paper-plane mr-3"></span>2º GRAPROEM</a>
+							</li>
+							<li>
+								<a href="cadastrograproem33.php"><span class="bx bxs-analyse mr-3"></span>3º GRAPROEM</a>
+							</li>
+						</ul>
+					</div>
+				</li>
 				<li class="active">
 					<a href="consultarsql.php"><span class="bx bx-search-alt mr-3"></span>Consultar SQL</a>
 				</li>
-				<li class="active"><a class="nav-link collapsed text-truncate" href="#submenu2" data-toggle="collapse" data-target="#submenu2" aria-expanded="false"><span class="bx bx-calendar mr-3"></span>Controle de Prazos</a>
-					<div class="collapse" id="submenu2" aria-expanded="false">
+				<li class="active"><a class="nav-link collapsed text-truncate" href="#submenu3" data-toggle="collapse" data-target="#submenu3" aria-expanded="false"><span class="bx bx-calendar mr-3"></span>Controle de Prazos</a>
+					<div class="collapse" id="submenu3" aria-expanded="false">
 					<ul class="flex-column pl-2 nav">
 							<li>
 								<a href="controleprazos.php"><span class="bx bx-calendar-check mr-3"></span>Controle de prazo Geral</a>
@@ -118,5 +163,11 @@
 
 		$(document).ready(function() {
 			$("#submenu3").attr("aria-expanded", "false");
+		});
+		$(document).ready(function() {
+			$("#submenu4").attr("aria-expanded", "false");
+		});
+		$(document).ready(function() {
+			$("#submenu5").attr("aria-expanded", "false");
 		});
 	</script>

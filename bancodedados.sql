@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS conclusao (
 
 CREATE TABLE IF NOT EXISTS graproem (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  controleinterno INT(11) UNIQUE,
+  controleinterno INT(11),
   complementar TINYINT,
   dataagendada DATE,
   datacoord DATE,
