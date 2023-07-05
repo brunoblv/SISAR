@@ -304,7 +304,7 @@ if ($permissao == 2) {
 					?>
 		</div>
 		<div id="form" hidden>
-			<form class="need-validation" no validade method="POST" action="addgraproem11.php" autocomplete="off" name="formulario" id="formulario">
+			<form class="need-validation" no validade method="POST" action="addgraproem12.php" autocomplete="off" name="formulario" id="formulario">
 				<div class="card bg-light mb-3">
 					<div class="card-header">
 						<strong>Dados do Processo</strong>
@@ -336,36 +336,35 @@ if ($permissao == 2) {
 						</div>
 					</div>
 				</div>
-
 				<div class="card bg-light mb-3">
 					<div class="card-header">
-						<strong>Análise Técnica</strong>
+						<strong>Reanálise Técnica</strong>
 					</div>
 					<div class="card-body">
 						<div class="form-row">
 							<div class="col col-4">
-								<label for="datainicio" class="form-label">Data de início da análise pela coordenadoria/secretarias:</label>
-								<input type="text" class="form-control form-control-sm" id="datainicio" name="datainicio" readonly>
+								<label for="datainicio" class="form-label">Data de cumprimento do Comunique-se:</label>
+								<input type="date" class="form-control form-control-sm" id="datacumprimento_r" name="datacumprimento_r">
 							</div>
 							<div class="col col-4">
 								<label for="datainicio" class="form-label">Data de limite de análise pela coordenadoria/secretarias:</label>
-								<input type="text" class="form-control form-control-sm" id="datalimite" name="datalimite" readonly>
+								<input type="date" class="form-control form-control-sm" id="datalimite_r" name="datalimite_r">
 							</div>
 							<div class="col col-4">
 								<label for="dataagendada" class="form-label">Data agendada da reunião do GRAPROEM:</label>
-								<input type="text" class="form-control form-control-sm" id="dataagendada" name="dataagendada" readonly>
+								<input type="date" class="form-control form-control-sm" id="dataagendada_r" name="dataagendada_r">
 							</div>
 							<div class="col col-4">
 								<label for="datareal" class="form-label">Data da realização do GRAPROEM:</label>
-								<input type="date" class="form-control form-control-sm" id="datareal" name="datareal">
+								<input type="date" class="form-control form-control-sm" id="datareal_r" name="datareal_r">
 							</div>
 							<div class="col col-4">
 								<label for="motivo" class="form-label">Motivo da realização do GRAPROEM ser em data distinta</label>
-								<input type="text" class="form-control form-control-sm" id="motivo" name="motivo">
+								<input type="text" class="form-control form-control-sm" id="motivo_r" name="motivo_r">
 							</div>
 							<div class="col col-4">
 								<label for="parecer" class="form-label">Parecer do GRAPROEM ou Coordenadoria:</label>
-								<select class="form-select" aria-label="Default select example" name="parecer" id="parecer" requiered>
+								<select class="form-select" aria-label="Default select example" name="parecer_r" id="parecer_r">
 									<option selected></option>
 									<option value="1">Parecer favorável</option>
 									<option value="2">Comunique-se</option>
@@ -374,39 +373,40 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-4">
 								<label for="datapubli" class="form-label">Data de publicação do parecer do GRAPROEM ou Coordenadoria:</label>
-								<input type="date" class="form-control form-control-sm" id="datapubli" name="datapubli">
+								<input type="date" class="form-control form-control-sm" id="datapublicacao_r" name="datapubli_r">
 							</div>
 							<div class="col col-4">
 								<label for="datasmul" class="form-label">Data final da análise pela coordenadoria de SMUL:</label>
-								<input type="date" class="form-control form-control-sm" id="datasmul" name="datasmul">
+								<input type="date" class="form-control form-control-sm" id="datasmul_r" name="datasmul_r">
 							</div>
 							<div class="col col-4">
 								<label for="datasvma" class="form-label">Data final da análise SVMA:</label>
-								<input type="date" class="form-control form-control-sm" id="datasvma" name="datasvma">
+								<input type="date" class="form-control form-control-sm" id="datasvma_r" name="datasvma_r">
 							</div>
 							<div class="col col-4">
 								<label for="datasmc" class="form-label">Data final da análise SMC:</label>
-								<input type="date" class="form-control form-control-sm" id="datasmc" name="datasmc">
+								<input type="date" class="form-control form-control-sm" id="datasmc_r" name="datasmc_r">
 							</div>
 							<div class="col col-4">
 								<label for="datasmt" class="form-label">Data final da análise SMT:</label>
-								<input type="date" class="form-control form-control-sm" id="datasmt" name="datasmt">
+								<input type="date" class="form-control form-control-sm" id="datasmt_r" name="datasmt_r">
 							</div>
 							<div class="col col-4">
 								<label for="datasehab" class="form-label">Data final da análise SEHAB:</label>
-								<input type="date" class="form-control form-control-sm" id="datasehab" name="datasehab">
+								<input type="date" class="form-control form-control-sm" id="datasehab_r" name="datasehab_r">
 							</div>
 							<div class="col col-4">
 								<label for="datafinalsiurb" class="form-label">Data final da análise SIURB:</label>
-								<input type="date" class="form-control form-control-sm" id="datasiurb" name="datasiurb">
+								<input type="date" class="form-control form-control-sm" id="datasiurb_r" name="datasiurb_r">
 							</div>
 						</div>
 						<div class=".col-12 .col-md-8">
 							<label class="form-label" for="obs">Observação:</label>
-							<textarea class="form-control form-control-sm textarea" id="obs" rows="" name="obs" maxlength="300"></textarea>
+							<textarea class="form-control form-control-sm textarea" id="obs_r" rows="" name="obs_r" maxlength="300"></textarea>
 						</div>
 					</div>
 				</div>
+				<br>
 				<div class="form-row">
 					<div class="col col-3">
 						<button type="submit" class="btn btn-primary" name="salvar">Salvar</button>

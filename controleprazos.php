@@ -218,14 +218,7 @@ if ($result->num_rows > 0) {
               }
             } else {
               $resultado = "";
-            }
-
-            echo 'O valor de $dataprotocolo é:' . $dataprotocolo . "<br>";
-            echo 'O valor de $dataenvio é:' . $dataenvio  . "<br>";
-            echo 'O valor de $dataad é:' . $dataad  . "<br>";
-            echo 'O valor de $dataprotocolo é:' . $dataprotocolo  . "<br>";
-
-
+            }        
 
             $dataprotocolo = date("d/m/Y", strtotime($dataprotocolo));
             $dataad = date("d/m/Y", strtotime($dataad));

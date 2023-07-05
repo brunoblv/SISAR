@@ -304,7 +304,7 @@ if ($permissao == 2) {
 					?>
 		</div>
 		<div id="form" hidden>
-			<form class="need-validation" no validade method="POST" action="addgraproem11.php" autocomplete="off" name="formulario" id="formulario">
+			<form class="need-validation" no validade method="POST" action="addgraproem13.php" autocomplete="off" name="formulario" id="formulario">
 				<div class="card bg-light mb-3">
 					<div class="card-header">
 						<strong>Dados do Processo</strong>
@@ -336,36 +336,47 @@ if ($permissao == 2) {
 						</div>
 					</div>
 				</div>
-
 				<div class="card bg-light mb-3">
 					<div class="card-header">
-						<strong>Análise Técnica</strong>
+						<strong>Análise Complementar</strong>
 					</div>
 					<div class="card-body">
 						<div class="form-row">
 							<div class="col col-4">
-								<label for="datainicio" class="form-label">Data de início da análise pela coordenadoria/secretarias:</label>
-								<input type="text" class="form-control form-control-sm" id="datainicio" name="datainicio" readonly>
+								<label for="complementar" class="form-label">Houve Comunique-se complementar?</label>
+								<select class="form-select" aria-label="Default select example" name="complementar" id="complementar">
+									<option selected></option>
+									<option value="1">Sim</option>
+									<option value="0">Não</option>
+								</select>
+							</div>
+							<div class="col col-4">
+								<label for="datapublicomplementar" class="form-label">Data de publicação do Comunique-se complementar:</label>
+								<input type="date" class="form-control form-control-sm" id="datapublicomplementar" name="datapublicomplementar">
+							</div>
+							<div class="col col-4">
+								<label for="datacumprimento_c" class="form-label">Data de resposta do Comunique-se complementar:</label>
+								<input type="date" class="form-control form-control-sm" id="datacumprimento_c" name="datacumprimento_c">
 							</div>
 							<div class="col col-4">
 								<label for="datainicio" class="form-label">Data de limite de análise pela coordenadoria/secretarias:</label>
-								<input type="text" class="form-control form-control-sm" id="datalimite" name="datalimite" readonly>
+								<input type="date" class="form-control form-control-sm" id="datalimite_c" name="datalimite_c">
 							</div>
 							<div class="col col-4">
 								<label for="dataagendada" class="form-label">Data agendada da reunião do GRAPROEM:</label>
-								<input type="text" class="form-control form-control-sm" id="dataagendada" name="dataagendada" readonly>
+								<input type="date" class="form-control form-control-sm" id="dataagendada_c" name="dataagendada_c">
 							</div>
 							<div class="col col-4">
 								<label for="datareal" class="form-label">Data da realização do GRAPROEM:</label>
-								<input type="date" class="form-control form-control-sm" id="datareal" name="datareal">
+								<input type="date" class="form-control form-control-sm" id="datareal_c" name="datareal_c">
 							</div>
 							<div class="col col-4">
 								<label for="motivo" class="form-label">Motivo da realização do GRAPROEM ser em data distinta</label>
-								<input type="text" class="form-control form-control-sm" id="motivo" name="motivo">
+								<input type="text" class="form-control form-control-sm" id="motivo_c" name="motivo_c">
 							</div>
 							<div class="col col-4">
 								<label for="parecer" class="form-label">Parecer do GRAPROEM ou Coordenadoria:</label>
-								<select class="form-select" aria-label="Default select example" name="parecer" id="parecer" requiered>
+								<select class="form-select" aria-label="Default select example" name="parecer_c" id="parecer_c">
 									<option selected></option>
 									<option value="1">Parecer favorável</option>
 									<option value="2">Comunique-se</option>
@@ -374,45 +385,51 @@ if ($permissao == 2) {
 							</div>
 							<div class="col col-4">
 								<label for="datapubli" class="form-label">Data de publicação do parecer do GRAPROEM ou Coordenadoria:</label>
-								<input type="date" class="form-control form-control-sm" id="datapubli" name="datapubli">
+								<input type="date" class="form-control form-control-sm" id="datapubli_c" name="datapubli_c">
 							</div>
 							<div class="col col-4">
 								<label for="datasmul" class="form-label">Data final da análise pela coordenadoria de SMUL:</label>
-								<input type="date" class="form-control form-control-sm" id="datasmul" name="datasmul">
+								<input type="date" class="form-control form-control-sm" id="datasmul_c" name="datasmul_c">
 							</div>
 							<div class="col col-4">
 								<label for="datasvma" class="form-label">Data final da análise SVMA:</label>
-								<input type="date" class="form-control form-control-sm" id="datasvma" name="datasvma">
+								<input type="date" class="form-control form-control-sm" id="datasvma_c" name="datasvma_c">
 							</div>
 							<div class="col col-4">
 								<label for="datasmc" class="form-label">Data final da análise SMC:</label>
-								<input type="date" class="form-control form-control-sm" id="datasmc" name="datasmc">
+								<input type="date" class="form-control form-control-sm" id="datasmc_c" name="datasmc_c">
 							</div>
 							<div class="col col-4">
 								<label for="datasmt" class="form-label">Data final da análise SMT:</label>
-								<input type="date" class="form-control form-control-sm" id="datasmt" name="datasmt">
+								<input type="date" class="form-control form-control-sm" id="datasmt_c" name="datasmt_c">
 							</div>
 							<div class="col col-4">
 								<label for="datasehab" class="form-label">Data final da análise SEHAB:</label>
-								<input type="date" class="form-control form-control-sm" id="datasehab" name="datasehab">
+								<input type="date" class="form-control form-control-sm" id="datasehab_c" name="datasehab_c">
 							</div>
 							<div class="col col-4">
 								<label for="datafinalsiurb" class="form-label">Data final da análise SIURB:</label>
-								<input type="date" class="form-control form-control-sm" id="datasiurb" name="datasiurb">
+								<input type="date" class="form-control form-control-sm" id="datasiurb_c" name="datasiurb_c">
+							</div>
+							<div class="col col-4">
+								<label for="datafinalsiurb" class="form-label">Data de publicação do despacho pela coordenadoria de SMUL:</label>
+								<input type="date" class="form-control form-control-sm" id="datacoord" name="datacoord">
 							</div>
 						</div>
 						<div class=".col-12 .col-md-8">
 							<label class="form-label" for="obs">Observação:</label>
-							<textarea class="form-control form-control-sm textarea" id="obs" rows="" name="obs" maxlength="300"></textarea>
+							<textarea class="form-control form-control-sm textarea" id="obs_c" rows="" name="obs_c" maxlength="300"></textarea>
 						</div>
 					</div>
 				</div>
+				<br>
 				<div class="form-row">
 					<div class="col col-3">
 						<button type="submit" class="btn btn-primary" name="salvar">Salvar</button>
 						<button type="button" class="btn btn-dark ml-auto" name="cancelar" id="cancelar">Cancelar</button>
 					</div>
 				</div>
+
 			</form>
 		</div>
 	</div>
