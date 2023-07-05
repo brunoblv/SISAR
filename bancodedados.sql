@@ -7,21 +7,16 @@ CREATE TABLE IF NOT EXISTS usuarios (
   statususer int(1)
 );
 
-CREATE TABLE `controle_prazo` (
-	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`controleinterno` INT(11) NOT NULL,
-	`descricao` VARCHAR(100) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
-	`datainicio` DATE NOT NULL,
-	`datafim` DATE NOT NULL,
-	`instancia` VARCHAR(1) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
-	`graproem` VARCHAR(1) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
-	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `FK_controleinterno_controle_prazo` (`controleinterno`) USING BTREE,
-	CONSTRAINT `FK_controleinterno_controle_prazo` FOREIGN KEY (`controleinterno`) REFERENCES `inicial` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
-)
-COLLATE='utf8mb4_general_ci'
-ENGINE=InnoDB
-;
+CREATE TABLE IF NOT EXISTS controle_prazo (
+  id INT(11) PRIMARY KEY AUTO_INCREMENT,
+  controleinterno int(11),
+  descricao varchar(100),
+  datainicio date,
+  datafim date,
+  instancia varchar(1),
+  graproem varchar(1),
+  FOREIGN KEY (controleinterno) REFERENCES inicial(id)
+);
 
 CREATE TABLE IF NOT EXISTS inicial (
   id INT(11) PRIMARY KEY AUTO_INCREMENT,
