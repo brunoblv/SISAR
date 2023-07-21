@@ -73,13 +73,13 @@ if (isset($_POST['salvar'])) {
     }
 
     if (isset($_POST['motivo6'])) {
-        $motivo5 = mysqli_real_escape_string($mysqli, $_POST['motivo6']);
+        $motivo6 = mysqli_real_escape_string($mysqli, $_POST['motivo6']);
         $mysqli->query("INSERT INTO motivoinad_rel (controleinterno, idmotivo )
         VALUES('$controleinterno','$motivo6')") or die($mysqli->error);
     }
     // Caso o parecer da Análise de Admissibilidade seja "admissível" então será atribuído o status "admissível"
     // que é representado pelo valor "3".
-    // Senão é atribuído o valor "3" que significa "Inadmissível"
+    // Senão é atribuído o valor "4" que significa "Inadmissível"
 
     if ($parecer == '1') {
         $status = "3";

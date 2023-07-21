@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS controle_prazo (
   descricao varchar(100),
   datainicio date,
   datafim date,
+  dias int(11),
   instancia varchar(1),
   graproem varchar(1),
   FOREIGN KEY (controleinterno) REFERENCES inicial(id)

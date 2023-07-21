@@ -44,13 +44,8 @@
               <div class="form-group last mb-4">
                 <label for="password">Senha de rede:</label>
                 <input type="password" class="form-control" id="senha" name="senha">
-                
-              </div>            
-              
-
-              <input type="submit" value="Entrar" class="btn btn-block btn-primary">
-
-              
+              </div> 
+              <input type="submit" value="Entrar" class="btn btn-block btn-primary">              
             </form>
             </div>
           </div>

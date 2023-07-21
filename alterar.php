@@ -148,8 +148,7 @@ if ($permissao == 2) {
                                 $tipoalvara2 = $receber_cadastros['tipoalvara2'];
                                 $tipoalvara3 = $receber_cadastros['tipoalvara3'];
                                 $stand = $receber_cadastros['stand'];
-                                $sts = $receber_cadastros['sts'];
-                                $descstatus = $receber_cadastros['descstatus'];
+                                $sts = $receber_cadastros['sts'];                                
                                 $decreto = $receber_cadastros['decreto'];
                                 $dataad = $receber_cadastros['dataad'];
                                 $outorga = $receber_cadastros['outorga'];

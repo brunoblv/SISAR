@@ -16,10 +16,7 @@ include 'conexao.php';
 <html lang="pt-br">
 
 <head>
-    <?php include 'head.php'; ?>
-
-
-
+    <?php include 'head.php'; ?> 
 </head>
 
 <body>

@@ -168,13 +168,13 @@ if (isset($_POST['salvar'])) {
 
   switch ($parecer_c) {
     case 1:
-      $status = 6;
+      $status = 5;
       break;
     case 2:
-      $status = 7;
+      $status = 6;
       break;
     case 3:
-      $status = 8;
+      $status = 7;
       break;
   }
 

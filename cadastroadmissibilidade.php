@@ -597,10 +597,6 @@ if ($permissao == 2) {
 			document.getElementById("datareuniao").value = dataFormatada;
 		}
 	</script>
-
-	</div>
-	</div>
-
 </body>
 
 </html>

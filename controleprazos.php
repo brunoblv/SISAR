@@ -112,50 +112,41 @@ if ($result->num_rows > 0) {
           //Calcular o início da visualização
           $inicio = ($qnt_result_pg * $pagina) - $qnt_result_pg;
 
+          $buscar_cadastros = "
+          SELECT
+  i.id,
+  i.sei,
+  i.tipoprocesso,
+  i.tipoalvara1,
+  i.tipoalvara2,
+  i.tipoalvara3,
+  i.dataprotocolo,
+  MAX(CASE WHEN cp.descricao = 'Protocolo' THEN cp.datainicio ELSE NULL END) AS datainicio_p,
+  MAX(CASE WHEN cp.descricao = 'Análise de Admissibilidade' THEN cp.datainicio ELSE NULL END) AS datainicio_ad,
+  MAX(CASE WHEN cp.descricao = 'Análise Técnica' THEN cp.datainicio ELSE NULL END) AS datainicio_at,
+  MAX(CASE WHEN cp.descricao = 'Reanálise Técnica' THEN cp.datainicio ELSE NULL END) AS datainicio_rt,
+  MAX(CASE WHEN cp.descricao = 'Análise Técnica Complementar' THEN cp.datainicio ELSE NULL END) AS datainicio_ac,
+  MAX(CASE WHEN cp.descricao = 'Protocolo' THEN cp.datafim ELSE NULL END) AS datafim_p,
+  MAX(CASE WHEN cp.descricao = 'Análise de Admissibilidade' THEN cp.datafim ELSE NULL END) AS datafim_ad,
+  MAX(CASE WHEN cp.descricao = 'Análise Técnica' THEN cp.datafim ELSE NULL END) AS datafim_at,
+  MAX(CASE WHEN cp.descricao = 'Reanálise Técnica' THEN cp.datafim ELSE NULL END) AS datafim_rt,
+  MAX(CASE WHEN cp.descricao = 'Análise Técnica Complementar' THEN cp.datafim ELSE NULL END) AS datafim_ac,
+  MAX(CASE WHEN cp.descricao = 'Protocolo' THEN cp.dias ELSE NULL END) AS dias_p,
+  MAX(CASE WHEN cp.descricao = 'Análise de Admissibilidade' THEN cp.dias ELSE NULL END) AS dias_ad,
+  MAX(CASE WHEN cp.descricao = 'Análise Técnica' THEN cp.dias ELSE NULL END) AS dias_at,
+  MAX(CASE WHEN cp.descricao = 'Reanálise Técnica' THEN cp.dias ELSE NULL END) AS dias_rt,
+  MAX(CASE WHEN cp.descricao = 'Análise Técnica Complementar' THEN cp.dias ELSE NULL END) AS dias_ac
+FROM
+  inicial i
+JOIN
+  controle_prazo cp ON cp.controleinterno = i.id
+WHERE
+  cp.descricao IN ('Protocolo', 'Análise de Admissibilidade', 'Análise Técnica', 'Reanálise Técnica', 'Análise Técnica Complementar')
+GROUP BY
+  i.id, i.sei, i.tipoprocesso, i.tipoalvara1, i.tipoalvara2, i.tipoalvara3, i.dataprotocolo
 
-          #$buscar_cadastros = "SELECT i.*, COALESCE(cp.descricao, 'N/A') AS descricao_cp, COALESCE(a.parecer, 'N/A') AS parecer_a, 
-          #COALESCE(cp.datainicio, 'N/A') AS datainicio_cp, COALESCE(cp.datafim, 'N/A') AS datafim_cp
-          #FROM inicial i
-          #LEFT JOIN controle_prazo cp ON i.id = cp.controleinterno AND cp.descricao = 'Análise de Admissibilidade'
-          #LEFT JOIN admissibilidade a ON i.id = a.controleinterno
-          #ORDER BY i.id DESC LIMIT $inicio, $qnt_result_pg"; 
 
-          $buscar_cadastros = "SELECT 
-          i.id AS controleinterno,    
-          i.sei,
-          i.tipoprocesso,
-          i.tipoalvara1,
-          i.tipoalvara2,
-          i.tipoalvara3,
-          i.dataprotocolo,
-          i.dataad,
-          a.parecer AS parecer_AD,
-          a.dataenvio AS dataenvio_ad,
-          ad.datainicio AS datainicio_ad,
-          ad.datafim AS datafim_ad,
-          ad.dias AS real_ad,
-          tec.datainicio AS tecnica_inicio,
-          tec.datafim AS tecnica_final,
-          tec.dias AS tecnica_real,    
-          co.datainicio AS comunique_inicio,
-          co.datafim AS comunique_final,
-          co.dias AS comunique_real,   
-          re.datainicio AS reanalise_inicio,
-          re.datafim AS reanalise_final,
-          re.dias AS reanalise_parecer    
-          
-      FROM 
-          inicial i
-      LEFT JOIN 
-          admissibilidade A ON i.id = a.controleinterno
-      LEFT JOIN 
-          controle_prazo AD ON i.id = ad.controleinterno AND ad.descricao = 'Análise de Admissibilidade'
-      LEFT JOIN 
-          controle_prazo TEC ON i.id = tec.controleinterno AND TEC.descricao = 'Análise Técnica'
-      LEFT JOIN 
-          controle_prazo co ON i.id = co.controleinterno AND co.descricao = 'Comunique-se'
-      LEFT JOIN 
-          controle_prazo re ON i.id = re.controleinterno AND re.descricao = 'Reanálise Técnica'";
+          ";
 
 
           $query_cadastros = mysqli_query($conn, $buscar_cadastros);
@@ -174,21 +165,37 @@ if ($result->num_rows > 0) {
 
           while ($receber_cadastros = mysqli_fetch_array($query_cadastros)) {
 
-            $controleinterno = $receber_cadastros['controleinterno'];
+            $controleinterno = $receber_cadastros['id'];
             $sei = $receber_cadastros['sei'];
-            $dataprotocolo = $receber_cadastros['dataprotocolo'];
+            $datainicio_p = $receber_cadastros['datainicio_p'];
+            $datainicio_p = date("d/m/Y", strtotime($datainicio_p));
+            $datafim_p = $receber_cadastros['datafim_p'];
+            $dias_p = $receber_cadastros['dias_p'];
+            $datafim_p = date("d/m/Y", strtotime($datafim_p));
+            $datainicio_ad = $receber_cadastros['datainicio_ad'];
+            $datainicio_ad = date("d/m/Y", strtotime($datainicio_ad));
+            $datafim_ad = $receber_cadastros['datafim_ad'];
+            $datafim_ad = date("d/m/Y", strtotime($datafim_ad));
+            $datainicio_at = $receber_cadastros['datainicio_at'];
+            $datainicio_at = date("d/m/Y", strtotime($datainicio_at));
+            $datafim_at = $receber_cadastros['datafim_at'];
+            $datafim_at = date("d/m/Y", strtotime($datafim_at));
+            $datainicio_at = $receber_cadastros['datainicio_ac'];
+            $datainicio_at = date("d/m/Y", strtotime($datainicio_ac));
+            $datafim_at = $receber_cadastros['datafim_ac'];
+            $datafim_at = date("d/m/Y", strtotime($datafim_ac));
+            $dias_p = $receber_cadastros['dias_p'];
+            $dias_ad = $receber_cadastros['dias_ad'];
+            $dias_at = $receber_cadastros['dias_at'];
+            $dias_ac = $receber_cadastros['dias_ac'];
+
             $tipoprocesso = $receber_cadastros['tipoprocesso'];
             $tipoalvara1 = $receber_cadastros['tipoalvara1'];
             $tipoalvara2 = $receber_cadastros['tipoalvara2'];
             $tipoalvara3 = $receber_cadastros['tipoalvara3'];
-            $dataad = $receber_cadastros['dataad'];
-            $dataenvio = $receber_cadastros['dataenvio_ad'];
+            
             $suspensaoprazo = 0;
 
-            $datainicio_AD = isset($receber_cadastros['datainicio_ad']) ? $receber_cadastros['datainicio_ad'] : 'N/A';
-            $datafim_AD = isset($receber_cadastros['datafim_ad']) ? $receber_cadastros['datafim_ad'] : 'N/A';
-            $parecer_AD = isset($receber_cadastros['parecer_AD']) ? $receber_cadastros['parecer_AD'] : 'N/A';
-            $real_AD = isset($receber_cadastros['real_ad']) ? $receber_cadastros['real_ad'] : 'N/A';
             // Cálculo de prazo de Admissibilidade e Invertendo a data do SQL para o formato brasileiro
 
             $hoje = date("Y-m-d");
@@ -197,11 +204,9 @@ if ($result->num_rows > 0) {
             $datalimite = date('Y-m-d', strtotime($dataad . ' + 15 days'));
             $diasrestantes = 15 - $dias;
 
-
             $diferencaProt = abs(strtotime($datainicio_AD) - strtotime($dataprotocolo));
             $diferencaProt = floor($diferencaProt / (60 * 60 * 24));
 
-                      
             if ($dataprotocolo != $dataad) {
               if ($dataenvio == "") {
                 $resultado = "N/A";
@@ -218,7 +223,7 @@ if ($result->num_rows > 0) {
               }
             } else {
               $resultado = "";
-            }        
+            }
 
             $dataprotocolo = date("d/m/Y", strtotime($dataprotocolo));
             $dataad = date("d/m/Y", strtotime($dataad));
@@ -288,13 +293,24 @@ if ($result->num_rows > 0) {
               <td><?php echo $sei ?></td>
               <td><?php echo $tipoprocesso ?></td>
               <td><?php echo $tipoalvara ?></td>
-              <td><?php echo $dataprotocolo ?></td>
-              <td><?php echo $dataad ?></td>
+              <td><?php echo $datainicio_p ?></td>
+              <td><?php echo $datafim_p ?></td>
               <td>2</td>
-              <td><?php echo $resultado ?></td>
-              <td><?php echo $datainicio_AD ?></td>
-              <td><?php echo $datafim_AD ?></td>
-              <td><?php echo $parecer_AD ?></td>
+              <td><?php echo $dias_p ?></td>
+              <td><?php echo $datainicio_ad ?></td>
+              <td><?php echo $datafim_ad ?></td>
+              <td><?php echo $parecer_ad ?></td>
+              <td>15</td>
+              <td><?php echo $dias_ad ?></td>
+              <td><?php echo $datainicio_at ?></td>
+              <td><?php echo $datafim_at ?></td>
+              <td><?php echo $parecer_at ?></td>
+              <td>15</td>
+              <td><?php echo $dias_at ?></td>
+
+
+
+
             </tr>
           <?php }; ?>
         </tbody>

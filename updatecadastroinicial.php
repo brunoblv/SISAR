@@ -31,9 +31,7 @@ if(isset($_POST['salvar'])) {
     $decreto = mysqli_real_escape_string($mysqli, $_POST['decreto']);
     $dataad = mysqli_real_escape_string($mysqli, $_POST['dataad']);
     $dataad = date("Y-m-d",strtotime(str_replace('/','-',$dataad)));
-   
-    $datalimite = date('Y-m-d', strtotime($dataad . ' + 15 days'));
-    $datalimite = date("Y-m-d",strtotime(str_replace('/','-',$datalimite)));
+    
 
     $date = date('Y-m-d', strtotime("-120 days"));
     $buscar_cadastros = "SELECT COUNT(id) AS numprotocolo FROM inicial WHERE numsql = '$numsql' AND dataprotocolo >= '$date'";
@@ -44,9 +42,9 @@ if(isset($_POST['salvar'])) {
 
 
     $stmt = $mysqli->prepare("UPDATE inicial SET numsql=?, obs=?, tipo=?, req=?, fisico=?, aprovadigital=?, sei=?, dataprotocolo=?, tipoprocesso=?, tipoalvara1=?, tipoalvara2=?, tipoalvara3=?,
-     stand=?, sts=?, descstatus=?, decreto=?, dataad=?, datalimite=?, outorga=?, cepac=?, ou=?, aiu=?, rivi=?, aquecimento=?, gerador=? WHERE id='$id'");
-    $stmt->bind_param("ssiissssiiiiiisisssssssss", $numsql, $obs, $tipo, $req, $fisico, $digital, $sei, $dataprotocolo, $tipoprocesso, $alv1, $alv2, $alv3, $stand, $status, $descstatus, $decreto, $dataad,
-    $datalimite, $outorga, $cepac, $ou, $aiu, $rivi, $aquecimento, $gerador);
+     stand=?, sts=?, decreto=?, dataad=?, outorga=?, cepac=?, ou=?, aiu=?, rivi=?, aquecimento=?, gerador=? WHERE id='$id'");
+    $stmt->bind_param("ssiissssiiiiiisisssssss", $numsql, $obs, $tipo, $req, $fisico, $digital, $sei, $dataprotocolo, $tipoprocesso, $alv1, $alv2, $alv3, $stand, $status, $decreto, $dataad,
+    $outorga, $cepac, $ou, $aiu, $rivi, $aquecimento, $gerador);
     $stmt->execute();      
     
   

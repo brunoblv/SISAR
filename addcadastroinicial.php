@@ -19,15 +19,7 @@ if (isset($_POST['salvar'])) {
     $tipoprocesso = mysqli_real_escape_string($mysqli, $_POST['tipoprocesso']);
     $alv1 = mysqli_real_escape_string($mysqli, $_POST['alv1']);
     $alv2 = mysqli_real_escape_string($mysqli, $_POST['alv2']);
-    $alv3 = mysqli_real_escape_string($mysqli, $_POST['alv3']);
-    $stand = mysqli_real_escape_string($mysqli, $_POST['stand']);
-    $outorga = mysqli_real_escape_string($mysqli, $_POST['outorga']);
-    $cepac = mysqli_real_escape_string($mysqli, $_POST['cepac']);
-    $ou = mysqli_real_escape_string($mysqli, $_POST['ou']);
-    $aiu = mysqli_real_escape_string($mysqli, $_POST['aiu']);
-    $rivi = mysqli_real_escape_string($mysqli, $_POST['rivi']);
-    $aquecimento = mysqli_real_escape_string($mysqli, $_POST['aquecimento']);
-    $gerador = mysqli_real_escape_string($mysqli, $_POST['gerador']);    
+    $alv3 = mysqli_real_escape_string($mysqli, $_POST['alv3']);    
     $decreto = mysqli_real_escape_string($mysqli, $_POST['decreto']);
     $dataad = mysqli_real_escape_string($mysqli, $_POST['dataad']);
     $dataad = date("Y-m-d", strtotime(str_replace('/', '-', $dataad)));
@@ -64,7 +56,55 @@ if (isset($_POST['salvar'])) {
 
     $stmt = $mysqli->prepare("UPDATE controle_prazo SET dias = ABS(DATEDIFF(?,?)) WHERE controleinterno=?");
     $stmt->bind_param("ssi", $dataad, $dataprotocolo, $controleinterno);
-    $stmt->execute();  
+    $stmt->execute();
+    
+    if (isset($_POST['pedido1'])) {
+        $pedido1 = mysqli_real_escape_string($mysqli, $_POST['pedido1']);
+        $mysqli->query("INSERT INTO pedido_rel (controleinterno, idpedido )
+        VALUES('$controleinterno','$pedido1')") or die($mysqli->error);
+    }
+
+    if (isset($_POST['pedido2'])) {
+        $pedido2 = mysqli_real_escape_string($mysqli, $_POST['pedido2']);
+        $mysqli->query("INSERT INTO pedido_rel (controleinterno, idpedido )
+        VALUES('$controleinterno','$pedido2')") or die($mysqli->error);
+    }
+
+    if (isset($_POST['pedido3'])) {
+        $pedido3 = mysqli_real_escape_string($mysqli, $_POST['pedido3']);
+        $mysqli->query("INSERT INTO pedido_rel (controleinterno, idpedido )
+        VALUES('$controleinterno','$pedido3')") or die($mysqli->error);
+    }
+
+    if (isset($_POST['pedido4'])) {
+        $pedido4 = mysqli_real_escape_string($mysqli, $_POST['pedido4']);
+        $mysqli->query("INSERT INTO pedido_rel (controleinterno, idpedido )
+        VALUES('$controleinterno','$pedido4')") or die($mysqli->error);
+    }
+
+    if (isset($_POST['pedido5'])) {
+        $pedido5 = mysqli_real_escape_string($mysqli, $_POST['pedido5']);
+        $mysqli->query("INSERT INTO pedido_rel (controleinterno, idpedido )
+        VALUES('$controleinterno','$pedido5')") or die($mysqli->error);
+    }
+
+    if (isset($_POST['pedido6'])) {
+        $pedido6 = mysqli_real_escape_string($mysqli, $_POST['pedido6']);
+        $mysqli->query("INSERT INTO pedido_rel (controleinterno, idpedido )
+        VALUES('$controleinterno','$pedido6')") or die($mysqli->error);
+    }
+
+    if (isset($_POST['pedido7'])) {
+        $pedido7 = mysqli_real_escape_string($mysqli, $_POST['pedido7']);
+        $mysqli->query("INSERT INTO pedido_rel (controleinterno, idpedido )
+        VALUES('$controleinterno','$pedido7')") or die($mysqli->error);
+    }
+
+    if (isset($_POST['pedido6'])) {
+        $pedido8 = mysqli_real_escape_string($mysqli, $_POST['pedido8']);
+        $mysqli->query("INSERT INTO pedido_rel (controleinterno, idpedido )
+        VALUES('$controleinterno','$pedido8')") or die($mysqli->error);
+    }
     
     if ($prot == 0){
         echo "<script>window.alert('Cadastrado com Sucesso!'); document.location.href='principal.php'</script>";

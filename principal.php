@@ -23,11 +23,25 @@ include 'conexao.php';
 <body>
     <!-- Page Content  -->
     <div id="content" class="p-4 p-md-5 pt-5">
-        <div class="card bg-light mb-3">
+        <div>
+            <button type="button" id="todos" class="btn btn-secondary" onclick="mostrarTodos()">Todos os Processos</button>
+            <button type="button" id="meus" class="btn btn-secondary" onclick="mostrarMeus()">Meus Processos</button>
+        </div>
+        <br>
+        <div class="card bg-light mb-3 todos" style="display: block;">
             <div class="card-header">
-                <strong>Processos atribuídos a mim</strong>
+                <strong>Todos os processos</strong>
             </div>
             <div class="card-body">
+                <div class="form-row">
+                    <div class="d-flex align-items-center">
+                        <label for="datasql" class="form-label">Nº SEI:</label>
+                        <input type="text" class="form-control form-control-sm" id="pesquisar" name="pesquisar"></input>
+                    </div>
+                    <div class="ml-2">
+                        <button class="btnpesquisa2 btn-outline-success" type="submit" name="search" id="search" onclick="searchData();">Pesquisar</button>
+                    </div>
+                </div>
                 <table class="table table-sm">
                     <thead>
                         <tr>
@@ -38,7 +52,6 @@ include 'conexao.php';
                             <th>Etapa</th>
                             <th>Data Limite</th>
                             <th>Dias restantes</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -54,15 +67,23 @@ include 'conexao.php';
                         //Calcular o início da visualização
                         $inicio = ($qnt_result_pg * $pagina) - $qnt_result_pg;
 
-                        $buscar_cadastros = "SELECT inicial.id, inicial.numsql, inicial.sei, inicial.dataprotocolo, inicial.tipoprocesso, inicial.sts
-                    FROM inicial
-                    INNER JOIN distribuicao ON inicial.id = distribuicao.controleinterno
-                    WHERE distribuicao.adm = '" . $_SESSION['SesNome'] . "' AND conclusao = 0
-                    ORDER BY inicial.id DESC LIMIT " . $inicio . ", " . $qnt_result_pg;
-
+                        if (!empty($_GET['search'])) {
+                            $data = mysqli_real_escape_string($conn, $_GET['search']);
+                            $buscar_cadastros = "SELECT inicial.id, inicial.numsql, inicial.sei, inicial.dataprotocolo, inicial.tipoprocesso, inicial.sts
+                            FROM inicial
+                            INNER JOIN distribuicao ON inicial.id = distribuicao.controleinterno
+                            WHERE conclusao = 0 AND sei LIKE '%$data%'
+                            ORDER BY inicial.id DESC LIMIT " . $inicio . ", " . $qnt_result_pg;                            
+                        } else {
+                            $buscar_cadastros = "SELECT inicial.id, inicial.numsql, inicial.sei, inicial.dataprotocolo, inicial.tipoprocesso, inicial.sts
+                            FROM inicial
+                            INNER JOIN distribuicao ON inicial.id = distribuicao.controleinterno
+                            WHERE conclusao = 0
+                            ORDER BY inicial.id DESC LIMIT " . $inicio . ", " . $qnt_result_pg;
+                        }
 
                         $query_cadastros = mysqli_query($conn, $buscar_cadastros);
-                        //Paginação - Somar a quantidade de processos                   
+                        //Paginação - Somar a quantidade de processos 
 
 
                         $result_pg = "SELECT COUNT(id) AS num_result FROM inicial";
@@ -95,6 +116,9 @@ include 'conexao.php';
                                 case '3':
                                     $etapa = '<td class="text-wrap table-success">Aguardando envio para Coordenadoria SMUL/Secretarias</td>';
                                     break;
+                                case '4':
+                                    $etapa = '<td class="text-wrap table-success">Aguardando envio para Coordenadoria SMUL/Secretarias</td>';
+                                    break;
                                 case '5':
                                     $etapa = '<td class="text-wrap table-danger">Em análise técnica (SMUL/Secretarias)</td>';
                                     break;
@@ -102,6 +126,12 @@ include 'conexao.php';
                                     $etapa = '<td class="text-wrap table-warning">GRAPROEM favorável - Aguardando deferimento';
                                     break;
                                 case '7':
+                                    $etapa = 'Deferido';
+                                    break;
+                                case '8':
+                                    $etapa = 'Deferido';
+                                    break;
+                                case '9':
                                     $etapa = 'Deferido';
                                     break;
                             }
@@ -181,9 +211,9 @@ include 'conexao.php';
                 </ul>
             </nav>
         </div>
-        <div class="card bg-light mb-3" hidden>
+        <div class="card bg-light mb-3 meus" style="display: none;">
             <div class="card-header">
-                <strong>Todos os processos</strong>
+                <strong>Meus Processos</strong>
             </div>
             <div class="card-body">
                 <table class="table table-sm">
@@ -214,7 +244,7 @@ include 'conexao.php';
                         $buscar_cadastros = "SELECT inicial.id, inicial.numsql, inicial.sei, inicial.dataprotocolo, inicial.tipoprocesso, inicial.sts
                     FROM inicial
                     INNER JOIN distribuicao ON inicial.id = distribuicao.controleinterno
-                    WHERE conclusao = 0
+                    WHERE distribuicao.adm = '" . $_SESSION['SesNome'] . "' AND conclusao = 0
                     ORDER BY inicial.id DESC LIMIT " . $inicio . ", " . $qnt_result_pg;
 
 
@@ -350,5 +380,37 @@ include 'conexao.php';
     </div>
 
 </body>
+
+<script>
+    var search = document.getElementById('pesquisar');
+
+    search.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            searchData();
+        }
+    });
+
+    function searchData() {
+        window.location = 'principal.php?search=' + search.value;
+    }
+
+
+    function mostrarTodos() {
+        var todosProcessos = document.querySelector(".todos");
+        var meusProcessos = document.querySelector(".meus");
+
+        todosProcessos.style.display = "block";
+        meusProcessos.style.display = "none";
+    }
+
+    function mostrarMeus() {
+        var todosProcessos = document.querySelector(".todos");
+        var meusProcessos = document.querySelector(".meus");
+
+        todosProcessos.style.display = "none";
+        meusProcessos.style.display = "block";
+    }
+</script>
+
 
 </html>

@@ -43,18 +43,6 @@ if ($result->num_rows > 0) {
 
 <body>
 
-  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-    <symbol id="check-circle-fill" viewBox="0 0 16 16">
-      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-    </symbol>
-    <symbol id="info-fill" viewBox="0 0 16 16">
-      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
-    </symbol>
-    <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
-      <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-    </symbol>
-  </svg>
-
   <?php
   $dataprotocolo = '';
 
@@ -75,7 +63,7 @@ if ($result->num_rows > 0) {
                 <input type="text" class="form-control form-control-sm" id="buscasql" name="buscasql"></input>
               </div>
               <div class="ml-2">
-                <button class="btnpesquisa2 btn-outline-success" type="submit" name="busca">Pesquisar</button>
+                <button class="btnpesquisa2 btn-outline-success" type="submit" name="busca" id="busca">Pesquisar</button>
               </div>
             </div>
           </div>
@@ -172,175 +160,153 @@ if ($result->num_rows > 0) {
         </div>
       </div>
     </div>
-    <div class="card bg-light mb-3">
-      <div class="card-header">
-        <strong>Dados Iniciais</strong>
-      </div>
-      <div class="card-body">
-        <form class="need-validation" novalidade method="POST" action="addcadastroinicial.php" autocomplete="off">
-          <div class="form-row">
-            <div class="col col-3">
-              <label for="novocontrole" class="form-label">Número de Controle interno:</label>
-              <input type="text" class="form-control form-control-sm" id="controleinterno" readonly name="controleinterno" value="<?php echo htmlspecialchars($next_id); ?>"></input>
+    <div id="dados" style="display: none;">
+      <div class="card bg-light mb-3">
+        <div class="card-header">
+          <strong>Dados Iniciais</strong>
+        </div>
+        <div class="card-body">
+          <form class="need-validation" novalidade method="POST" action="addcadastroinicial.php" autocomplete="off">
+            <div class="form-row">
+              <div class="col col-3">
+                <label for="novocontrole" class="form-label">Número de Controle interno:</label>
+                <input type="text" class="form-control form-control-sm" id="controleinterno" readonly name="controleinterno" value="<?php echo htmlspecialchars($next_id); ?>"></input>
+              </div>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="col col-3">
-              <label for="sei" class="form-label sei">Nº SEI:</label>
-              <input type="text" class="form-control form-control-sm" id="sei" name="sei" required="required">
+            <div class="form-row">
+              <div class="col col-3">
+                <label for="sei" class="form-label sei">Nº SEI:</label>
+                <input type="text" class="form-control form-control-sm" id="sei" name="sei" required="required">
+              </div>
+              <div class="col col-3">
+                <label for="numsql" class="form-label sql">SQL:</label>
+                <input type="text" class="form-control form-control-sm" id="numsql" name="numsql" value="<?php echo htmlspecialchars($numsql); ?>">
+              </div>
+              <div class="col col-3">
+                <label for="tipo" class="form-label">Tipo:</label>
+                <input type="text" class="form-control form-control-sm" id="tipo" name="tipo" placeholder="Verificar na TEV/COE o campo 05" maxlength="1">
+              </div>
+              <div class="col col-3">
+                <label for="req" class="form-label">REQ:</label>
+                <input type="text" class="form-control form-control-sm" id="req" name="req" placeholder="Verificar na TEV/COE o campo 05" maxlength="3">
+              </div>
             </div>
-            <div class="col col-3">
-              <label for="numsql" class="form-label sql">SQL:</label>
-              <input type="text" class="form-control form-control-sm" id="numsql" name="numsql" value="<?php echo htmlspecialchars($numsql); ?>">
+            <div class="form-row">
+              <div class="col col-3">
+                <label for="aprova" class="form-label digital">N° Aprova Digital:</label>
+                <input type="text" class="form-control form-control-sm" id="digital" name="digital">
+              </div>
+              <div class="col col-3">
+                <label for="fisico" class="form-label fisico">Nº Processo Físico:</label>
+                <input type="text" class="form-control form-control-sm" id="fisico" name="fisico">
+              </div>
+              <div class="col col-3">
+                <label for="dataprotocolo" class="form-label">Data de Protocolo pelo interessado:</label>
+                <input type="date" class="form-control form-control-sm" id="dataprotocolo" name="dataprotocolo" required>
+              </div>
+              <div class="col col-3">
+                <label for="tipoprocesso" class="form-label">Tipo de processo:</label>
+                <select class="form-select" aria-label="Default select example" name="tipoprocesso" id="tipoprocesso">
+                  <option selected></option>
+                  <option value="1">Próprio de SMUL</option>
+                  <option value="2">Múltiplas Interfaces</option>
+                </select>
+              </div>
             </div>
-            <div class="col col-3">
-              <label for="tipo" class="form-label">Tipo:</label>
-              <input type="text" class="form-control form-control-sm" id="tipo" name="tipo" placeholder="Verificar na TEV/COE o campo 05" maxlength="1">
+            <div class="form-row">
+              <div class="col col-3">
+                <label for="alv1" class="form-label">É projeto modificativo?</label>
+                <select class="form-select" aria-label="Default select example" name="alv1" id="alv1">
+                  <option selected></option>
+                  <option value="1">Sim</option>
+                  <option value="2">Não</option>
+                </select>
+              </div>
+              <div class="col col-3">
+                <label for="alv2" class="form-label">Tipo de Alvará 2:</label>
+                <select class="form-select" aria-label="Default select example" name="alv2" id="alv2">
+                  <option selected></option>
+                  <option value="1">Alvará de Aprovação</option>
+                  <option value="2">Alvará de Aprovação e Execução</option>
+                  <option value="3">Alvará de Execução</option>
+                </select>
+              </div>
+              <div class="col col-3">
+                <label for="alv3" class="form-label">Tipo de Alvará 3:</label>
+                <select class="form-select" aria-label="Default select example" name="alv3" id="alv3">
+                  <option selected></option>
+                  <option value="1">Edificação Nova</option>
+                  <option value="2">Reforma</option>
+                  <option value="3">Requalificação</option>
+                  <option value="4">Requalificação associada a reforma</option>
+                </select>
+              </div>
+              <div class="col col-3">
+                <label for="decreto" class="form-label">Anterior ao Decreto ou após novo Decreto?:</label>
+                <select class="form-select" aria-label="Default select example" name="decreto" id="decreto">
+                  <option selected></option>
+                  <option value="1">Anterior</option>
+                  <option value="2">Posterior</option>
+                </select>
+              </div>
+              <div class="col col-3">
+                <label for="dataad" class="form-label">Data de início da Análise de Admissibilidade:</label>
+                <input type="date" class="form-control form-control-sm" id="dataad" name="dataad" required>
+              </div>
             </div>
-            <div class="col col-3">
-              <label for="req" class="form-label">REQ:</label>
-              <input type="text" class="form-control form-control-sm" id="req" name="req" placeholder="Verificar na TEV/COE o campo 05" maxlength="3">
+            <div class="form-row motivos">
+              <div class="col col-3">
+                <label for="decisao" class="form-label">Pedidos</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="1" name="pedido1">
+                  <label class="form-check-label" for="pedido1"> Stand de vendas
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="2" name="pedido2">
+                  <label class="form-check-label" for="pedido2"> Outorga onerosa
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="3" name="pedido3">
+                  <label class="form-check-label" for="pedido3"> CEPAC
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="4" name="pedido4">
+                  <label class="form-check-label" for="pedido4"> Operação Urbana
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="5" name="pedido5">
+                  <label class="form-check-label" for="pedido5"> AUI
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="6" name="pedido6">
+                  <label class="form-check-label" for="pedido6"> RIVI
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="7" name="pedido7">
+                  <label class="form-check-label" for="pedido7"> Aquecimento Solar
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="8" name="pedido8">
+                  <label class="form-check-label" for="pedido8"> Polo Gerador de Tráfego
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="col col-3">
-              <label for="aprova" class="form-label digital">N° Aprova Digital:</label>
-              <input type="text" class="form-control form-control-sm" id="digital" name="digital">
+            <br>
+            <div class="row">
+              <div class=".col-12 .col-md-8">
+                <label class="form-label" for="obs">Observação:</label>
+                <textarea class="form-control form-control-sm textarea" id="obs" rows="" name="obs" maxlength="300"></textarea>
+              </div>
             </div>
-            <div class="col col-3">
-              <label for="fisico" class="form-label fisico">Nº Processo Físico:</label>
-              <input type="text" class="form-control form-control-sm" id="fisico" name="fisico">
-            </div>
-            <div class="col col-3">
-              <label for="dataprotocolo" class="form-label">Data de Protocolo pelo interessado:</label>
-              <input type="date" class="form-control form-control-sm" id="dataprotocolo" name="dataprotocolo">
-            </div>
-            <div class="col col-3">
-              <label for="tipoprocesso" class="form-label">Tipo de processo:</label>
-              <select class="form-select" aria-label="Default select example" name="tipoprocesso" id="tipoprocesso">
-                <option selected></option>
-                <option value="1">Próprio de SMUL</option>
-                <option value="2">Múltiplas Interfaces</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col col-3">
-              <label for="alv1" class="form-label">Tipo de Alvará:</label>
-              <select class="form-select" aria-label="Default select example" name="alv1" id="alv1">
-                <option selected></option>
-                <option value="1">Nada</option>
-                <option value="2">Projeto Modificativo</option>
-              </select>
-            </div>
-            <div class="col col-3">
-              <label for="alv2" class="form-label">Tipo de Alvará 2:</label>
-              <select class="form-select" aria-label="Default select example" name="alv2" id="alv2">
-                <option selected></option>
-                <option value="1">Alvará de Aprovação</option>
-                <option value="2">Alvará de Aprovação e Execução</option>
-                <option value="3">Alvará de Execução</option>
-              </select>
-            </div>
-            <div class="col col-3">
-              <label for="alv3" class="form-label">Tipo de Alvará 3:</label>
-              <select class="form-select" aria-label="Default select example" name="alv3" id="alv3">
-                <option selected></option>
-                <option value="1">Edificação Nova</option>
-                <option value="2">Reforma</option>
-                <option value="3">Requalificação</option>
-                <option value="4">Requalificação associada a reforma</option>
-              </select>
-            </div>
-            <div class="col col-3">
-              <label for="stand" class="form-label">Há pedido de stand de vendas?</label>
-              <select class="form-select" aria-label="Default select example" name="stand" id="stand">
-                <option selected></option>
-                <option value="1">Sim</option>
-                <option value="0">Não</option>
-              </select>
-            </div>
-            <div class="col col-3">
-              <label for="outorga" class="form-label">Há pedido de Outorga Onerosa?</label>
-              <select class="form-select" aria-label="Default select example" name="outorga" id="outorga">
-                <option selected></option>
-                <option value="1">Sim</option>
-                <option value="0">Não</option>
-              </select>
-            </div>
-            <div class="col col-3">
-              <label for="CEPAC" class="form-label">Há pedido de CEPAC?</label>
-              <select class="form-select" aria-label="Default select example" name="cepac" id="cepac">
-                <option selected></option>
-                <option value="1">Sim</option>
-                <option value="0">Não</option>
-              </select>
-            </div>
-            <div class="col col-3">
-              <label for="ou" class="form-label">Há pedido de Operação urbana?</label>
-              <select class="form-select" aria-label="Default select example" name="ou" id="ou">
-                <option selected></option>
-                <option value="1">Sim</option>
-                <option value="0">Não</option>
-              </select>
-            </div>
-            <div class="col col-3">
-              <label for="AIU" class="form-label">Há pedido de AIU?</label>
-              <select class="form-select" aria-label="Default select example" name="aiu" id="aiu">
-                <option selected></option>
-                <option value="1">Sim</option>
-                <option value="0">Não</option>
-              </select>
-            </div>
-            <div class="col col-3">
-              <label for="RIVI" class="form-label">Há pedido de RIVI?</label>
-              <select class="form-select" aria-label="Default select example" name="rivi" id="rivi">
-                <option selected></option>
-                <option value="1">Sim</option>
-                <option value="0">Não</option>
-              </select>
-            </div>
-            <div class="col col-3">
-              <label for="aquecimento" class="form-label">Há pedido de Aquecimento Solar?</label>
-              <select class="form-select" aria-label="Default select example" name="aquecimento" id="aquecimento">
-                <option selected></option>
-                <option value="1">Sim</option>
-                <option value="0">Não</option>
-              </select>
-            </div>
-            <div class="col col-3">
-              <label for="gerador" class="form-label">Há pedido de Polo gerador de tráfego?</label>
-              <select class="form-select" aria-label="Default select example" name="gerador" id="gerador">
-                <option selected></option>
-                <option value="1">Sim</option>
-                <option value="0">Não</option>
-              </select>
-            </div>
-            <div class="col col-3">
-              <label for="decreto" class="form-label">Anterior ao Decreto ou após novo Decreto?:</label>
-              <select class="form-select" aria-label="Default select example" name="decreto" id="decreto">
-                <option selected></option>
-                <option value="1">Anterior</option>
-                <option value="2">Posterior</option>
-              </select>
-            </div>
-            <div class="col col-3">
-              <label for="dataad" class="form-label">Data de início da Análise de Admissibilidade:</label>
-              <input type="date" class="form-control form-control-sm" id="dataad" name="dataad">
-            </div>
-          </div>
-          <br>
-          <div class="row">
-            <div class=".col-12 .col-md-8">
-              <label class="form-label" for="obs">Observação:</label>
-              <textarea class="form-control form-control-sm textarea" id="obs" rows="" name="obs" maxlength="300"></textarea>
-            </div>
-          </div>
-          <br>
-          <button type="submit" class="btn btn-primary" name="salvar">Salvar</button>
-        </form>
+            <br>
+            <button type="submit" class="btn btn-primary" name="salvar">Salvar</button>
+          </form>
+        </div>
       </div>
     </div>
+  </div>
+
+
 </body>
 
 <script>
@@ -366,6 +332,19 @@ if ($result->num_rows > 0) {
 
   $(document).ready(function() {
     $('#sei').mask('0000.0000/0000000-0');
+  });
+
+  // Selecionando o botão e a div pelo id
+  const botaoBusca = document.getElementById("busca");
+  const divDados = document.getElementById("dados");
+
+  // Adicionando um evento de clique ao botão
+  botaoBusca.addEventListener("click", function(event) {
+    // Evitando que o comportamento padrão do botão recarregue a página
+    event.preventDefault();
+
+    // Alterando a propriedade 'display' da div para torná-la visível
+    divDados.style.display = "block";
   });
 </script>
 

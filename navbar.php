@@ -51,10 +51,7 @@
 							</li>							
 							<li>
 								<a href="cadastrosecretarias.php"><span class="bx bxs-bank mr-3"></span>Coord. SMUL/Secretarias</a>
-							</li>
-							<li>
-								<a href="cadastrograproem.php"><span class="bx bx-intersect mr-3 mr-3"></span>GRAPROEM</a>
-							</li>							
+							</li>														
 							<li>
 								<a href="cadastroprazo.php"><span class="bx bx-stopwatch mr-3"></span>Suspensão de prazos</a>
 							</li>
@@ -130,7 +127,7 @@
 					<a href="alterar.php"><span class="bx bx-edit mr-3"></span>Alteração de Dados</a>
 				</li>				
 				<li class="active">
-					<a href="principal.php"><span class="bx bxs-user-account mr-3"></span>Cadastro de Usuários</a>
+					<a href="cadastrousuario.php"><span class="bx bxs-user-account mr-3"></span>Cadastro de Usuários</a>
 				</li>
 			</ul>
 			<div class="footer"><span class="bx bxs-user mr-3"></span><?php echo $_SESSION['SesNome'];?> 
