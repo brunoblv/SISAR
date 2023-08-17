@@ -108,7 +108,7 @@ if ($permissao == 2) {
 						FROM
 						inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno
 						JOIN admissibilidade ON inicial.id = admissibilidade.controleinterno
-						WHERE sts='5' AND sei = '$data' ORDER BY id DESC";
+						WHERE sts='7' AND sei = '$data' ORDER BY id DESC";
 						} else {
 							$buscar_cadastros = "SELECT
 							Inicial.*, 
@@ -117,7 +117,7 @@ if ($permissao == 2) {
 							FROM
 							inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno
 							JOIN admissibilidade ON inicial.id = admissibilidade.controleinterno
-							WHERE sts='5' ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
+							WHERE sts='7' ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
 						}
 
 

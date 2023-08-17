@@ -74,10 +74,12 @@ if ($result->num_rows > 0) {
 
         $alert = '';
         $numsql = '';
+        $pesquisa = '';
 
-        if (isset($_POST['busca'])) {
+        if (isset($_POST['buscasql'])) {
           $pesquisa = $_POST['buscasql'];
           $numsql = $_POST['buscasql'];
+          echo "o valor de pesquisa é:" . $pesquisa . $numsql;
           if ($conn) {
             $buscar_cadastros = "SELECT * FROM Inicial
               WHERE numsql = '$pesquisa'
@@ -143,7 +145,7 @@ if ($result->num_rows > 0) {
         <div class="form-row">
           <div class="col col-3">
             <label for="novocontrole" class="form-label">Número de Controle interno:</label>
-            <input type="text" class="form-control form-control-sm" id="novocontrole" readonly name="novocontrole" value="<?php echo htmlspecialchars($next_id); ?>"></input>
+            <input type="text" class="form-control form-control-sm" id="novocontrole" readonly name="novocontrole" value="<?php echo htmlspecialchars($pesquisa); ?>"></input>
           </div>
           <div class="col col-3">
             <label for="datasql" class="form-label">Data do último protocolo para esse SQL:</label>

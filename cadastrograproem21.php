@@ -108,7 +108,7 @@ if ($permissao == 2) {
 						FROM
 						inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno
 						JOIN admissibilidade ON inicial.id = admissibilidade.controleinterno
-						WHERE sts='5' AND sei = '$data' ORDER BY id DESC";
+						WHERE sts='8' AND sei = '$data' ORDER BY id DESC";
 						} else {
 							$buscar_cadastros = "SELECT
 							Inicial.*, 
@@ -117,7 +117,7 @@ if ($permissao == 2) {
 							FROM
 							inicial JOIN distribuicao ON inicial.id = distribuicao.controleinterno
 							JOIN admissibilidade ON inicial.id = admissibilidade.controleinterno
-							WHERE sts='5' ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
+							WHERE sts='8' ORDER BY id DESC LIMIT $inicio, $qnt_result_pg";
 						}
 
 
@@ -149,7 +149,8 @@ if ($permissao == 2) {
 							$tipoprocesso = $receber_cadastros['tipoprocesso'];
 							$tipoalvara1 = $receber_cadastros['tipoalvara1'];
 							$tipoalvara2 = $receber_cadastros['tipoalvara2'];
-							$tipoalvara3 = $receber_cadastros['tipoalvara3'];							
+							$tipoalvara3 = $receber_cadastros['tipoalvara3'];
+							$stand = $receber_cadastros['stand'];
 							$decreto = $receber_cadastros['decreto'];
 							$dataenvio = $receber_cadastros['dataenvio'];
 							$datareuniao = $receber_cadastros['datareuniao'];
@@ -303,7 +304,7 @@ if ($permissao == 2) {
 					?>
 		</div>
 		<div id="form" hidden>
-			<form class="need-validation" no validade method="POST" action="addgraproem11.php" autocomplete="off" name="formulario" id="formulario">
+			<form class="need-validation" no validade method="POST" action="addgraproem21.php" autocomplete="off" name="formulario" id="formulario">
 				<div class="card bg-light mb-3">
 					<div class="card-header">
 						<strong>Dados do Processo</strong>

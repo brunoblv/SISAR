@@ -70,14 +70,12 @@ include 'conexao.php';
                         if (!empty($_GET['search'])) {
                             $data = mysqli_real_escape_string($conn, $_GET['search']);
                             $buscar_cadastros = "SELECT inicial.id, inicial.numsql, inicial.sei, inicial.dataprotocolo, inicial.tipoprocesso, inicial.sts
-                            FROM inicial
-                            INNER JOIN distribuicao ON inicial.id = distribuicao.controleinterno
+                            FROM inicial                          
                             WHERE conclusao = 0 AND sei LIKE '%$data%'
                             ORDER BY inicial.id DESC LIMIT " . $inicio . ", " . $qnt_result_pg;                            
                         } else {
                             $buscar_cadastros = "SELECT inicial.id, inicial.numsql, inicial.sei, inicial.dataprotocolo, inicial.tipoprocesso, inicial.sts
-                            FROM inicial
-                            INNER JOIN distribuicao ON inicial.id = distribuicao.controleinterno
+                            FROM inicial                            
                             WHERE conclusao = 0
                             ORDER BY inicial.id DESC LIMIT " . $inicio . ", " . $qnt_result_pg;
                         }
@@ -189,11 +187,11 @@ include 'conexao.php';
             </div>
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="prazoad.php?pagina=1">Primeira</a></li>
+                    <li class="page-item"><a class="page-link" href="principal.php?pagina=1">Primeira</a></li>
 
                     <?php for ($pag_ant = $pagina - $max_links; $pag_ant <= $pagina - 1; $pag_ant++) {
                         if ($pag_ant >= 1) {
-                            echo "<li class='page-item'><a class='page-link' href='prazoad.php?pagina=$pag_ant'>$pag_ant</a></li>";
+                            echo "<li class='page-item'><a class='page-link' href='principal.php?pagina=$pag_ant'>$pag_ant</a></li>";
                         }
                     } ?>
 
@@ -201,10 +199,10 @@ include 'conexao.php';
 
                     <?php for ($pag_dep = $pagina + 1; $pag_dep <= $pagina + $max_links; $pag_dep++) {
                         if ($pag_dep <= $quantidade_pg) {
-                            echo "<li class='page-item'><a class='page-link' href='prazoad.php?pagina=$pag_dep'>$pag_dep</a></li>";
+                            echo "<li class='page-item'><a class='page-link' href='principal.php?pagina=$pag_dep'>$pag_dep</a></li>";
                         }
                     }
-                    echo "<li class='page-item'><a class='page-link' href='prazoad.php?pagina=$quantidade_pg'>Última</a></li>";
+                    echo "<li class='page-item'><a class='page-link' href='principal.php?pagina=$quantidade_pg'>Última</a></li>";
                     echo '</ul>';
                     echo '</nav>';
                     ?>
@@ -355,11 +353,11 @@ include 'conexao.php';
             </div>
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="prazoad.php?pagina=1">Primeira</a></li>
+                    <li class="page-item"><a class="page-link" href="principal.php?pagina=1">Primeira</a></li>
 
                     <?php for ($pag_ant = $pagina - $max_links; $pag_ant <= $pagina - 1; $pag_ant++) {
                         if ($pag_ant >= 1) {
-                            echo "<li class='page-item'><a class='page-link' href='prazoad.php?pagina=$pag_ant'>$pag_ant</a></li>";
+                            echo "<li class='page-item'><a class='page-link' href='principal.php?pagina=$pag_ant'>$pag_ant</a></li>";
                         }
                     } ?>
 
@@ -367,10 +365,10 @@ include 'conexao.php';
 
                     <?php for ($pag_dep = $pagina + 1; $pag_dep <= $pagina + $max_links; $pag_dep++) {
                         if ($pag_dep <= $quantidade_pg) {
-                            echo "<li class='page-item'><a class='page-link' href='prazoad.php?pagina=$pag_dep'>$pag_dep</a></li>";
+                            echo "<li class='page-item'><a class='page-link' href='principal.php?pagina=$pag_dep'>$pag_dep</a></li>";
                         }
                     }
-                    echo "<li class='page-item'><a class='page-link' href='prazoad.php?pagina=$quantidade_pg'>Última</a></li>";
+                    echo "<li class='page-item'><a class='page-link' href='principal.php?pagina=$quantidade_pg'>Última</a></li>";
                     echo '</ul>';
                     echo '</nav>';
                     ?>

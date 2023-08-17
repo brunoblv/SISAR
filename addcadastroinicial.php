@@ -36,15 +36,18 @@ if (isset($_POST['salvar'])) {
 
     $status = '1';
 
+    if($decreto == 2){
+        
+    }
+
     $stmt = $mysqli->prepare("
     INSERT INTO inicial
      (conclusao, obs, numsql, tipo, req, fisico, aprovadigital, sei, dataprotocolo, tipoprocesso,
      tipoalvara1, tipoalvara2,
-     tipoalvara3, stand, sts, decreto, dataad, outorga, cepac, ou, aiu, rivi, aquecimento, gerador)
-      VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("isssssssssssssssssssssss", $conclusao, $obs, $numsql, $tipo, $req, $fisico, $digital, $sei,
-     $dataprotocolo,$tipoprocesso, $alv1, $alv2, $alv3, $stand, $status, $decreto, $dataad,$outorga, $cepac, $ou, 
-     $aiu, $rivi, $aquecimento, $gerador
+     tipoalvara3, sts, decreto, dataad)
+      VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("isssssssssssssss", $conclusao, $obs, $numsql, $tipo, $req, $fisico, $digital, $sei,
+     $dataprotocolo,$tipoprocesso, $alv1, $alv2, $alv3, $status, $decreto, $dataad
     );
     $stmt->execute();
     
@@ -106,10 +109,10 @@ if (isset($_POST['salvar'])) {
         VALUES('$controleinterno','$pedido8')") or die($mysqli->error);
     }
     
-    if ($prot == 0){
-        echo "<script>window.alert('Cadastrado com Sucesso!'); document.location.href='principal.php'</script>";
-    } else {
-        echo "<script>window.alert('Cadastrado com Sucesso! Porém esse SQL tem protocolo em menos de 120 dias.'); document.location.href='principal.php'</script>";
-    }
+   if ($prot == 0){
+      echo "<script>window.alert('Cadastrado com Sucesso!'); document.location.href='principal.php'</script>";
+   } else {
+     echo "<script>window.alert('Cadastrado com Sucesso! Porém esse SQL tem protocolo em menos de 120 dias.'); document.location.href='principal.php'</script>";
+   }
    
  }

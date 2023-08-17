@@ -155,7 +155,7 @@ if (isset($_POST['salvar'])) {
 
   $datas = array($datasmul_c, $datasvma_c, $datasmc_c, $datasmt_c, $datasehab_c, $datasiurb_c);
   $datafim = max($datas);
-  $instancia = 1;
+  $instancia = 2;
   $graproem = 3;
 
   $stmt = $mysqli->prepare("INSERT INTO controle_prazo (controleinterno, descricao, instancia, graproem, datainicio, datafim) VALUES (?,?,?,?,?,?)");
@@ -168,13 +168,13 @@ if (isset($_POST['salvar'])) {
 
   switch ($parecer_c) {
     case 1:
-      $status = 6;
+      $status = 9;
       break;
     case 2:
-      $status = 7;
+      $status = 10;
       break;
     case 3:
-      $status = 8;
+      $status = 11;
       break;
   }
 

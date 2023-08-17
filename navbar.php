@@ -65,10 +65,10 @@
 					<div class="collapse" id="submenu2" aria-expanded="false">
 						<ul class="flex-column pl-2 nav">
 							<li>
-								<a href="cadastrograproem11.php"><span class="bx bx-plus mr-3"></span>1º GRAPROEM</a>
+								<a href="cadastrograproem11.php"><span class="bx bx-plus mr-3"></span>Análise Técnica</a>
 							</li>
 							<li>
-								<a href="cadastrograproem12.php"><span class="bx bxs-paper-plane mr-3"></span>2º GRAPROEM</a>
+								<a href="cadastrograproem12.php"><span class="bx bxs-paper-plane mr-3"></span>Reanálise Técnica</a>
 							</li>
 							<li>
 								<a href="cadastrograproem13.php"><span class="bx bxs-analyse mr-3"></span>3º GRAPROEM</a>
